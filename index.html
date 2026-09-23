@@ -30,29 +30,30 @@
     }
 
     /* ============================================================
-       ТЕМА 1: «Пикми» (ДЕФОЛТНАЯ) — глубокий сочный розовый, малина, клубника
+       ТЕМА 1: «Пикми» (ДЕФОЛТНАЯ) — ультрамодный жемчужно-розовый омбре
+       (Strawberry Glaze & Frosted Peach-Rose, глубокий ягодный акцент)
        ============================================================ */
     body, body[data-theme="pikmi"] {
-        --bg-a: #FFE4F0;
-        --bg-b: #FCD6E8;
-        --bg-c: #F3CEE8;
-        --blob1: #FF6BA6;
-        --blob2: #D946EF;
-        --blob3: #FFA8CC;
-        --blob-opacity: .55;
-        --text-1: #241626;          /* Четкий, глубокий графитово-ягодный */
-        --text-2: #7D4F70;          /* Бархатный ягодный */
-        --glass: rgba(255, 255, 255, 0.76);
-        --glass-strong: rgba(255, 255, 255, 0.94);
-        --glass-border: rgba(255, 255, 255, 0.95);
-        --accent1: #FF2E79;         /* Сочный глубокий розовый */
-        --accent2: #E11D48;         /* Насыщенный малиновый */
-        --accent-solid: #FF2E79;
-        --shadow: 0 12px 34px rgba(225, 29, 72, 0.14), 0 2px 8px rgba(0,0,0,0.03);
-        --shadow-live: 0 16px 42px rgba(255, 46, 121, 0.38), 0 0 20px rgba(255, 46, 121, 0.25);
-        --pill: rgba(255, 46, 121, 0.12);
-        --divider: rgba(255, 46, 121, 0.16);
-        --card-border: rgba(255, 175, 204, 0.6);
+        --bg-a: #FFF2F7;           /* Нежный перламутрово-молочный румянец */
+        --bg-b: #FCE1EE;           /* Пастельный шелковый розово-лиловый */
+        --bg-c: #FDE8E5;           /* Мягкий персиково-розовый теплый оттенок */
+        --blob1: #FFA6CC;          /* Розовый кварц */
+        --blob2: #FF8EB5;          /* Клубничный зефир */
+        --blob3: #FBCFE8;          /* Розовая аура */
+        --blob-opacity: .48;
+        --text-1: #2B1626;          /* Дорогой графитово-ежевичный тон (максимальная читаемость) */
+        --text-2: #845573;          /* Бархатный сливово-розовый */
+        --glass: rgba(255, 255, 255, 0.78);
+        --glass-strong: rgba(255, 255, 255, 0.95);
+        --glass-border: rgba(255, 255, 255, 0.98);
+        --accent1: #FF3378;         /* Насыщенный клубничный неон */
+        --accent2: #FB5184;         /* Сочный кораллово-розовый закат */
+        --accent-solid: #FF3378;
+        --shadow: 0 10px 32px rgba(244, 63, 94, 0.12), 0 2px 8px rgba(0,0,0,0.02);
+        --shadow-live: 0 14px 40px rgba(255, 51, 120, 0.36), 0 0 18px rgba(255, 51, 120, 0.2);
+        --pill: rgba(255, 51, 120, 0.11);
+        --divider: rgba(255, 51, 120, 0.16);
+        --card-border: rgba(255, 185, 210, 0.55);
         --room-bg: #FFF0F5;
         --room-color: #BE123C;
         --room-border: rgba(244, 63, 94, 0.28);
@@ -117,17 +118,17 @@
     }
 
     body {
-        background: linear-gradient(165deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+        background: linear-gradient(168deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
         color: var(--text-1);
     }
 
     body::before {
         content: ''; position: fixed; inset: -10%; z-index: 0; pointer-events: none;
         background:
-            radial-gradient(circle at 6% -8%, var(--blob1), transparent 44%),
-            radial-gradient(circle at 108% 6%, var(--blob2), transparent 42%),
-            radial-gradient(circle at 50% 118%, var(--blob3), transparent 50%);
-        filter: blur(65px);
+            radial-gradient(circle at 8% -6%, var(--blob1), transparent 45%),
+            radial-gradient(circle at 106% 8%, var(--blob2), transparent 42%),
+            radial-gradient(circle at 50% 115%, var(--blob3), transparent 48%);
+        filter: blur(70px);
         opacity: var(--blob-opacity);
     }
 
@@ -142,24 +143,32 @@
         opacity: .55;
     }
 
-    /* Плавающие милые акценты для темы «Пикми» */
+    /* ============================================================
+       ПЛАВАЮЩИЕ СЕРДЕЧКИ И СТИКЕРЫ (СТРОГО НА ФОНЕ ПОД КАРТОЧКАМИ)
+       ============================================================ */
     .pikmi-decor { display: none; }
-    body[data-theme="pikmi"] .pikmi-decor { display: block; position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .pikmi-decor span {
-        position: absolute; opacity: .65; filter: drop-shadow(0 4px 12px rgba(255,46,121,.3));
-        animation: floatDecor 7s ease-in-out infinite;
-        user-select: none;
+    body[data-theme="pikmi"] .pikmi-decor {
+        display: block; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
     }
-    .pikmi-decor .d1 { top: 6%; left: 8%; font-size: 32px; animation-delay: 0s; }
-    .pikmi-decor .d2 { top: 15%; right: 10%; font-size: 26px; animation-delay: 1.2s; }
-    .pikmi-decor .d3 { top: 48%; right: 5%; font-size: 30px; animation-delay: 2.4s; }
-    .pikmi-decor .d4 { bottom: 22%; left: 6%; font-size: 28px; animation-delay: .6s; }
-    .pikmi-decor .d5 { bottom: 8%; right: 14%; font-size: 24px; animation-delay: 1.8s; }
-    @keyframes floatDecor {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(8deg); }
+    .pikmi-decor span {
+        position: absolute; opacity: .42; filter: drop-shadow(0 4px 10px rgba(255, 51, 120, 0.22));
+        user-select: none;
+        animation: floatHeart 12s ease-in-out infinite;
+    }
+    .pikmi-decor .d1 { top: 8%; left: 5%; font-size: 28px; animation-duration: 11s; animation-delay: 0s; }
+    .pikmi-decor .d2 { top: 20%; right: 5%; font-size: 24px; animation-duration: 13s; animation-delay: 1.5s; }
+    .pikmi-decor .d3 { top: 45%; left: 4%; font-size: 26px; animation-duration: 10s; animation-delay: 3s; }
+    .pikmi-decor .d4 { top: 66%; right: 6%; font-size: 25px; animation-duration: 12s; animation-delay: 2s; }
+    .pikmi-decor .d5 { bottom: 16%; left: 7%; font-size: 26px; animation-duration: 14s; animation-delay: 4.5s; }
+    .pikmi-decor .d6 { bottom: 6%; right: 10%; font-size: 22px; animation-duration: 9s; animation-delay: 1s; }
+
+    @keyframes floatHeart {
+        0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+        35% { transform: translateY(-16px) rotate(-6deg) scale(1.05); }
+        70% { transform: translateY(10px) rotate(6deg) scale(0.97); }
     }
 
+    /* Контейнер приложения над летающими сердечками */
     .app {
         position: relative; z-index: 1; max-width: 480px; margin: 0 auto;
         padding: 16px 16px calc(92px + env(safe-area-inset-bottom, 0px));
@@ -188,13 +197,13 @@
         border: 1px solid var(--divider);
     }
     
-    /* Кнопки действий в шапке (Копировать, ДЗ, Идеи) */
+    /* Кнопки действий в шапке (ДЗ, Идеи, Копировать) */
     .hero-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
     .icon-btn {
         width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--glass-border);
         background: var(--glass-strong); display: flex; align-items: center; justify-content: center;
         font-size: 16px; cursor: pointer; color: var(--text-1); transition: all .18s;
-        box-shadow: 0 4px 12px rgba(0,0,0,.06); position: relative;
+        box-shadow: 0 4px 12px rgba(0,0,0,.05); position: relative;
     }
     .icon-btn:hover { transform: translateY(-1px); }
     .icon-btn:active { transform: scale(.9); }
@@ -228,7 +237,7 @@
         display: inline-flex; align-items: center; gap: 8px; font-weight: 750; font-size: .86rem;
         padding: 9px 16px; border-radius: 999px; width: fit-content;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        box-shadow: 0 8px 22px rgba(225, 29, 72, 0.28); cursor: pointer; transition: transform .18s;
+        box-shadow: 0 8px 22px rgba(255, 51, 120, 0.28); cursor: pointer; transition: transform .18s;
     }
     .status-pill:active { transform: scale(.98); }
     .status-pill.idle { background: var(--pill); color: var(--text-1); box-shadow: none; border: 1px solid var(--divider); }
@@ -243,7 +252,7 @@
     .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent1), var(--accent2)); width: 0%; transition: width .6s ease; }
 
     /* ============================================================
-       НАВИГАЦИЯ ПО ДНЯМ (ЧИСТЫЕ ЛЕТАЮЩИЕ ОСТРОВКИ БЕЗ ФОНОВОГО БЛОКА!)
+       НАВИГАЦИЯ ПО ДНЯМ (ЧИСТЫЕ ОТДЕЛЬНЫЕ ОСТРОВКИ БЕЗ ФОНА!)
        ============================================================ */
     .day-nav {
         display: flex;
@@ -268,14 +277,14 @@
         text-align: center;
         cursor: pointer;
         transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s, background .25s, border-color .25s;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05); /* Легкая индивидуальная тень островка */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         user-select: none;
     }
     .day-chip:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
     }
     .day-chip:active {
         transform: scale(0.93);
@@ -341,7 +350,7 @@
     }
     @keyframes liveCardAura {
         0%, 100% { box-shadow: var(--shadow-live); }
-        50% { box-shadow: 0 16px 44px rgba(255, 46, 121, 0.45), 0 0 24px rgba(255, 46, 121, 0.3); }
+        50% { box-shadow: 0 16px 44px rgba(255, 51, 120, 0.45), 0 0 24px rgba(255, 51, 120, 0.3); }
     }
 
     /* Завершенная пара — красивый приглушенный тон */
@@ -385,7 +394,7 @@
         font-size: 10.5px; font-weight: 800; color: #fff; padding: 3px 10px 3px 8px; border-radius: 999px;
         background: linear-gradient(135deg, var(--accent1), var(--accent2));
         display: inline-flex; align-items: center; gap: 5px;
-        box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+        box-shadow: 0 2px 8px rgba(255, 51, 120, 0.35);
     }
     .past-chip {
         font-size: 10.5px; font-weight: 650; color: var(--text-2); padding: 2px 8px; border-radius: 999px;
@@ -411,7 +420,7 @@
     /* Блок ДЗ прямо внутри карточки пары */
     .card-hw-badge {
         display: inline-flex; align-items: center; gap: 6px;
-        background: rgba(255, 46, 121, 0.08); border: 1px solid var(--divider);
+        background: rgba(255, 51, 120, 0.08); border: 1px solid var(--divider);
         padding: 4px 10px; border-radius: var(--r-sm); font-size: 12px; font-weight: 700;
         color: var(--accent-solid); margin-top: 2px;
     }
@@ -442,7 +451,7 @@
         width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; font-size: 24px;
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 12px 32px rgba(225, 29, 72, 0.42); z-index: 40;
+        box-shadow: 0 12px 32px rgba(255, 51, 120, 0.42); z-index: 40;
         transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
     }
     .fab:active { transform: scale(.9); }
@@ -481,8 +490,8 @@
         transition: background .2s;
     }
     .bell-row.live {
-        background: rgba(255, 46, 121, 0.16); border-color: var(--accent-solid);
-        box-shadow: 0 4px 14px rgba(255, 46, 121, 0.2);
+        background: rgba(255, 51, 120, 0.16); border-color: var(--accent-solid);
+        box-shadow: 0 4px 14px rgba(255, 51, 120, 0.2);
     }
     .bell-num {
         font-family: var(--f-head); font-weight: 700; font-size: .95rem; color: var(--accent-solid);
@@ -494,13 +503,13 @@
        СТИЛИ ШТОРКИ ДОМАШНИХ ЗАДАНИЙ (ДЗ)
        ============================================================ */
     .hw-input-wrap {
-        display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;
-        background: var(--pill); padding: 12px; border-radius: var(--r-md);
+        display: flex; flex-direction: column; gap: 9px; margin-bottom: 16px;
+        background: var(--pill); padding: 13px; border-radius: var(--r-md);
         border: 1px solid var(--divider);
     }
     .hw-input-text {
         width: 100%; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
-        padding: 10px 14px; font-family: var(--f-body); font-size: 14px;
+        padding: 11px 14px; font-family: var(--f-body); font-size: 14.5px;
         background: var(--glass-strong); color: var(--text-1); outline: none;
     }
     .hw-input-text:focus { border-color: var(--accent-solid); }
@@ -509,13 +518,13 @@
     }
     .hw-select {
         flex: 1; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
-        padding: 9px 12px; font-family: var(--f-body); font-size: 13px;
+        padding: 10px 12px; font-family: var(--f-body); font-size: 13px;
         background: var(--glass-strong); color: var(--text-1); outline: none;
     }
     .hw-add-btn {
-        border: none; border-radius: var(--r-sm); padding: 9px 16px;
+        border: none; border-radius: var(--r-sm); padding: 10px 16px;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        font-family: var(--f-body); font-weight: 750; font-size: 13px; cursor: pointer;
+        font-family: var(--f-body); font-weight: 750; font-size: 13.5px; cursor: pointer;
         transition: transform .18s; white-space: nowrap;
     }
     .hw-add-btn:active { transform: scale(.95); }
@@ -524,7 +533,7 @@
     .hw-item {
         display: flex; align-items: center; justify-content: space-between; gap: 10px;
         background: var(--glass-strong); border: 1px solid var(--card-border);
-        border-radius: var(--r-sm); padding: 10px 14px; transition: all .2s;
+        border-radius: var(--r-sm); padding: 11px 14px; transition: all .2s;
     }
     .hw-item.done { opacity: .55; text-decoration: line-through; }
     .hw-item-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
@@ -544,10 +553,10 @@
     .hw-del-btn:hover { color: var(--accent-solid); }
 
     /* ============================================================
-       СТИЛИ ШТОРКИ ИДЕЙ («СДЕЛАНО ПО ЗАКАЗУ СОФИИ»)
+       СТИЛИ ШТОРКИ ИДЕЙ («РАСПИСАНИЕ СДЕЛАНО СПЕЦИАЛЬНО ПО ЗАКАЗУ СОФИИ🙄»)
        ============================================================ */
     .ideas-card {
-        background: linear-gradient(135deg, rgba(255, 46, 121, 0.12), rgba(225, 29, 72, 0.05));
+        background: linear-gradient(135deg, rgba(255, 51, 120, 0.12), rgba(251, 81, 132, 0.05));
         border: 1.5px solid var(--divider); border-radius: var(--r-md);
         padding: 16px; margin-bottom: 16px; text-align: center;
         display: flex; flex-direction: column; gap: 8px;
@@ -571,7 +580,7 @@
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
         font-family: var(--f-body); font-weight: 750; font-size: 14px; cursor: pointer;
         display: flex; align-items: center; justify-content: center; gap: 6px;
-        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3); transition: transform .18s;
+        box-shadow: 0 4px 14px rgba(255, 51, 120, 0.3); transition: transform .18s;
     }
     .ideas-submit-btn:active { transform: scale(.97); }
 
@@ -591,13 +600,14 @@
 </head>
 <body data-theme="pikmi">
 
-<!-- Плавающие акценты Pikmi (цветочки, бантики, сердечки) -->
+<!-- Плавающие сердечки и акценты Pikmi (строго на фоне ПОД карточками!) -->
 <div class="pikmi-decor" aria-hidden="true">
-    <span class="d1">🌸</span>
-    <span class="d2">🎀</span>
-    <span class="d3">💗</span>
+    <span class="d1">💖</span>
+    <span class="d2">💕</span>
+    <span class="d3">🌸</span>
     <span class="d4">✨</span>
-    <span class="d5">🌷</span>
+    <span class="d5">🎀</span>
+    <span class="d6">💗</span>
 </div>
 
 <div class="app">
@@ -616,7 +626,7 @@
                     <span class="hw-badge-counter" id="hw-counter" style="display:none;">0</span>
                 </button>
 
-                <!-- 2. Иконка Идеи («Сделано по заказу Софии») -->
+                <!-- 2. Иконка Идеи («Сделано специально по заказу Софии🙄») -->
                 <button class="icon-btn" id="ideas-btn" title="Идеи и пожелания" aria-label="Идеи и пожелания">
                     💡
                 </button>
@@ -679,7 +689,7 @@
     <div id="bells-list"></div>
 </div>
 
-<!-- 2. Шторка ДОМАШНЕГО ЗАДАНИЯ (ДЗ) -->
+<!-- 2. Шторка ДОМАШНЕГО ЗАДАНИЯ (ДЗ) — ПОЛНЫЙ СПИСОК ПРЕДМЕТОВ -->
 <div class="sheet" id="sheet-hw" role="dialog" aria-modal="true" aria-label="Домашнее задание">
     <div class="sheet-handle"></div>
     <div class="sheet-header-row">
@@ -688,12 +698,13 @@
     </div>
 
     <div class="hw-input-wrap">
-        <input type="text" class="hw-input-text" id="hw-input" placeholder="Что задали? (например: Конспект ст. 105 УК...)">
+        <input type="text" class="hw-input-text" id="hw-input" placeholder="Что задали">
         <div class="hw-select-row">
             <select class="hw-select" id="hw-subject">
-                <option value="Общее">📌 Общее задание</option>
-                <option value="Уголовное право">Уголовное право</option>
+                <option value="Методы исследовательской деятельности">Методы исследовательской деятельности</option>
+                <option value="Муниципальное право">Муниципальное право</option>
                 <option value="Семейное право">Семейное право</option>
+                <option value="Уголовное право">Уголовное право</option>
                 <option value="Уголовный процесс">Уголовный процесс</option>
                 <option value="Трудовое право">Трудовое право</option>
                 <option value="Гражданское право">Гражданское право</option>
@@ -701,8 +712,7 @@
                 <option value="Криминология">Криминология</option>
                 <option value="Избирательное право">Избирательное право</option>
                 <option value="Гражданский процесс">Гражданский процесс</option>
-                <option value="Методы исследовательской деятельности">Методы иссл. деят.</option>
-                <option value="Муниципальное право">Муниципальное право</option>
+                <option value="Общее задание">📌 Общее задание</option>
             </select>
             <button class="hw-add-btn" id="hw-add-btn">+ Добавить</button>
         </div>
@@ -713,7 +723,7 @@
     </div>
 </div>
 
-<!-- 3. Шторка ИДЕЙ («Сделано по заказу Софии») -->
+<!-- 3. Шторка ИДЕЙ («Расписание сделано специально по заказу Софии🙄») -->
 <div class="sheet" id="sheet-ideas" role="dialog" aria-modal="true" aria-label="Идеи и пожелания">
     <div class="sheet-handle"></div>
     <div class="sheet-header-row">
@@ -723,10 +733,10 @@
 
     <div class="ideas-card">
         <div class="ideas-card-quote">
-            «Если что-то нужно улучшить или добавить — пишите свои идеи!» 💌
+            Если что-то нужно улучшить или добавить — пишите свои идеи! 💌
         </div>
         <div class="ideas-card-sub">
-            ✨ Сделано с любовью по специальному заказу Софии ✨
+            Расписание сделано специально по заказу Софии🙄
         </div>
     </div>
 
@@ -734,8 +744,12 @@
     
     <div class="ideas-btn-row">
         <button class="ideas-submit-btn" id="ideas-tg-btn">
-            <span>Отправить в Telegram</span> ✈️
+            <span>Отправить в Telegram @MichSc1</span> ✈️
         </button>
+    </div>
+    
+    <div style="text-align:center; margin-top:12px; font-size:13px; color:var(--text-2);">
+        Контакт для связи: <a href="https://t.me/MichSc1" target="_blank" rel="noopener" style="color:var(--accent-solid); font-weight:750; text-decoration:none;">@MichSc1</a>
     </div>
 </div>
 
@@ -805,7 +819,7 @@
     var DAY_FULL  = {1:"Понедельник",2:"Вторник",3:"Среда",4:"Четверг",5:"Пятница",6:"Суббота"};
     var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
 
-    // Функция получения текущего дня (вызывается динамически!)
+    // Динамическое определение текущего дня
     function getTodayDayIndex() {
         return new Date().getDay();
     }
@@ -835,7 +849,7 @@
             var el = document.getElementById('dot-'+t);
             if(el) el.classList.toggle('active', t === name);
         });
-        safeStorage.set('sched_theme_custom', name);
+        safeStorage.set('sched_theme_custom_v4', name);
     }
     window.setTheme = setTheme;
 
@@ -894,7 +908,7 @@
         var container = document.getElementById('hw-list-container');
         var list = getHWList();
         if (!list.length) {
-            container.innerHTML = '<div style="text-align:center; padding:24px 10px; color:var(--text-2); font-size:13.5px;">Пока нет домашних заданий ✨<br>Напишите задание выше и нажмите «Добавить»</div>';
+            container.innerHTML = '<div style="text-align:center; padding:24px 10px; color:var(--text-2); font-size:13.5px;">Пока нет домашних заданий ✨<br>Напишите задание выше и нажмите «+ Добавить»</div>';
             return;
         }
 
@@ -1162,17 +1176,17 @@
     };
     document.getElementById('overlay').onclick = closeAllSheets;
 
-    /* ---------- Отправка идеи в Telegram ---------- */
+    /* ---------- Отправка идеи напрямую в Telegram @MichSc1 ---------- */
     document.getElementById('ideas-tg-btn').onclick = function(){
         var text = (document.getElementById('ideas-input').value || '').trim();
-        var message = '💡 Идея для расписания (по заказу Софии): ' + (text ? text : 'Привет! Хочу предложить улучшение в расписании.');
-        var tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent('https://danilmmmm.github.io/schedule') + '&text=' + encodeURIComponent(message);
+        var message = text ? ('💡 Идея по расписанию: ' + text) : 'Привет! Хочу предложить идею по расписанию ✨';
+        var tgUrl = 'https://t.me/MichSc1?text=' + encodeURIComponent(message);
         
-        // Копируем текст и открываем Telegram
+        // Копируем текст и открываем Telegram к @MichSc1
         if(navigator.clipboard && navigator.clipboard.writeText){
             navigator.clipboard.writeText(message);
         }
-        showToast('Открываем Telegram… ✨');
+        showToast('Открываем Telegram @MichSc1… ✈️');
         window.open(tgUrl, '_blank');
     };
 
@@ -1214,7 +1228,7 @@
     /* ---------- Инициализация ---------- */
     function init(){
         // Дефолтная тема: ВСЕГДА Pikmi при первом входе!
-        var savedTheme = safeStorage.get('sched_theme_custom') || 'pikmi';
+        var savedTheme = safeStorage.get('sched_theme_custom_v4') || 'pikmi';
         setTheme(savedTheme);
         renderDayNav();
         renderTimeline();
