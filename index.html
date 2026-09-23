@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <title>Расписание занятий</title>
+
+<!-- PWA & Apple Safari На экран «Домой» -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Расписание">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FF2A75">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -30,33 +41,33 @@
     }
 
     /* ============================================================
-       ТЕМА 1: «Пикми» (ДЕФОЛТНАЯ) — ультрамодный жемчужно-розовый омбре
-       (Strawberry Glaze & Frosted Peach-Rose, глубокий ягодный акцент)
+       ТЕМА 1: «Пикми» (ДЕФОЛТНАЯ) — МАКСИМУМ РОЗОВОГО!
+       (Сочный клубничный крем, нежное розовое стекло, ягодный акцент)
        ============================================================ */
     body, body[data-theme="pikmi"] {
-        --bg-a: #FFF2F7;           /* Нежный перламутрово-молочный румянец */
-        --bg-b: #FCE1EE;           /* Пастельный шелковый розово-лиловый */
-        --bg-c: #FDE8E5;           /* Мягкий персиково-розовый теплый оттенок */
-        --blob1: #FFA6CC;          /* Розовый кварц */
-        --blob2: #FF8EB5;          /* Клубничный зефир */
-        --blob3: #FBCFE8;          /* Розовая аура */
-        --blob-opacity: .48;
-        --text-1: #2B1626;          /* Дорогой графитово-ежевичный тон (максимальная читаемость) */
-        --text-2: #845573;          /* Бархатный сливово-розовый */
-        --glass: rgba(255, 255, 255, 0.78);
-        --glass-strong: rgba(255, 255, 255, 0.95);
-        --glass-border: rgba(255, 255, 255, 0.98);
-        --accent1: #FF3378;         /* Насыщенный клубничный неон */
-        --accent2: #FB5184;         /* Сочный кораллово-розовый закат */
-        --accent-solid: #FF3378;
-        --shadow: 0 10px 32px rgba(244, 63, 94, 0.12), 0 2px 8px rgba(0,0,0,0.02);
-        --shadow-live: 0 14px 40px rgba(255, 51, 120, 0.36), 0 0 18px rgba(255, 51, 120, 0.2);
-        --pill: rgba(255, 51, 120, 0.11);
-        --divider: rgba(255, 51, 120, 0.16);
-        --card-border: rgba(255, 185, 210, 0.55);
-        --room-bg: #FFF0F5;
+        --bg-a: #FFD8EB;           /* Сочный клубнично-розовый */
+        --bg-b: #FFBFDF;           /* Насыщенный пастельно-розовый */
+        --bg-c: #FFCEE6;           /* Розовая сакура */
+        --blob1: #FF3B88;          /* Яркий клубничный неон */
+        --blob2: #FF5C9D;          /* Розовый румянец */
+        --blob3: #FFA3CE;          /* Сахарная вата */
+        --blob-opacity: .62;
+        --text-1: #281022;          /* Четкий темный ежевичный (не блеклый, идеальный контраст) */
+        --text-2: #824970;          /* Бархатный ягодный */
+        --glass: rgba(255, 238, 246, 0.86);       /* Розовое матовое стекло */
+        --glass-strong: rgba(255, 244, 250, 0.96); /* Плотный розовый кристалл */
+        --glass-border: rgba(255, 170, 204, 0.65); /* Аккуратный розовый кант */
+        --accent1: #FF1A6C;         /* Сочный глубокий клубничный */
+        --accent2: #FF4D8D;         /* Малиново-розовый */
+        --accent-solid: #FF1A6C;
+        --shadow: 0 12px 34px rgba(255, 26, 108, 0.16), 0 2px 8px rgba(0,0,0,0.02);
+        --shadow-live: 0 16px 44px rgba(255, 26, 108, 0.42), 0 0 20px rgba(255, 26, 108, 0.28);
+        --pill: rgba(255, 26, 108, 0.12);
+        --divider: rgba(255, 26, 108, 0.18);
+        --card-border: rgba(255, 158, 198, 0.62);
+        --room-bg: #FFEBF3;
         --room-color: #BE123C;
-        --room-border: rgba(244, 63, 94, 0.28);
+        --room-border: rgba(255, 26, 108, 0.3);
     }
 
     /* ============================================================
@@ -72,8 +83,8 @@
         --blob-opacity: .55;
         --text-1: #1E293B;
         --text-2: #64748B;
-        --glass: rgba(255, 255, 255, 0.72);
-        --glass-strong: rgba(255, 255, 255, 0.92);
+        --glass: rgba(255, 255, 255, 0.76);
+        --glass-strong: rgba(255, 255, 255, 0.94);
         --glass-border: rgba(255, 255, 255, 0.9);
         --accent1: #6366F1;
         --accent2: #A855F7;
@@ -125,10 +136,10 @@
     body::before {
         content: ''; position: fixed; inset: -10%; z-index: 0; pointer-events: none;
         background:
-            radial-gradient(circle at 8% -6%, var(--blob1), transparent 45%),
-            radial-gradient(circle at 106% 8%, var(--blob2), transparent 42%),
+            radial-gradient(circle at 10% -6%, var(--blob1), transparent 45%),
+            radial-gradient(circle at 106% 12%, var(--blob2), transparent 44%),
             radial-gradient(circle at 50% 115%, var(--blob3), transparent 48%);
-        filter: blur(70px);
+        filter: blur(65px);
         opacity: var(--blob-opacity);
     }
 
@@ -144,31 +155,39 @@
     }
 
     /* ============================================================
-       ПЛАВАЮЩИЕ СЕРДЕЧКИ И СТИКЕРЫ (СТРОГО НА ФОНЕ ПОД КАРТОЧКАМИ)
+       ЯРКИЕ РОЗОВЫЕ ЦВЕТОЧКИ (ХАОТИЧНО ЛЕТАЮТ НА ФОНЕ ПОД КАРТОЧКАМИ)
        ============================================================ */
-    .pikmi-decor { display: none; }
+    .pikmi-decor {
+        display: none;
+        position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
     body[data-theme="pikmi"] .pikmi-decor {
-        display: block; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        display: block;
     }
-    .pikmi-decor span {
-        position: absolute; opacity: .42; filter: drop-shadow(0 4px 10px rgba(255, 51, 120, 0.22));
+    
+    .random-flower {
+        position: absolute;
+        opacity: 0.88;
+        filter: drop-shadow(0 4px 12px rgba(255, 26, 108, 0.38));
         user-select: none;
-        animation: floatHeart 12s ease-in-out infinite;
-    }
-    .pikmi-decor .d1 { top: 8%; left: 5%; font-size: 28px; animation-duration: 11s; animation-delay: 0s; }
-    .pikmi-decor .d2 { top: 20%; right: 5%; font-size: 24px; animation-duration: 13s; animation-delay: 1.5s; }
-    .pikmi-decor .d3 { top: 45%; left: 4%; font-size: 26px; animation-duration: 10s; animation-delay: 3s; }
-    .pikmi-decor .d4 { top: 66%; right: 6%; font-size: 25px; animation-duration: 12s; animation-delay: 2s; }
-    .pikmi-decor .d5 { bottom: 16%; left: 7%; font-size: 26px; animation-duration: 14s; animation-delay: 4.5s; }
-    .pikmi-decor .d6 { bottom: 6%; right: 10%; font-size: 22px; animation-duration: 9s; animation-delay: 1s; }
-
-    @keyframes floatHeart {
-        0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-        35% { transform: translateY(-16px) rotate(-6deg) scale(1.05); }
-        70% { transform: translateY(10px) rotate(6deg) scale(0.97); }
+        pointer-events: none;
+        animation: driftRandom ease-in-out infinite alternate;
+        transition: transform .2s ease-out;
     }
 
-    /* Контейнер приложения над летающими сердечками */
+    @keyframes driftRandom {
+        0% {
+            transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+        }
+        50% {
+            transform: translate3d(var(--dx), var(--dy), 0) rotate(22deg) scale(1.12);
+        }
+        100% {
+            transform: translate3d(calc(var(--dx) * -0.85), calc(var(--dy) * -0.9), 0) rotate(-18deg) scale(0.92);
+        }
+    }
+
+    /* Контейнер приложения над летающими цветами */
     .app {
         position: relative; z-index: 1; max-width: 480px; margin: 0 auto;
         padding: 16px 16px calc(92px + env(safe-area-inset-bottom, 0px));
@@ -197,13 +216,13 @@
         border: 1px solid var(--divider);
     }
     
-    /* Кнопки действий в шапке (ДЗ, Идеи, Копировать) */
-    .hero-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+    /* Кнопки действий в шапке (ДЗ и Идеи) */
+    .hero-actions { display: flex; gap: 9px; flex-shrink: 0; align-items: center; }
     .icon-btn {
-        width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--glass-border);
+        width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--glass-border);
         background: var(--glass-strong); display: flex; align-items: center; justify-content: center;
-        font-size: 16px; cursor: pointer; color: var(--text-1); transition: all .18s;
-        box-shadow: 0 4px 12px rgba(0,0,0,.05); position: relative;
+        font-size: 17px; cursor: pointer; color: var(--text-1); transition: all .18s;
+        box-shadow: 0 4px 12px rgba(0,0,0,.06); position: relative;
     }
     .icon-btn:hover { transform: translateY(-1px); }
     .icon-btn:active { transform: scale(.9); }
@@ -211,11 +230,11 @@
     /* Счетчик ДЗ на иконке */
     .hw-badge-counter {
         position: absolute; top: -3px; right: -3px;
-        width: 17px; height: 17px; border-radius: 50%;
+        width: 18px; height: 18px; border-radius: 50%;
         background: var(--accent-solid); color: #fff;
-        font-size: 10px; font-weight: 800; display: flex;
+        font-size: 10.5px; font-weight: 800; display: flex;
         align-items: center; justify-content: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.22);
     }
 
     /* Тема-бар: Пикми первая! */
@@ -237,7 +256,7 @@
         display: inline-flex; align-items: center; gap: 8px; font-weight: 750; font-size: .86rem;
         padding: 9px 16px; border-radius: 999px; width: fit-content;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        box-shadow: 0 8px 22px rgba(255, 51, 120, 0.28); cursor: pointer; transition: transform .18s;
+        box-shadow: 0 8px 22px rgba(255, 26, 108, 0.28); cursor: pointer; transition: transform .18s;
     }
     .status-pill:active { transform: scale(.98); }
     .status-pill.idle { background: var(--pill); color: var(--text-1); box-shadow: none; border: 1px solid var(--divider); }
@@ -350,7 +369,7 @@
     }
     @keyframes liveCardAura {
         0%, 100% { box-shadow: var(--shadow-live); }
-        50% { box-shadow: 0 16px 44px rgba(255, 51, 120, 0.45), 0 0 24px rgba(255, 51, 120, 0.3); }
+        50% { box-shadow: 0 16px 44px rgba(255, 26, 108, 0.45), 0 0 24px rgba(255, 26, 108, 0.3); }
     }
 
     /* Завершенная пара — красивый приглушенный тон */
@@ -394,7 +413,7 @@
         font-size: 10.5px; font-weight: 800; color: #fff; padding: 3px 10px 3px 8px; border-radius: 999px;
         background: linear-gradient(135deg, var(--accent1), var(--accent2));
         display: inline-flex; align-items: center; gap: 5px;
-        box-shadow: 0 2px 8px rgba(255, 51, 120, 0.35);
+        box-shadow: 0 2px 8px rgba(255, 26, 108, 0.35);
     }
     .past-chip {
         font-size: 10.5px; font-weight: 650; color: var(--text-2); padding: 2px 8px; border-radius: 999px;
@@ -420,7 +439,7 @@
     /* Блок ДЗ прямо внутри карточки пары */
     .card-hw-badge {
         display: inline-flex; align-items: center; gap: 6px;
-        background: rgba(255, 51, 120, 0.08); border: 1px solid var(--divider);
+        background: rgba(255, 26, 108, 0.08); border: 1px solid var(--divider);
         padding: 4px 10px; border-radius: var(--r-sm); font-size: 12px; font-weight: 700;
         color: var(--accent-solid); margin-top: 2px;
     }
@@ -451,7 +470,7 @@
         width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; font-size: 24px;
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 12px 32px rgba(255, 51, 120, 0.42); z-index: 40;
+        box-shadow: 0 12px 32px rgba(255, 26, 108, 0.42); z-index: 40;
         transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
     }
     .fab:active { transform: scale(.9); }
@@ -463,9 +482,14 @@
     }
     .overlay.show { opacity: 1; pointer-events: auto; }
 
-    /* Общие стили для шторок (Звонки, ДЗ, Идеи) */
+    /* Общие стили для шторок с гарантированным идеальным скроллом на мобилках */
     .sheet {
-        position: fixed; left: 0; right: 0; bottom: 0; z-index: 61; max-height: 86vh; overflow-y: auto;
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 61;
+        max-height: 85vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        touch-action: pan-y;
         background: var(--glass-strong);
         backdrop-filter: blur(32px) saturate(190%); -webkit-backdrop-filter: blur(32px) saturate(190%);
         border-radius: 28px 28px 0 0; border-top: 2px solid var(--glass-border);
@@ -490,8 +514,8 @@
         transition: background .2s;
     }
     .bell-row.live {
-        background: rgba(255, 51, 120, 0.16); border-color: var(--accent-solid);
-        box-shadow: 0 4px 14px rgba(255, 51, 120, 0.2);
+        background: rgba(255, 26, 108, 0.16); border-color: var(--accent-solid);
+        box-shadow: 0 4px 14px rgba(255, 26, 108, 0.2);
     }
     .bell-num {
         font-family: var(--f-head); font-weight: 700; font-size: .95rem; color: var(--accent-solid);
@@ -503,52 +527,69 @@
        СТИЛИ ШТОРКИ ДОМАШНИХ ЗАДАНИЙ (ДЗ)
        ============================================================ */
     .hw-input-wrap {
-        display: flex; flex-direction: column; gap: 9px; margin-bottom: 16px;
-        background: var(--pill); padding: 13px; border-radius: var(--r-md);
+        display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
+        background: var(--pill); padding: 14px; border-radius: var(--r-md);
         border: 1px solid var(--divider);
     }
     .hw-input-text {
         width: 100%; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
-        padding: 11px 14px; font-family: var(--f-body); font-size: 14.5px;
+        padding: 12px 14px; font-family: var(--f-body); font-size: 15px;
         background: var(--glass-strong); color: var(--text-1); outline: none;
     }
     .hw-input-text:focus { border-color: var(--accent-solid); }
+    
     .hw-select-row {
         display: flex; gap: 8px; align-items: center;
     }
     .hw-select {
         flex: 1; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
-        padding: 10px 12px; font-family: var(--f-body); font-size: 13px;
+        padding: 11px 12px; font-family: var(--f-body); font-size: 14px;
         background: var(--glass-strong); color: var(--text-1); outline: none;
+        cursor: pointer; -webkit-appearance: menulist;
     }
     .hw-add-btn {
-        border: none; border-radius: var(--r-sm); padding: 10px 16px;
+        border: none; border-radius: var(--r-sm); padding: 11px 18px;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        font-family: var(--f-body); font-weight: 750; font-size: 13.5px; cursor: pointer;
-        transition: transform .18s; white-space: nowrap;
+        font-family: var(--f-body); font-weight: 750; font-size: 14px; cursor: pointer;
+        transition: transform .18s; white-space: nowrap; box-shadow: 0 4px 12px rgba(255, 26, 108, 0.28);
     }
     .hw-add-btn:active { transform: scale(.95); }
 
-    .hw-list { display: flex; flex-direction: column; gap: 8px; }
+    /* Быстрый тап по предметам (горизонтальные чипсы) */
+    .hw-chips-scroll {
+        display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 4px;
+        scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .hw-chips-scroll::-webkit-scrollbar { display: none; }
+    .hw-chip-tag {
+        font-size: 11px; font-weight: 750; padding: 4px 10px; border-radius: 999px;
+        background: var(--glass-strong); color: var(--text-2); border: 1px solid var(--glass-border);
+        cursor: pointer; white-space: nowrap; transition: all .15s;
+    }
+    .hw-chip-tag.selected {
+        background: var(--accent-solid); color: #fff; border-color: transparent;
+    }
+
+    .hw-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 24px; }
     .hw-item {
         display: flex; align-items: center; justify-content: space-between; gap: 10px;
         background: var(--glass-strong); border: 1px solid var(--card-border);
-        border-radius: var(--r-sm); padding: 11px 14px; transition: all .2s;
+        border-radius: var(--r-sm); padding: 12px 14px; transition: all .2s;
     }
     .hw-item.done { opacity: .55; text-decoration: line-through; }
     .hw-item-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .hw-checkbox {
-        width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--accent-solid);
+        width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--accent-solid);
         cursor: pointer; display: flex; align-items: center; justify-content: center;
-        background: transparent; flex-shrink: 0; color: #fff; font-size: 12px;
+        background: transparent; flex-shrink: 0; color: #fff; font-size: 13px; font-weight: 800;
     }
     .hw-item.done .hw-checkbox { background: var(--accent-solid); }
     .hw-text-wrap { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-    .hw-text { font-size: 13.5px; font-weight: 700; color: var(--text-1); word-break: break-word; }
-    .hw-subject-tag { font-size: 11px; font-weight: 650; color: var(--accent-solid); }
+    .hw-text { font-size: 14px; font-weight: 750; color: var(--text-1); word-break: break-word; }
+    .hw-subject-tag { font-size: 11.5px; font-weight: 700; color: var(--accent-solid); }
     .hw-del-btn {
         border: none; background: transparent; color: var(--text-2); cursor: pointer;
-        font-size: 15px; padding: 4px; border-radius: 6px;
+        font-size: 16px; padding: 5px; border-radius: 6px;
     }
     .hw-del-btn:hover { color: var(--accent-solid); }
 
@@ -556,31 +597,31 @@
        СТИЛИ ШТОРКИ ИДЕЙ («РАСПИСАНИЕ СДЕЛАНО СПЕЦИАЛЬНО ПО ЗАКАЗУ СОФИИ🙄»)
        ============================================================ */
     .ideas-card {
-        background: linear-gradient(135deg, rgba(255, 51, 120, 0.12), rgba(251, 81, 132, 0.05));
+        background: linear-gradient(135deg, rgba(255, 26, 108, 0.14), rgba(255, 77, 141, 0.06));
         border: 1.5px solid var(--divider); border-radius: var(--r-md);
-        padding: 16px; margin-bottom: 16px; text-align: center;
-        display: flex; flex-direction: column; gap: 8px;
+        padding: 18px 16px; margin-bottom: 16px; text-align: center;
+        display: flex; flex-direction: column; gap: 10px;
     }
     .ideas-card-quote {
-        font-size: 14.5px; font-weight: 750; color: var(--text-1); line-height: 1.45;
+        font-size: 15px; font-weight: 750; color: var(--text-1); line-height: 1.45;
     }
     .ideas-card-sub {
-        font-family: var(--f-head); font-size: 13.5px; font-weight: 650;
+        font-family: var(--f-head); font-size: 14px; font-weight: 700;
         color: var(--accent-solid); letter-spacing: .01em;
     }
     .ideas-textarea {
-        width: 100%; height: 95px; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
-        padding: 12px 14px; font-family: var(--f-body); font-size: 14px;
-        background: var(--glass-strong); color: var(--text-1); outline: none; resize: none; margin-bottom: 10px;
+        width: 100%; height: 100px; border: 1.5px solid var(--glass-border); border-radius: var(--r-sm);
+        padding: 12px 14px; font-family: var(--f-body); font-size: 14.5px;
+        background: var(--glass-strong); color: var(--text-1); outline: none; resize: none; margin-bottom: 12px;
     }
     .ideas-textarea:focus { border-color: var(--accent-solid); }
     .ideas-btn-row { display: flex; gap: 8px; }
     .ideas-submit-btn {
-        flex: 1; border: none; border-radius: var(--r-sm); padding: 12px;
+        flex: 1; border: none; border-radius: var(--r-sm); padding: 13px;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        font-family: var(--f-body); font-weight: 750; font-size: 14px; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; gap: 6px;
-        box-shadow: 0 4px 14px rgba(255, 51, 120, 0.3); transition: transform .18s;
+        font-family: var(--f-body); font-weight: 750; font-size: 14.5px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 4px 14px rgba(255, 26, 108, 0.3); transition: transform .18s;
     }
     .ideas-submit-btn:active { transform: scale(.97); }
 
@@ -600,15 +641,8 @@
 </head>
 <body data-theme="pikmi">
 
-<!-- Плавающие сердечки и акценты Pikmi (строго на фоне ПОД карточками!) -->
-<div class="pikmi-decor" aria-hidden="true">
-    <span class="d1">💖</span>
-    <span class="d2">💕</span>
-    <span class="d3">🌸</span>
-    <span class="d4">✨</span>
-    <span class="d5">🎀</span>
-    <span class="d6">💗</span>
-</div>
+<!-- Динамически летающие розовые цветочки на фоне -->
+<div class="pikmi-decor" id="pikmi-decor" aria-hidden="true"></div>
 
 <div class="app">
 
@@ -631,12 +665,9 @@
                     💡
                 </button>
 
-                <!-- 3. Иконка Скопировать расписание дня -->
-                <button class="icon-btn" id="copy-btn" title="Скопировать расписание дня" aria-label="Скопировать расписание">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
+                <!-- 3. Кнопка установки на iPhone / телефон (PWA) -->
+                <button class="icon-btn" id="install-btn" title="Скачать на телефон" aria-label="Скачать на телефон">
+                    📱
                 </button>
             </div>
         </div>
@@ -679,7 +710,7 @@
 <!-- Затемнение фона -->
 <div class="overlay" id="overlay"></div>
 
-<!-- 1. Шторка расписания звонков -->
+<!-- 1. Шторка расписания звонков (до 6 пары включительно) -->
 <div class="sheet" id="sheet-bells" role="dialog" aria-modal="true" aria-label="Расписание звонков">
     <div class="sheet-handle"></div>
     <div class="sheet-header-row">
@@ -699,6 +730,23 @@
 
     <div class="hw-input-wrap">
         <input type="text" class="hw-input-text" id="hw-input" placeholder="Что задали">
+        
+        <!-- Быстрые чипсы предметов для выбора в один тап -->
+        <div class="hw-chips-scroll" id="hw-chips-bar">
+            <span class="hw-chip-tag selected" data-val="Методы исследовательской деятельности">Методы иссл. деят.</span>
+            <span class="hw-chip-tag" data-val="Муниципальное право">Муниципальное</span>
+            <span class="hw-chip-tag" data-val="Семейное право">Семейное</span>
+            <span class="hw-chip-tag" data-val="Уголовное право">Уголовное</span>
+            <span class="hw-chip-tag" data-val="Уголовный процесс">Уголовный процесс</span>
+            <span class="hw-chip-tag" data-val="Трудовое право">Трудовое</span>
+            <span class="hw-chip-tag" data-val="Гражданское право">Гражданское</span>
+            <span class="hw-chip-tag" data-val="Жилищное право">Жилищное</span>
+            <span class="hw-chip-tag" data-val="Криминология">Криминология</span>
+            <span class="hw-chip-tag" data-val="Избирательное право">Избирательное</span>
+            <span class="hw-chip-tag" data-val="Гражданский процесс">Гражданский процесс</span>
+            <span class="hw-chip-tag" data-val="Общее задание">📌 Общее</span>
+        </div>
+
         <div class="hw-select-row">
             <select class="hw-select" id="hw-subject">
                 <option value="Методы исследовательской деятельности">Методы исследовательской деятельности</option>
@@ -753,6 +801,47 @@
     </div>
 </div>
 
+<!-- 4. Шторка УСТАНОВКИ НА ТЕЛЕФОН / IPHONE (PWA) -->
+<div class="sheet" id="sheet-install" role="dialog" aria-modal="true" aria-label="Установка на телефон">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header-row">
+        <div class="sheet-title">Установка на телефон 📲</div>
+        <button class="sheet-close" onclick="closeAllSheets()" aria-label="Закрыть">✕</button>
+    </div>
+
+    <div style="text-align:center; padding:8px 0 16px;">
+        <img src="apple-touch-icon.png" alt="Иконка приложения" style="width:74px; height:74px; border-radius:18px; box-shadow:0 8px 24px rgba(255,42,117,0.32); margin-bottom:8px;">
+        <h3 style="font-family:var(--f-head); font-size:18px; font-weight:700; color:var(--text-1);">Расписание занятий</h3>
+        <p style="font-size:13px; color:var(--text-2); margin-top:2px;">Судебная деятельность · 2 подгруппа</p>
+    </div>
+
+    <div class="ideas-card" style="margin-bottom:14px; text-align:left;">
+        <div style="font-weight:800; font-size:14.5px; color:var(--accent-solid); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+            <span>🍏 Инструкция для iPhone (Safari):</span>
+        </div>
+        <ol style="margin-left:18px; font-size:13px; line-height:1.55; color:var(--text-1); font-weight:600;">
+            <li>Внизу экрана Safari нажмите кнопку <b>«Поделиться»</b> (квадрат со стрелочкой 📤).</li>
+            <li>Прокрутите открывшееся меню вниз и выберите <b>«На экран „Домой“»</b> ➕.</li>
+            <li>Вверху справа нажмите <b>«Добавить»</b>.</li>
+        </ol>
+        <div style="margin-top:9px; font-size:12px; color:var(--text-2); line-height:1.4;">
+            ✨ Готово! Иконка появится на рабочем столе и расписание будет открываться во весь экран как настоящее приложение!
+        </div>
+    </div>
+
+    <div class="ideas-card" style="margin-bottom:14px; text-align:left;">
+        <div style="font-weight:800; font-size:14.5px; color:var(--text-1); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>🤖 Для Android / Chrome:</span>
+        </div>
+        <p style="font-size:12.5px; color:var(--text-2); line-height:1.4; margin-bottom:10px;">
+            Нажмите три точки ⋮ в правом углу Chrome и выберите <b>«Установить приложение»</b> или нажмите кнопку ниже:
+        </p>
+        <button id="pwa-install-trigger" class="ideas-submit-btn" style="padding:11px; font-size:13.5px; width:100%;">
+            Установить приложение 📲
+        </button>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -765,16 +854,14 @@
         set: function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
     };
 
-    /* ---------- Расписание звонков ---------- */
+    /* ---------- Расписание звонков (Строго до 6 пары включительно!) ---------- */
     var PAIRS = [
         {n:1, start:8*60,      end:9*60+30,  label:"8:00–9:30"},
         {n:2, start:9*60+40,   end:11*60+10, label:"9:40–11:10"},
         {n:3, start:11*60+25,  end:12*60+55, label:"11:25–12:55"},
         {n:4, start:13*60+5,   end:14*60+35, label:"13:05–14:35"},
         {n:5, start:14*60+45,  end:16*60+15, label:"14:45–16:15"},
-        {n:6, start:16*60+30,  end:18*60,    label:"16:30–18:00"},
-        {n:7, start:18*60+10,  end:19*60+40, label:"18:10–19:40"},
-        {n:8, start:19*60+50,  end:21*60+20, label:"19:50–21:20"}
+        {n:6, start:16*60+30,  end:18*60,    label:"16:30–18:00"}
     ];
     var PAIR_MAP = {}; PAIRS.forEach(function(p){ PAIR_MAP[p.n]=p; });
 
@@ -842,6 +929,41 @@
         return now.getDate() + " " + months;
     }
 
+    /* ---------- Генерация 6 розовых парящих цветов с хаотичной траекторией ---------- */
+    function initRandomFlowers() {
+        var container = document.getElementById('pikmi-decor');
+        if (!container) return;
+        container.innerHTML = '';
+        var flowerIcons = ['🌸', '🌺', '🌷', '🌸', '🌺', '🌸'];
+
+        flowerIcons.forEach(function(icon){
+            var span = document.createElement('span');
+            span.className = 'random-flower';
+            span.textContent = icon;
+
+            // Случайные стартовые координаты
+            var startLeft = Math.floor(Math.random() * 82) + 6; // 6% - 88%
+            var startTop = Math.floor(Math.random() * 82) + 6;  // 6% - 88%
+            var size = Math.floor(Math.random() * 12) + 32;     // 32px - 44px
+            var duration = (Math.random() * 6 + 10).toFixed(1); // 10s - 16s
+            var delay = (Math.random() * 3).toFixed(1);
+            
+            // Случайные векторы смещения
+            var dirX = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 45) + 25);
+            var dirY = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 55) + 30);
+
+            span.style.left = startLeft + '%';
+            span.style.top = startTop + '%';
+            span.style.fontSize = size + 'px';
+            span.style.setProperty('--dx', dirX + 'px');
+            span.style.setProperty('--dy', dirY + 'px');
+            span.style.animationDuration = duration + 's';
+            span.style.animationDelay = delay + 's';
+
+            container.appendChild(span);
+        });
+    }
+
     /* ---------- Переключение темы ---------- */
     function setTheme(name){
         document.body.setAttribute('data-theme', name);
@@ -849,7 +971,10 @@
             var el = document.getElementById('dot-'+t);
             if(el) el.classList.toggle('active', t === name);
         });
-        safeStorage.set('sched_theme_custom_v4', name);
+        if (name === 'pikmi') {
+            initRandomFlowers();
+        }
+        safeStorage.set('sched_theme_custom_v5', name);
     }
     window.setTheme = setTheme;
 
@@ -941,6 +1066,25 @@
 
             container.appendChild(div);
         });
+    }
+
+    // Обработка быстрых чипсов предметов
+    function initHWChips() {
+        var chips = document.querySelectorAll('.hw-chip-tag');
+        var select = document.getElementById('hw-subject');
+        chips.forEach(function(chip){
+            chip.onclick = function(){
+                chips.forEach(function(c){ c.classList.remove('selected'); });
+                chip.classList.add('selected');
+                var val = chip.getAttribute('data-val');
+                select.value = val;
+            };
+        });
+        select.onchange = function(){
+            chips.forEach(function(c){
+                c.classList.toggle('selected', c.getAttribute('data-val') === select.value);
+            });
+        };
     }
 
     // Добавление нового ДЗ
@@ -1156,7 +1300,7 @@
 
     function closeAllSheets() {
         document.getElementById('overlay').classList.remove('show');
-        ['sheet-bells', 'sheet-hw', 'sheet-ideas'].forEach(function(s){
+        ['sheet-bells', 'sheet-hw', 'sheet-ideas', 'sheet-install'].forEach(function(s){
             var el = document.getElementById(s);
             if(el) el.classList.remove('show');
         });
@@ -1174,7 +1318,40 @@
     document.getElementById('ideas-btn').onclick = function(){
         openSheet('sheet-ideas');
     };
+    document.getElementById('install-btn').onclick = function(){
+        openSheet('sheet-install');
+    };
     document.getElementById('overlay').onclick = closeAllSheets;
+
+    // PWA Service Worker & Install Prompt
+    var deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+    });
+
+    var pwaTrigger = document.getElementById('pwa-install-trigger');
+    if (pwaTrigger) {
+        pwaTrigger.onclick = function() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                deferredInstallPrompt.userChoice.then(function(choice) {
+                    if (choice && choice.outcome === 'accepted') {
+                        showToast('🎉 Приложение установлено!');
+                    }
+                    deferredInstallPrompt = null;
+                });
+            } else {
+                showToast('Нажмите меню браузера ⋮ и выберите «Установить»');
+            }
+        };
+    }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('./sw.js').catch(function(){});
+        });
+    }
 
     /* ---------- Отправка идеи напрямую в Telegram @MichSc1 ---------- */
     document.getElementById('ideas-tg-btn').onclick = function(){
@@ -1190,7 +1367,7 @@
         window.open(tgUrl, '_blank');
     };
 
-    /* ---------- Toast + копирование ---------- */
+    /* ---------- Toast ---------- */
     function showToast(msg){
         var t = document.getElementById('toast');
         t.textContent = msg;
@@ -1198,41 +1375,15 @@
         setTimeout(function(){ t.classList.remove('show'); }, 2400);
     }
 
-    function fallbackCopy(text){
-        try{
-            var ta = document.createElement('textarea');
-            ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-            document.body.appendChild(ta); ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('📋 Расписание скопировано!');
-        }catch(e){ showToast('Не удалось скопировать'); }
-    }
-
-    document.getElementById('copy-btn').onclick = function(){
-        var lessons = SCHEDULE[selectedDay] || [];
-        var lines = ['Расписание — ' + DAY_FULL[selectedDay] + ':', '━━━━━━━━━━━━━━━━━━━━'];
-        lessons.forEach(function(lesson){
-            var p = PAIR_MAP[lesson.pair];
-            lines.push(p.n + ' пара (' + p.label + '): ' + lesson.subject + ' [' + lesson.type + ']');
-            lines.push('  ' + lesson.teacher + ' · ауд. ' + lesson.room);
-        });
-        var full = lines.join('\n');
-        if(navigator.clipboard && navigator.clipboard.writeText){
-            navigator.clipboard.writeText(full).then(function(){ showToast('📋 Расписание скопировано!'); }).catch(function(){ fallbackCopy(full); });
-        } else {
-            fallbackCopy(full);
-        }
-    };
-
     /* ---------- Инициализация ---------- */
     function init(){
         // Дефолтная тема: ВСЕГДА Pikmi при первом входе!
-        var savedTheme = safeStorage.get('sched_theme_custom_v4') || 'pikmi';
+        var savedTheme = safeStorage.get('sched_theme_custom_v5') || 'pikmi';
         setTheme(savedTheme);
         renderDayNav();
         renderTimeline();
         renderBells();
+        initHWChips();
         updateHWBadge();
         updateHeader();
 
