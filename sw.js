@@ -1,11 +1,12 @@
-const CACHE_NAME = 'schedule-cache-v3';
+const CACHE_NAME = 'schedule-cache-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './apple-touch-icon.png',
-  './icon-192.png',
-  './icon-512.png'
+  './apple-touch-icon-bow.png',
+  './icon-bow-192.png',
+  './icon-bow-512.png',
+  './icon-bow-32.png'
 ];
 
 self.addEventListener('install', (event) => {
