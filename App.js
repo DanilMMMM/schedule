@@ -1,6 +1,6 @@
 // ==========================================================================
 // STUDENT SCHEDULE APPLICATION (React 18 Standalone)
-// Specialty: 40.05.04 | Legal & Judicial Specialization
+// Specialization: Judicial Activity (2nd subgroup)
 // ==========================================================================
 
 const { useState, useEffect, useMemo } = React;
@@ -22,15 +22,15 @@ const BASE_SEMESTER_START = new Date(2026, 7, 31, 0, 0, 0);
 
 // --- Days of the Week Meta ---
 const DAYS_DATA = [
-  { id: 1, name: "Понедельник", short: "ПН", slug: "mon" },
-  { id: 2, name: "Вторник", short: "ВТ", slug: "tue" },
-  { id: 3, name: "Среда", short: "СР", slug: "wed" },
-  { id: 4, name: "Четверг", short: "ЧТ", slug: "thu" },
-  { id: 5, name: "Пятница", short: "ПТ", slug: "fri" },
-  { id: 6, name: "Суббота", short: "СБ", slug: "sat" }
+  { id: 1, name: "Понедельник", short: "ПН" },
+  { id: 2, name: "Вторник", short: "ВТ" },
+  { id: 3, name: "Среда", short: "СР" },
+  { id: 4, name: "Четверг", short: "ЧТ" },
+  { id: 5, name: "Пятница", short: "ПТ" },
+  { id: 6, name: "Суббота", short: "СБ" }
 ];
 
-// --- Schedule Database (Specialty 40.05.04) ---
+// --- Schedule Database (Judicial Activity Group) ---
 const SCHEDULE_DATABASE = {
   // ПОНЕДЕЛЬНИК
   1: [
@@ -40,8 +40,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. А.В. Калякина",
-      auditorium: "Ауд. 208 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 208 К.12"
     },
     {
       pairNum: 2,
@@ -49,8 +48,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Доц. А.В. Калякина",
-      auditorium: "Ауд. 208 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 208 К.12"
     },
     {
       pairNum: 3,
@@ -58,8 +56,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Ст.пр. М.П. Цап",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     },
     {
       pairNum: 4,
@@ -67,8 +64,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Ст.пр. М.П. Цап",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     }
   ],
 
@@ -80,8 +76,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Ст. пр. М.А. Лободюк",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     },
     {
       pairNum: 2,
@@ -89,8 +84,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. К.Н. Гудима",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     },
     {
       pairNum: 3,
@@ -98,8 +92,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Доц. К.Н. Гудима",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     },
     {
       pairNum: 4,
@@ -107,8 +100,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Ст. пр. М.А. Лободюк",
-      auditorium: null,
-      subgroup: "all"
+      auditorium: null
     }
   ],
 
@@ -120,8 +112,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. А.Ф. Дели",
-      auditorium: "Ауд. 102 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 102 К.12"
     },
     {
       pairNum: 2,
@@ -129,8 +120,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. А.Ф. Дели",
-      auditorium: "Ауд. 102 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 102 К.12"
     }
   ],
 
@@ -142,8 +132,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. Я.Ф. Федорчуков",
-      auditorium: "Ауд. 107 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 107 К.12"
     },
     {
       pairNum: 2,
@@ -151,8 +140,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. Я.Ф. Федорчуков",
-      auditorium: "Ауд. 107 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 107 К.12"
     },
     {
       pairNum: 3,
@@ -160,8 +148,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. Н.А. Шеленга",
-      auditorium: "Ауд. 104 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 104 К.12"
     },
     {
       pairNum: 4,
@@ -169,8 +156,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Доц. Н.А. Шеленга",
-      auditorium: "Ауд. 104 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 104 К.12"
     }
   ],
 
@@ -182,8 +168,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Ст. пр. О.А. Салкуцан",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 211 К.12"
     },
     {
       pairNum: 2,
@@ -191,18 +176,7 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Ст. пр. О.А. Салкуцан",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "all"
-    },
-    // 3 пара: разделение по подгруппам
-    {
-      pairNum: 3,
-      subject: "Проблемы назначения наказания",
-      type: "practice",
-      typeLabel: "Практика",
-      teacher: "Доц. К.Н. Гудима",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "1"
+      auditorium: "Ауд. 211 К.12"
     },
     {
       pairNum: 3,
@@ -210,18 +184,7 @@ const SCHEDULE_DATABASE = {
       type: "mix",
       typeLabel: "Л / ПР",
       teacher: "Доц. Г.С. Брусалинская",
-      auditorium: "Ауд. 102 К.12",
-      subgroup: "2"
-    },
-    // 4 пара: только подгруппа 1
-    {
-      pairNum: 4,
-      subject: "Проблемы назначения наказания",
-      type: "lecture",
-      typeLabel: "Лекция",
-      teacher: "Доц. К.Н. Гудима",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "1"
+      auditorium: "Ауд. 102 К.12"
     }
   ],
 
@@ -233,8 +196,7 @@ const SCHEDULE_DATABASE = {
       type: "lecture",
       typeLabel: "Лекция",
       teacher: "Доц. Е.З. Евстигнеева",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "all"
+      auditorium: "Ауд. 211 К.12"
     },
     {
       pairNum: 2,
@@ -242,35 +204,14 @@ const SCHEDULE_DATABASE = {
       type: "practice",
       typeLabel: "Практика",
       teacher: "Доц. Е.З. Евстигнеева",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "all"
-    },
-    // 3 пара: подгруппа 1 (у подгруппы 2 пар нет)
-    {
-      pairNum: 3,
-      subject: "Актуальные проблемы национальной безопасности в уголовной политике",
-      type: "lecture",
-      typeLabel: "Лекция",
-      teacher: "Пр. И.Ф. Осипов",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "1"
-    },
-    // 4 пара: подгруппа 1 (у подгруппы 2 пар нет)
-    {
-      pairNum: 4,
-      subject: "Актуальные проблемы национальной безопасности в уголовной политике",
-      type: "practice",
-      typeLabel: "Практика",
-      teacher: "Пр. И.Ф. Осипов",
-      auditorium: "Ауд. 211 К.12",
-      subgroup: "1"
+      auditorium: "Ауд. 211 К.12"
     }
   ]
 };
 
 // --- SVG Icons Components ---
 const IconBook = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
   </svg>
@@ -321,8 +262,8 @@ const IconClose = () => (
   </svg>
 );
 
-// --- Week Parity Helper ---
-function calculateWeekParity(nowDate = new Date()) {
+// --- Week Calculation Helper (Week number only) ---
+function calculateWeekNumber(nowDate = new Date()) {
   const current = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
   const dayOfWeek = (current.getDay() + 6) % 7; // 0: Mon, 1: Tue ... 6: Sun
   
@@ -333,45 +274,30 @@ function calculateWeekParity(nowDate = new Date()) {
   const diffTime = monday.getTime() - BASE_SEMESTER_START.getTime();
   const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
   const weekNumber = Math.floor(diffDays / 7) + 1;
-  const isEven = weekNumber % 2 === 0;
 
-  return {
-    weekNumber: weekNumber > 0 ? weekNumber : 1,
-    isEven,
-    parityText: isEven ? "Чётная неделя" : "Нечётная неделя"
-  };
+  return weekNumber > 0 ? weekNumber : 1;
 }
 
 // --- Main Application Component ---
 function App() {
-  // Theme state: 'light' | 'dark' | 'accent'
+  // Themes: 'dark' | 'light' | 'pikmi'
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('schedule_theme') || 'dark';
+    return localStorage.getItem('schedule_theme_v2') || 'dark';
   });
 
   const [showThemePicker, setShowThemePicker] = useState(false);
   const [showBellsModal, setShowBellsModal] = useState(false);
 
-  // Subgroup filter state: 'all' | '1' | '2'
-  const [subgroup, setSubgroup] = useState(() => {
-    return localStorage.getItem('schedule_subgroup') || 'all';
-  });
-
-  // Real-time date and clock
+  // Real-time clock state
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
-  // Set theme on DOM document
+  // Apply Theme attribute to document
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('schedule_theme', theme);
+    localStorage.setItem('schedule_theme_v2', theme);
   }, [theme]);
 
-  // Persist subgroup selection
-  useEffect(() => {
-    localStorage.setItem('schedule_subgroup', subgroup);
-  }, [subgroup]);
-
-  // Live timer tick every second
+  // Real-time timer tick every second
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDateTime(new Date());
@@ -379,43 +305,45 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Current weekday (1: Mon, ... 6: Sat, 0: Sun)
+  // Current day of week (1: Mon, ... 6: Sat, 0: Sun)
   const currentDayOfWeek = currentDateTime.getDay();
-  const currentDayId = currentDayOfWeek === 0 ? 1 : currentDayOfWeek; // default Sunday to Monday
+  const currentDayId = currentDayOfWeek === 0 ? 1 : currentDayOfWeek;
 
-  // Selected Day tab in ribbon
+  // Selected Day state in ribbon
   const [selectedDayId, setSelectedDayId] = useState(currentDayId);
 
-  // Week Parity Info
-  const weekParity = useMemo(() => {
-    return calculateWeekParity(currentDateTime);
+  // Week number (e.g. 4)
+  const weekNumber = useMemo(() => {
+    return calculateWeekNumber(currentDateTime);
   }, [currentDateTime]);
 
-  // Current minutes from midnight
+  // Current minutes of the day (0 - 1439)
   const currentMinutes = currentDateTime.getHours() * 60 + currentDateTime.getMinutes();
 
   // Find currently active pair or current interval
   const liveStatus = useMemo(() => {
-    const isTodaySelected = selectedDayId === currentDayOfWeek;
     if (currentDayOfWeek === 0 || currentDayOfWeek > 6) {
       return {
         type: 'idle',
-        title: 'Выходной день',
-        detail: 'Сегодня занятий нет. Отдыхайте и набирайтесь сил!',
-        activePairNum: null
+        label: '🏖 Выходной день',
+        sub: 'Занятий нет',
+        activePairNum: null,
+        remainingMinutes: null
       };
     }
 
-    // Check if within any pair
+    // Check if right now within any bell interval
     for (let bell of BELL_SCHEDULE) {
       if (currentMinutes >= bell.startMin && currentMinutes <= bell.endMin) {
         const remaining = bell.endMin - currentMinutes;
+        const progress = ((currentMinutes - bell.startMin) / (bell.endMin - bell.startMin)) * 100;
         return {
           type: 'lesson',
-          title: `Идет ${bell.num} пара`,
-          detail: `До звонка осталось ${remaining} мин (${bell.start} - ${bell.end})`,
+          label: `🟢 Идет ${bell.num} пара`,
+          sub: `до звонка ${remaining} мин`,
           activePairNum: bell.num,
-          progress: ((currentMinutes - bell.startMin) / (bell.endMin - bell.startMin)) * 100
+          remainingMinutes: remaining,
+          progress: progress
         };
       }
     }
@@ -428,9 +356,10 @@ function App() {
         const untilNext = next.startMin - currentMinutes;
         return {
           type: 'break',
-          title: 'Перемена',
-          detail: `До ${next.num} пары осталось ${untilNext} мин (начало в ${next.start})`,
-          activePairNum: null
+          label: '☕ Перемена',
+          sub: `до ${next.num} пары ${untilNext} мин (${next.start})`,
+          activePairNum: null,
+          remainingMinutes: null
         };
       }
     }
@@ -439,28 +368,24 @@ function App() {
       const untilFirst = BELL_SCHEDULE[0].startMin - currentMinutes;
       return {
         type: 'break',
-        title: 'Утро до пар',
-        detail: `До 1 пары осталось ${untilFirst} мин (начало в 08:00)`,
-        activePairNum: null
+        label: '🌅 До начала пар',
+        sub: `${untilFirst} мин (начало в 08:00)`,
+        activePairNum: null,
+        remainingMinutes: null
       };
     }
 
     return {
       type: 'idle',
-      title: 'Учебный день завершен',
-      detail: 'Все пары на сегодня закончились',
-      activePairNum: null
+      label: '✨ Учебный день завершен',
+      sub: 'Все пары окончены',
+      activePairNum: null,
+      remainingMinutes: null
     };
-  }, [currentMinutes, currentDayOfWeek, selectedDayId]);
+  }, [currentMinutes, currentDayOfWeek]);
 
-  // Filter pairs for selected day according to subgroup
-  const activeDayPairs = useMemo(() => {
-    const daySchedule = SCHEDULE_DATABASE[selectedDayId] || [];
-    if (subgroup === 'all') return daySchedule;
-    return daySchedule.filter(item => item.subgroup === 'all' || item.subgroup === subgroup);
-  }, [selectedDayId, subgroup]);
-
-  // Selected Day Meta
+  // Active day pairs for Judicial Activity Group
+  const activeDayPairs = SCHEDULE_DATABASE[selectedDayId] || [];
   const selectedDayMeta = DAYS_DATA.find(d => d.id === selectedDayId);
   const isSelectedDayToday = selectedDayId === currentDayOfWeek;
 
@@ -472,291 +397,241 @@ function App() {
   });
 
   return (
-    <div className="app-viewport">
-      {/* --- Sticky Glass Header --- */}
-      <header className="header-glass">
-        <div className="header-top">
-          <div className="app-brand">
-            <div className="brand-icon-wrapper">
-              <IconBook />
-            </div>
-            <div className="brand-text">
-              <h1>Расписание</h1>
-              <span className="specialty-badge">Спец. 40.05.04</span>
-            </div>
-          </div>
-
-          <div className="header-actions">
-            {/* Bell Schedule button */}
-            <button 
-              className="icon-btn" 
-              onClick={() => setShowBellsModal(true)} 
-              title="Расписание звонков"
-              aria-label="Расписание звонков"
-            >
-              <IconBell />
-            </button>
-
-            {/* Theme switcher toggle button */}
-            <button 
-              className="icon-btn" 
-              onClick={() => setShowThemePicker(prev => !prev)} 
-              title="Сменить тему"
-              aria-label="Сменить тему"
-            >
-              <IconPalette />
-            </button>
-          </div>
-        </div>
-
-        {/* Week Parity and Live Clock info */}
-        <div className="header-info-bar">
-          <div className="parity-badge">
-            <span className="parity-indicator" />
-            <span>{weekParity.weekNumber} неделя</span>
-            <span className="parity-tag">{weekParity.parityText}</span>
-          </div>
-          <div className="clock-live">
-            <IconClock />
-            <span>{formattedTime}</span>
-          </div>
-        </div>
-      </header>
-
-      {/* --- 3-Theme Selector Bar (Expandable) --- */}
-      {showThemePicker && (
-        <div className="theme-picker-segmented">
-          <button 
-            className={`theme-tab-btn ${theme === 'light' ? 'active' : ''}`}
-            onClick={() => setTheme('light')}
-          >
-            ☀️ Светлая
-          </button>
-          <button 
-            className={`theme-tab-btn ${theme === 'dark' ? 'active' : ''}`}
-            onClick={() => setTheme('dark')}
-          >
-            🌙 Темная
-          </button>
-          <button 
-            className={`theme-tab-btn ${theme === 'accent' ? 'active' : ''}`}
-            onClick={() => setTheme('accent')}
-          >
-            ✨ Акцентная
-          </button>
-        </div>
-      )}
-
-      {/* --- Subgroups Filter Segmented Control --- */}
-      <div className="subgroup-filter-wrap">
-        <div className="filter-label">
-          <span>Подгруппа</span>
-          <span>{subgroup === 'all' ? 'Все студенты' : subgroup === '1' ? '1: Прокурорская' : '2: Судебная'}</span>
-        </div>
-        <div className="subgroup-segmented">
-          <button 
-            className={`subgroup-btn ${subgroup === 'all' ? 'active' : ''}`}
-            onClick={() => setSubgroup('all')}
-          >
-            Все
-          </button>
-          <button 
-            className={`subgroup-btn ${subgroup === '1' ? 'active' : ''}`}
-            onClick={() => setSubgroup('1')}
-          >
-            1: Прокурорская
-          </button>
-          <button 
-            className={`subgroup-btn ${subgroup === '2' ? 'active' : ''}`}
-            onClick={() => setSubgroup('2')}
-          >
-            2: Судебная
-          </button>
-        </div>
+    <>
+      {/* --- Pikmi Theme Floating Sakura Petals --- */}
+      <div className="pikmi-decor-container" aria-hidden="true">
+        <div className="petal">🌸</div>
+        <div className="petal">🌸</div>
+        <div className="petal">🌷</div>
+        <div className="petal">🌸</div>
+        <div className="petal">✨</div>
+        <div className="petal">🌸</div>
       </div>
 
-      {/* --- Horizontal Days Ribbon (Пн-Сб) --- */}
-      <div className="days-ribbon-container">
-        <div className="days-ribbon-scroll">
-          {DAYS_DATA.map(day => {
-            const isToday = day.id === currentDayOfWeek;
-            const isSelected = day.id === selectedDayId;
-            const pairsCount = (SCHEDULE_DATABASE[day.id] || []).filter(item => 
-              subgroup === 'all' || item.subgroup === 'all' || item.subgroup === subgroup
-            ).length;
+      <div className="app-viewport">
+        {/* --- Sticky Glass Header --- */}
+        <header className="header-glass">
+          <div className="header-top">
+            <div className="app-brand">
+              <div className="brand-icon-wrapper">
+                {theme === 'pikmi' ? '🌸' : <IconBook />}
+              </div>
+              <div className="brand-text">
+                <h1>Расписание</h1>
+              </div>
+            </div>
 
-            return (
-              <button
-                key={day.id}
-                className={`day-chip ${isSelected ? 'active' : ''} ${isToday ? 'today' : ''}`}
-                onClick={() => setSelectedDayId(day.id)}
+            <div className="header-actions">
+              {/* Bell Schedule button */}
+              <button 
+                className="icon-btn" 
+                onClick={() => setShowBellsModal(true)} 
+                title="Расписание звонков"
+                aria-label="Расписание звонков"
               >
-                <span className="day-abbr">{day.short}</span>
-                <span className="day-count">{pairsCount} {pairsCount === 1 ? 'пара' : pairsCount < 5 ? 'пары' : 'пар'}</span>
+                <IconBell />
               </button>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* --- Live Status Banner (Current Status) --- */}
-      <div className={`live-status-card ${liveStatus.type}`}>
-        <div className="live-status-info">
-          <div className={`live-status-title active-${liveStatus.type}`}>
-            {liveStatus.type === 'lesson' && (
-              <span className="live-pulse-beacon">
-                <span className="ring" />
-                <span className="core" />
-              </span>
-            )}
-            <span>{liveStatus.title}</span>
-          </div>
-          <div className="live-status-detail">{liveStatus.detail}</div>
-        </div>
-      </div>
-
-      {/* --- Day Title & Stats --- */}
-      <main className="schedule-container">
-        <div className="day-header-meta">
-          <div className="day-title-row">
-            <h2>{selectedDayMeta.name}</h2>
-            {isSelectedDayToday && <span className="day-today-tag">Сегодня</span>}
-          </div>
-          <span className="day-stats-text">
-            {activeDayPairs.length} {activeDayPairs.length === 1 ? 'занятие' : activeDayPairs.length < 5 ? 'занятия' : 'занятий'}
-          </span>
-        </div>
-
-        {/* Schedule List */}
-        {activeDayPairs.length > 0 ? (
-          activeDayPairs.map((item, idx) => {
-            const bell = BELL_SCHEDULE.find(b => b.num === item.pairNum) || { start: '--:--', end: '--:--' };
-            const isPairActiveNow = isSelectedDayToday && liveStatus.activePairNum === item.pairNum;
-
-            return (
-              <div 
-                key={`${item.pairNum}-${item.subgroup}-${idx}`} 
-                className={`pair-card ${isPairActiveNow ? 'is-active' : ''}`}
+              {/* Theme switcher toggle button */}
+              <button 
+                className="icon-btn" 
+                onClick={() => setShowThemePicker(prev => !prev)} 
+                title="Сменить тему"
+                aria-label="Сменить тему"
               >
-                <div className="pair-card-header">
-                  <div className="pair-time-block">
-                    <span className={`pair-badge-num ${isPairActiveNow ? 'active' : ''}`}>
-                      {item.pairNum} пара
-                    </span>
-                    <span className="pair-time-range">
-                      {bell.start} – {bell.end}
-                    </span>
+                {theme === 'pikmi' ? '🌸' : <IconPalette />}
+              </button>
+            </div>
+          </div>
+
+          {/* Week number and live clock in Header */}
+          <div className="header-info-bar">
+            <div className="week-display">
+              <span className="week-indicator-dot" />
+              <span>{weekNumber} неделя</span>
+            </div>
+            <div className="clock-live">
+              <IconClock />
+              <span>{formattedTime}</span>
+            </div>
+          </div>
+        </header>
+
+        {/* --- 3-Theme Selector Bar (Dark, Light, Pikmi 🌸) --- */}
+        {showThemePicker && (
+          <div className="theme-picker-segmented">
+            <button 
+              className={`theme-tab-btn ${theme === 'dark' ? 'active' : ''}`}
+              onClick={() => { setTheme('dark'); setShowThemePicker(false); }}
+            >
+              🌙 Тёмная
+            </button>
+            <button 
+              className={`theme-tab-btn ${theme === 'light' ? 'active' : ''}`}
+              onClick={() => { setTheme('light'); setShowThemePicker(false); }}
+            >
+              ☀️ Светлая
+            </button>
+            <button 
+              className={`theme-tab-btn ${theme === 'pikmi' ? 'active' : ''}`}
+              onClick={() => { setTheme('pikmi'); setShowThemePicker(false); }}
+            >
+              🌸 Pikmi
+            </button>
+          </div>
+        )}
+
+        {/* --- Horizontal Days Ribbon (Пн-Сб) --- */}
+        <div className="days-ribbon-container">
+          <div className="days-ribbon-scroll">
+            {DAYS_DATA.map(day => {
+              const isToday = day.id === currentDayOfWeek;
+              const isSelected = day.id === selectedDayId;
+              const pairsCount = (SCHEDULE_DATABASE[day.id] || []).length;
+
+              return (
+                <button
+                  key={day.id}
+                  className={`day-chip ${isSelected ? 'active' : ''} ${isToday ? 'today' : ''}`}
+                  onClick={() => setSelectedDayId(day.id)}
+                >
+                  <span className="day-abbr">{day.short}</span>
+                  <span className="day-count">{pairsCount} {pairsCount === 1 ? 'пара' : pairsCount < 5 ? 'пары' : 'пар'}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* --- Status Strip between Ribbon and Cards --- */}
+        <div className="status-pill-strip">
+          <span className="status-pill-text">{liveStatus.label}</span>
+          <span className="status-pill-sub">{liveStatus.sub}</span>
+        </div>
+
+        {/* --- Schedule Content Area --- */}
+        <main className="schedule-container">
+          <div className="day-header-meta">
+            <div className="day-title-row">
+              <h2>{selectedDayMeta.name}</h2>
+              {isSelectedDayToday && <span className="day-today-tag">Сегодня</span>}
+            </div>
+            <span className="day-stats-text">
+              {activeDayPairs.length} {activeDayPairs.length === 1 ? 'занятие' : activeDayPairs.length < 5 ? 'занятия' : 'занятий'}
+            </span>
+          </div>
+
+          {/* Schedule Cards */}
+          {activeDayPairs.length > 0 ? (
+            activeDayPairs.map((item, idx) => {
+              const bell = BELL_SCHEDULE.find(b => b.num === item.pairNum) || { start: '--:--', end: '--:--' };
+              const isPairActiveNow = isSelectedDayToday && liveStatus.activePairNum === item.pairNum;
+
+              return (
+                <div 
+                  key={`${item.pairNum}-${idx}`} 
+                  className={`pair-card ${isPairActiveNow ? 'is-active' : ''}`}
+                >
+                  <div className="pair-card-header">
+                    <div className="pair-time-block">
+                      <span className={`pair-badge-num ${isPairActiveNow ? 'active' : ''}`}>
+                        {item.pairNum} пара
+                      </span>
+                      <span className="pair-time-range">
+                        {bell.start} – {bell.end}
+                      </span>
+                    </div>
+
+                    {/* Highly aesthetic glowing badge when pair is running now */}
+                    {isPairActiveNow && (
+                      <div className="pulsing-live-badge">
+                        <span className="pulsing-dot" />
+                        <span>Идет сейчас • {liveStatus.remainingMinutes} мин</span>
+                      </div>
+                    )}
                   </div>
 
-                  {isPairActiveNow && (
-                    <div className="pulsing-live-badge">
-                      <span className="pulsing-dot" />
-                      <span>Идет сейчас</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="pair-card-body">
-                  <div className="pair-tags-row">
-                    {/* Lesson Type Chip */}
+                  <div className="pair-card-body">
                     <span className={`type-chip ${item.type}`}>
                       {item.typeLabel}
                     </span>
 
-                    {/* Subgroup Chip */}
-                    {item.subgroup === 'all' && (
-                      <span className="subgroup-chip all">Общая</span>
-                    )}
-                    {item.subgroup === '1' && (
-                      <span className="subgroup-chip sub1">1: Прокурорская</span>
-                    )}
-                    {item.subgroup === '2' && (
-                      <span className="subgroup-chip sub2">2: Судебная</span>
-                    )}
+                    <h3 className="pair-subject-title">{item.subject}</h3>
+
+                    <div className="pair-meta-info">
+                      {item.teacher && (
+                        <div className="meta-row">
+                          <IconUser />
+                          <span className="meta-text">{item.teacher}</span>
+                        </div>
+                      )}
+                      {item.auditorium && (
+                        <div className="meta-row">
+                          <IconMapPin />
+                          <span className="meta-text auditorium">{item.auditorium}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <h3 className="pair-subject-title">{item.subject}</h3>
-
-                  <div className="pair-meta-info">
-                    {item.teacher && (
-                      <div className="meta-row">
-                        <IconUser />
-                        <span className="meta-text">{item.teacher}</span>
-                      </div>
-                    )}
-                    {item.auditorium && (
-                      <div className="meta-row">
-                        <IconMapPin />
-                        <span className="meta-text auditorium">{item.auditorium}</span>
-                      </div>
-                    )}
-                  </div>
+                  {/* Real-time Smooth Progress Bar for Active Pair */}
+                  {isPairActiveNow && liveStatus.progress !== undefined && (
+                    <div className="active-pair-progress">
+                      <div 
+                        className="active-pair-progress-bar" 
+                        style={{ width: `${Math.min(Math.max(liveStatus.progress, 2), 100)}%` }} 
+                      />
+                    </div>
+                  )}
                 </div>
-
-                {isPairActiveNow && liveStatus.progress !== undefined && (
-                  <div className="active-pair-progress">
-                    <div 
-                      className="active-pair-progress-bar" 
-                      style={{ width: `${Math.min(Math.max(liveStatus.progress, 2), 100)}%` }} 
-                    />
-                  </div>
-                )}
+              );
+            })
+          ) : (
+            <div className="empty-schedule-card">
+              <div className="empty-icon-wrap">{theme === 'pikmi' ? '🌸' : '☕'}</div>
+              <div className="empty-title">Пар нет</div>
+              <div className="empty-subtitle">
+                В этот день занятий не запланировано. Свободное время для отдыха!
               </div>
-            );
-          })
-        ) : (
-          <div className="empty-schedule-card">
-            <div className="empty-icon-wrap">☕</div>
-            <div className="empty-title">Пар нет</div>
-            <div className="empty-subtitle">
-              {subgroup !== 'all' 
-                ? `Для выбранной подгруппы (${subgroup === '1' ? 'Прокурорская' : 'Судебная'}) занятий в этот день нет.`
-                : 'В этот день занятий не запланировано. Время для отдыха или подготовки!'}
+            </div>
+          )}
+        </main>
+
+        {/* --- Bell Schedule Modal --- */}
+        {showBellsModal && (
+          <div className="modal-overlay" onClick={() => setShowBellsModal(false)}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <div className="modal-drag-handle" />
+              <div className="modal-header">
+                <h3>Расписание звонков</h3>
+                <button 
+                  className="close-btn" 
+                  onClick={() => setShowBellsModal(false)}
+                  aria-label="Закрыть"
+                >
+                  <IconClose />
+                </button>
+              </div>
+
+              <div className="bells-table">
+                {BELL_SCHEDULE.map(bell => {
+                  const isCurrent = liveStatus.activePairNum === bell.num && selectedDayId === currentDayOfWeek;
+                  return (
+                    <div key={bell.num} className={`bells-row ${isCurrent ? 'current-pair' : ''}`}>
+                      <span className="bells-col-num">
+                        <span>{bell.num} пара</span>
+                        {isCurrent && <span className="pulsing-dot" />}
+                      </span>
+                      <span className="bells-col-time">{bell.start} – {bell.end}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
-      </main>
-
-      {/* --- Footer Notes --- */}
-      <footer className="footer-note">
-        Юридический факультет • Специальность 40.05.04<br/>
-        Отсчет недель от 31 августа 2026 г.
-      </footer>
-
-      {/* --- Bell Schedule Modal / Drawer --- */}
-      {showBellsModal && (
-        <div className="modal-overlay" onClick={() => setShowBellsModal(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="modal-drag-handle" />
-            <div className="modal-header">
-              <h3>Расписание звонков</h3>
-              <button 
-                className="close-btn" 
-                onClick={() => setShowBellsModal(false)}
-                aria-label="Закрыть"
-              >
-                <IconClose />
-              </button>
-            </div>
-
-            <div className="bells-table">
-              {BELL_SCHEDULE.map(bell => {
-                const isCurrent = liveStatus.activePairNum === bell.num && selectedDayId === currentDayOfWeek;
-                return (
-                  <div key={bell.num} className={`bells-row ${isCurrent ? 'current-pair' : ''}`}>
-                    <span className="bells-col-num">
-                      <span>{bell.num} пара</span>
-                      {isCurrent && <span className="pulsing-dot" />}
-                    </span>
-                    <span className="bells-col-time">{bell.start} – {bell.end}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 
