@@ -1,32 +1,852 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0F172A">
-  <title>Расписание занятий</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Расписание занятий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        --r-lg: 28px;
+        --r-md: 22px;
+        --r-sm: 14px;
+        --f-head: 'Fredoka', system-ui, -apple-system, sans-serif;
+        --f-body: 'Manrope', system-ui, -apple-system, sans-serif;
+    }
 
-  <!-- Google Fonts: Inter / Plus Jakarta Sans for sleek modern typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+    body {
+        font-family: var(--f-body);
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        transition: background .4s ease, color .4s ease;
+    }
 
-  <!-- React 18 and ReactDOM via CDN -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    /* ============================================================
+       ТЕМА 1: «Пикми» (ДЕФОЛТНАЯ) — глубокий сочный розовый, малина, клубника
+       ============================================================ */
+    body, body[data-theme="pikmi"] {
+        --bg-a: #FFE4F0;
+        --bg-b: #FCD6E8;
+        --bg-c: #F3CEE8;
+        --blob1: #FF6BA6;
+        --blob2: #D946EF;
+        --blob3: #FFA8CC;
+        --blob-opacity: .55;
+        --text-1: #241626;          /* Четкий, глубокий графитово-ягодный (не блеклый!) */
+        --text-2: #7D4F70;          /* Читаемый бархатный оттенок */
+        --glass: rgba(255, 255, 255, 0.75);
+        --glass-strong: rgba(255, 255, 255, 0.94);
+        --glass-border: rgba(255, 255, 255, 0.95);
+        --accent1: #FF2E79;         /* Сочный глубокий розовый */
+        --accent2: #E11D48;         /* Насыщенный малиновый */
+        --accent-solid: #FF2E79;
+        --shadow: 0 14px 38px rgba(225, 29, 72, 0.16), 0 3px 10px rgba(0,0,0,0.03);
+        --shadow-live: 0 16px 42px rgba(255, 46, 121, 0.38), 0 0 20px rgba(255, 46, 121, 0.25);
+        --pill: rgba(255, 46, 121, 0.12);
+        --divider: rgba(255, 46, 121, 0.16);
+        --card-border: rgba(255, 175, 204, 0.6);
+        --room-bg: #FFF0F5;
+        --room-color: #BE123C;
+        --room-border: rgba(244, 63, 94, 0.28);
+    }
 
-  <!-- Babel Standalone for in-browser JSX parsing -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    /* ============================================================
+       ТЕМА 2: «Утро» — светлая, лавандово-розовое небо
+       ============================================================ */
+    body[data-theme="light"] {
+        --bg-a: #F4F1FF;
+        --bg-b: #FFF1F7;
+        --bg-c: #EAF7FF;
+        --blob1: #C9BEFB;
+        --blob2: #FFC2E0;
+        --blob3: #BFE9FB;
+        --blob-opacity: .55;
+        --text-1: #1E293B;
+        --text-2: #64748B;
+        --glass: rgba(255, 255, 255, 0.72);
+        --glass-strong: rgba(255, 255, 255, 0.92);
+        --glass-border: rgba(255, 255, 255, 0.9);
+        --accent1: #6366F1;
+        --accent2: #A855F7;
+        --accent-solid: #6366F1;
+        --shadow: 0 14px 40px rgba(99, 102, 241, 0.14);
+        --shadow-live: 0 16px 42px rgba(99, 102, 241, 0.35);
+        --pill: rgba(99, 102, 241, 0.1);
+        --divider: rgba(99, 102, 241, 0.14);
+        --card-border: rgba(255, 255, 255, 0.85);
+        --room-bg: #F1F5F9;
+        --room-color: #334155;
+        --room-border: rgba(148, 163, 184, 0.25);
+    }
+
+    /* ============================================================
+       ТЕМА 3: «Полночь» — тёмное небо с сиянием и звёздами
+       ============================================================ */
+    body[data-theme="dark"] {
+        --bg-a: #070812;
+        --bg-b: #0C0F22;
+        --bg-c: #05060D;
+        --blob1: #34E0C0;
+        --blob2: #8B5CF6;
+        --blob3: #EC4899;
+        --blob-opacity: .30;
+        --text-1: #F8FAFC;
+        --text-2: #94A3B8;
+        --glass: rgba(24, 28, 48, 0.68);
+        --glass-strong: rgba(30, 35, 60, 0.88);
+        --glass-border: rgba(255, 255, 255, 0.11);
+        --accent1: #34E0C0;
+        --accent2: #8B5CF6;
+        --accent-solid: #8B5CF6;
+        --shadow: 0 18px 46px rgba(0, 0, 0, 0.55);
+        --shadow-live: 0 16px 42px rgba(139, 92, 246, 0.45);
+        --pill: rgba(255, 255, 255, 0.08);
+        --divider: rgba(255, 255, 255, 0.1);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --room-bg: rgba(139, 92, 246, 0.12);
+        --room-color: #C084FC;
+        --room-border: rgba(139, 92, 246, 0.3);
+    }
+
+    body {
+        background: linear-gradient(165deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+        color: var(--text-1);
+    }
+
+    body::before {
+        content: ''; position: fixed; inset: -10%; z-index: 0; pointer-events: none;
+        background:
+            radial-gradient(circle at 6% -8%, var(--blob1), transparent 44%),
+            radial-gradient(circle at 108% 6%, var(--blob2), transparent 42%),
+            radial-gradient(circle at 50% 118%, var(--blob3), transparent 50%);
+        filter: blur(65px);
+        opacity: var(--blob-opacity);
+    }
+
+    /* Звёздная пыль для тёмной темы */
+    body[data-theme="dark"]::after {
+        content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background-image:
+            radial-gradient(rgba(255,255,255,.55) 1px, transparent 1px),
+            radial-gradient(rgba(255,255,255,.35) 1px, transparent 1px);
+        background-size: 90px 90px, 140px 140px;
+        background-position: 0 0, 45px 60px;
+        opacity: .55;
+    }
+
+    /* Плавающие милые акценты для темы «Пикми» */
+    .pikmi-decor { display: none; }
+    body[data-theme="pikmi"] .pikmi-decor { display: block; position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .pikmi-decor span {
+        position: absolute; opacity: .65; filter: drop-shadow(0 4px 12px rgba(255,46,121,.3));
+        animation: floatDecor 7s ease-in-out infinite;
+        user-select: none;
+    }
+    .pikmi-decor .d1 { top: 6%; left: 8%; font-size: 32px; animation-delay: 0s; }
+    .pikmi-decor .d2 { top: 15%; right: 10%; font-size: 26px; animation-delay: 1.2s; }
+    .pikmi-decor .d3 { top: 48%; right: 5%; font-size: 30px; animation-delay: 2.4s; }
+    .pikmi-decor .d4 { bottom: 22%; left: 6%; font-size: 28px; animation-delay: .6s; }
+    .pikmi-decor .d5 { bottom: 8%; right: 14%; font-size: 24px; animation-delay: 1.8s; }
+    @keyframes floatDecor {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(8deg); }
+    }
+
+    .app {
+        position: relative; z-index: 1; max-width: 480px; margin: 0 auto;
+        padding: 16px 16px calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+    @media (min-width: 860px) { .app { max-width: 560px; } }
+
+    /* ---------- Шапка ---------- */
+    .hero {
+        background: var(--glass);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        border: 1.5px solid var(--glass-border);
+        border-radius: var(--r-lg);
+        box-shadow: var(--shadow);
+        padding: 20px 20px 18px;
+        margin-top: 4px;
+        display: flex; flex-direction: column; gap: 14px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .date-block { display: flex; flex-direction: column; gap: 6px; }
+    .date-text { font-family: var(--f-head); font-weight: 700; font-size: 1.45rem; letter-spacing: -.02em; color: var(--text-1); }
+    .week-badge {
+        display: inline-flex; align-items: center; gap: 6px; width: fit-content;
+        font-size: .78rem; font-weight: 750; color: var(--accent-solid);
+        background: var(--pill); padding: 4px 12px; border-radius: 999px;
+        border: 1px solid var(--divider);
+    }
+    .hero-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .icon-btn {
+        width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--glass-border);
+        background: var(--glass-strong); display: flex; align-items: center; justify-content: center;
+        font-size: 16px; cursor: pointer; color: var(--text-1); transition: all .18s;
+        box-shadow: 0 4px 12px rgba(0,0,0,.06);
+    }
+    .icon-btn:hover { transform: translateY(-1px); }
+    .icon-btn:active { transform: scale(.9); }
+
+    /* Тема-бар: Пикми первая! */
+    .theme-row {
+        display: inline-flex; gap: 5px; padding: 4px; background: var(--pill);
+        border: 1px solid var(--divider); border-radius: 999px; width: fit-content;
+    }
+    .theme-dot {
+        width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        font-size: 15px; background: var(--glass-strong); color: var(--text-1); transition: all .2s;
+    }
+    .theme-dot.active {
+        border-color: var(--accent-solid); transform: scale(1.06);
+        box-shadow: 0 3px 12px rgba(0,0,0,.15);
+    }
+
+    .status-pill {
+        display: inline-flex; align-items: center; gap: 8px; font-weight: 750; font-size: .86rem;
+        padding: 9px 16px; border-radius: 999px; width: fit-content;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
+        box-shadow: 0 8px 22px rgba(225, 29, 72, 0.28);
+    }
+    .status-pill.idle { background: var(--pill); color: var(--text-1); box-shadow: none; border: 1px solid var(--divider); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; flex-shrink: 0; animation: pulseBeacon 1.5s infinite; }
+    @keyframes pulseBeacon {
+        0% { box-shadow: 0 0 0 0 rgba(255,255,255,.8); }
+        70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+
+    .progress-track { height: 7px; border-radius: 999px; background: var(--pill); overflow: hidden; border: 1px solid var(--divider); }
+    .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent1), var(--accent2)); width: 0%; transition: width .6s ease; }
+
+    /* ---------- Навигация по дням ---------- */
+    .day-nav { display: flex; gap: 7px; overflow-x: auto; padding: 14px 2px 4px; scrollbar-width: none; }
+    .day-nav::-webkit-scrollbar { display: none; }
+    .day-chip {
+        flex: 1 1 0; min-width: 54px; padding: 10px 4px 9px; border-radius: var(--r-md);
+        background: var(--glass); border: 1.5px solid var(--glass-border); text-align: center;
+        cursor: pointer; transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background .25s, border-color .25s;
+        box-shadow: var(--shadow);
+    }
+    .day-chip .dname {
+        display: block; font-family: var(--f-head); font-size: .84rem; text-transform: uppercase;
+        letter-spacing: .02em; color: var(--text-1); font-weight: 700;
+    }
+    .day-chip .dcount { display: block; margin-top: 3px; font-size: .68rem; font-weight: 600; color: var(--text-2); height: 13px; }
+    .day-chip.today:not(.active) { border: 2px solid var(--accent-solid); }
+    .day-chip.today:not(.active) .dname { color: var(--accent-solid); }
+    .day-chip.active {
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        border-color: transparent; box-shadow: var(--shadow-live); transform: translateY(-2px);
+    }
+    .day-chip.active .dname, .day-chip.active .dcount { color: #fff !important; }
+
+    /* ---------- Карточки пар ---------- */
+    .day-title { display: flex; align-items: baseline; justify-content: space-between; padding: 14px 4px 10px; }
+    .day-title h2 { font-family: var(--f-head); font-weight: 700; font-size: 1.25rem; color: var(--text-1); }
+    .day-title span { font-size: .82rem; font-weight: 600; color: var(--text-2); }
+
+    .timeline { display: flex; flex-direction: column; gap: 12px; animation: fadeIn .32s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Инновационная карточка пары */
+    .lesson-card {
+        background: var(--glass);
+        border: 1.5px solid var(--card-border);
+        border-radius: var(--r-md);
+        padding: 16px 18px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        display: flex; flex-direction: column; gap: 10px;
+        position: relative; transition: all .24s cubic-bezier(.16, 1, 0.3, 1);
+    }
+    .lesson-card:hover { transform: translateY(-2px); }
+    .lesson-card:active { transform: scale(.985); }
+
+    /* Активная пара (Идет сейчас) — топовая пульсация и свечение */
+    .lesson-card.live {
+        background: var(--glass-strong);
+        border: 2px solid var(--accent-solid);
+        box-shadow: var(--shadow-live);
+        transform: translateY(-2px);
+        animation: liveCardAura 2.6s infinite ease-in-out;
+    }
+    @keyframes liveCardAura {
+        0%, 100% { box-shadow: var(--shadow-live); }
+        50% { box-shadow: 0 16px 44px rgba(255, 46, 121, 0.45), 0 0 24px rgba(255, 46, 121, 0.3); }
+    }
+
+    /* Завершенная пара — красивый приглушенный тон */
+    .lesson-card.past {
+        opacity: .54;
+        filter: grayscale(12%);
+    }
+    .lesson-card.past:hover { opacity: .95; filter: none; }
+
+    /* Верхняя строка карточки: номер + время в одну строку! */
+    .lesson-header {
+        display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    }
+    .lesson-badge-wrap {
+        display: inline-flex; align-items: center; gap: 8px;
+    }
+    .lesson-num {
+        font-family: var(--f-head); font-weight: 700; font-size: .88rem;
+        background: var(--pill); color: var(--accent-solid);
+        padding: 3px 9px; border-radius: var(--r-sm);
+        border: 1px solid var(--divider);
+        white-space: nowrap;
+    }
+    .lesson-time-pill {
+        font-family: var(--f-body); font-weight: 700; font-size: .84rem;
+        color: var(--text-2); white-space: nowrap; letter-spacing: -.01em;
+    }
+
+    .lesson-tags {
+        display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .type-chip {
+        font-size: 10.5px; font-weight: 750; padding: 3px 9px; border-radius: 999px;
+        background: var(--pill); color: var(--text-2); border: 1px solid var(--divider);
+    }
+    .type-chip.lecture { color: var(--accent-solid); background: var(--pill); }
+    .type-chip.practice { color: #059669; background: rgba(5, 150, 105, 0.1); border-color: rgba(5, 150, 105, 0.2); }
+    .type-chip.mix { color: #D97706; background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.2); }
+
+    .live-chip {
+        font-size: 10.5px; font-weight: 800; color: #fff; padding: 3px 10px 3px 8px; border-radius: 999px;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        display: inline-flex; align-items: center; gap: 5px;
+        box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+    }
+    .past-chip {
+        font-size: 10.5px; font-weight: 650; color: var(--text-2); padding: 2px 8px; border-radius: 999px;
+        background: rgba(0,0,0,0.04); display: inline-flex; align-items: center; gap: 4px;
+    }
+
+    .subject {
+        font-weight: 800; font-size: 1.08rem; color: var(--text-1); line-height: 1.32; letter-spacing: -.02em;
+    }
+
+    .meta {
+        display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); flex-wrap: wrap;
+    }
+    .meta b { color: var(--text-1); font-weight: 650; }
+    .room-badge {
+        font-weight: 750; font-size: 12px;
+        background: var(--room-bg); color: var(--room-color);
+        border: 1px solid var(--room-border);
+        padding: 2px 8px; border-radius: var(--r-sm);
+        display: inline-block;
+    }
+
+    /* Живая шкала и отсчет внутри карточки активной пары */
+    .card-countdown-box {
+        margin-top: 4px; display: flex; flex-direction: column; gap: 5px;
+        background: var(--pill); padding: 8px 12px; border-radius: var(--r-sm);
+        border: 1px solid var(--divider);
+    }
+    .countdown-row {
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 11.5px; font-weight: 750; color: var(--accent-solid);
+    }
+    .card-progress-track {
+        width: 100%; height: 5px; border-radius: 999px; background: rgba(0,0,0,0.06); overflow: hidden;
+    }
+    .card-progress-fill {
+        height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent1), var(--accent2));
+        transition: width .8s ease;
+    }
+
+    .empty { padding: 48px 16px; text-align: center; color: var(--text-2); font-family: var(--f-head); font-size: 16px; }
+
+    /* ---------- Кнопка звонков + шторка (Трендовый темный розовый) ---------- */
+    .fab {
+        position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+        width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; font-size: 24px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 12px 32px rgba(225, 29, 72, 0.42); z-index: 40;
+        transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .fab:active { transform: scale(.9); }
+
+    .overlay {
+        position: fixed; inset: 0; background: rgba(15, 10, 24, 0.55);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 60;
+    }
+    .overlay.show { opacity: 1; pointer-events: auto; }
+
+    .sheet {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 61; max-height: 84vh; overflow-y: auto;
+        background: var(--glass-strong);
+        backdrop-filter: blur(32px) saturate(190%); -webkit-backdrop-filter: blur(32px) saturate(190%);
+        border-radius: 28px 28px 0 0; border-top: 2px solid var(--glass-border);
+        padding: 16px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.25);
+        transform: translateY(105%); transition: transform .38s cubic-bezier(.2,.8,.2,1);
+    }
+    .sheet.show { transform: translateY(0); }
+    .sheet-handle { width: 40px; height: 5px; border-radius: 99px; background: var(--divider); margin: 0 auto 16px; }
+    .sheet-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .sheet-title { font-family: var(--f-head); font-weight: 700; font-size: 1.2rem; color: var(--text-1); }
+    .sheet-close {
+        width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--pill);
+        color: var(--text-2); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+    }
+
+    .bell-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 14px; border-radius: var(--r-sm); margin-bottom: 6px;
+        background: var(--pill); border: 1px solid var(--divider);
+        transition: background .2s;
+    }
+    .bell-row.live {
+        background: rgba(255, 46, 121, 0.16); border-color: var(--accent-solid);
+        box-shadow: 0 4px 14px rgba(255, 46, 121, 0.2);
+    }
+    .bell-num {
+        font-family: var(--f-head); font-weight: 700; font-size: .95rem; color: var(--accent-solid);
+        display: flex; align-items: center; gap: 6px;
+    }
+    .bell-range { color: var(--text-1); font-weight: 700; font-size: .92rem; font-family: var(--f-body); }
+
+    .toast {
+        position: fixed; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); left: 50%;
+        transform: translateX(-50%) translateY(40px);
+        background: var(--text-1); color: var(--bg-a); padding: 11px 20px; border-radius: 24px;
+        font-size: .9rem; font-weight: 750; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+        opacity: 0; transition: all .3s cubic-bezier(.175,.885,.32,1.275); pointer-events: none; z-index: 70;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    }
+</style>
 </head>
-<body>
-  <div id="root"></div>
+<body data-theme="pikmi">
 
-  <!-- React Application Source -->
-  <script type="text/babel" src="App.js"></script>
+<!-- Плавающие акценты Pikmi (цветочки, бантики, сердечки) -->
+<div class="pikmi-decor" aria-hidden="true">
+    <span class="d1">🌸</span>
+    <span class="d2">🎀</span>
+    <span class="d3">💗</span>
+    <span class="d4">✨</span>
+    <span class="d5">🌷</span>
+</div>
+
+<div class="app">
+
+    <!-- Верхний блок (Шапка) -->
+    <header class="hero">
+        <div class="hero-row">
+            <div class="date-block">
+                <span class="date-text" id="date-text">Загрузка…</span>
+                <span class="week-badge" id="week-badge">Неделя</span>
+            </div>
+            <div class="hero-actions">
+                <button class="icon-btn" id="copy-btn" title="Скопировать расписание дня" aria-label="Скопировать расписание">
+                    <!-- Четкая современная иконка скопировать (буфер обмена) -->
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Переключатель тем: Пикми идет ПЕРВОЙ по дефолту -->
+        <div class="theme-row" role="group" aria-label="Тема оформления">
+            <button class="theme-dot active" id="dot-pikmi" onclick="setTheme('pikmi')" title="Пикми 🎀">🎀</button>
+            <button class="theme-dot" id="dot-light" onclick="setTheme('light')" title="Утро ☀">☀</button>
+            <button class="theme-dot" id="dot-dark" onclick="setTheme('dark')" title="Полночь 🌙">🌙</button>
+        </div>
+
+        <span class="status-pill idle" id="status-pill">
+            <span class="status-dot" style="display:none;" id="status-dot"></span>
+            <span id="status-text">Проверка расписания…</span>
+        </span>
+
+        <div class="progress-track" id="progress-track" style="display:none;">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </header>
+
+    <!-- Навигация по дням недели -->
+    <nav class="day-nav" id="day-nav" aria-label="Дни недели"></nav>
+
+    <!-- Заголовок выбранного дня -->
+    <div class="day-title">
+        <h2 id="day-title-text">День</h2>
+        <span id="day-title-count"></span>
+    </div>
+
+    <!-- Список пар дня -->
+    <main class="timeline" id="timeline"></main>
+
+</div>
+
+<!-- Плавающая кнопка звонков -->
+<button class="fab" id="bells-fab" title="Расписание звонков" aria-label="Расписание звонков">🔔</button>
+
+<!-- Шторка расписания звонков -->
+<div class="overlay" id="overlay"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Расписание звонков">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header-row">
+        <div class="sheet-title">Расписание звонков</div>
+        <button class="sheet-close" id="sheet-close" aria-label="Закрыть">✕</button>
+    </div>
+    <div id="bells-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+    "use strict";
+
+    /* ---------- Безопасное хранилище ---------- */
+    var safeStorage = {
+        get: function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+        set: function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+    };
+
+    /* ---------- Расписание звонков ---------- */
+    var PAIRS = [
+        {n:1, start:8*60,      end:9*60+30,  label:"8:00–9:30"},
+        {n:2, start:9*60+40,   end:11*60+10, label:"9:40–11:10"},
+        {n:3, start:11*60+25,  end:12*60+55, label:"11:25–12:55"},
+        {n:4, start:13*60+5,   end:14*60+35, label:"13:05–14:35"},
+        {n:5, start:14*60+45,  end:16*60+15, label:"14:45–16:15"},
+        {n:6, start:16*60+30,  end:18*60,    label:"16:30–18:00"},
+        {n:7, start:18*60+10,  end:19*60+40, label:"18:10–19:40"},
+        {n:8, start:19*60+50,  end:21*60+20, label:"19:50–21:20"}
+    ];
+    var PAIR_MAP = {}; PAIRS.forEach(function(p){ PAIR_MAP[p.n]=p; });
+
+    /* ---------- Данные расписания (Судебная деятельность, 2 подгруппа) ---------- */
+    var SCHEDULE = {
+        1: [
+            {pair:1, subject:"Методы исследовательской деятельности", type:"Лекция", teacher:"доц. А.В. Калякина", room:"208, К.12"},
+            {pair:2, subject:"Методы исследовательской деятельности", type:"Практика", teacher:"доц. А.В. Калякина", room:"208, К.12"},
+            {pair:3, subject:"Муниципальное право", type:"Лекция", teacher:"ст.пр. М.П. Цап", room:"211, К.12"},
+            {pair:4, subject:"Муниципальное право", type:"Практика", teacher:"ст.пр. М.П. Цап", room:"211, К.12"}
+        ],
+        2: [
+            {pair:1, subject:"Семейное право", type:"Лекция", teacher:"ст.пр. М.А. Лободюк", room:"209, К.12"},
+            {pair:2, subject:"Уголовное право", type:"Лекция", teacher:"доц. К.Н. Гудима", room:"209, К.12"},
+            {pair:3, subject:"Уголовное право", type:"Практика", teacher:"доц. К.Н. Гудима", room:"104, К.12"},
+            {pair:4, subject:"Семейное право", type:"Практика", teacher:"ст.пр. М.А. Лободюк", room:"104, К.12"}
+        ],
+        3: [
+            {pair:1, subject:"Уголовный процесс", type:"Лекция", teacher:"доц. А.Ф. Дели", room:"102, К.12"},
+            {pair:2, subject:"Уголовный процесс", type:"Лекция", teacher:"доц. А.Ф. Дели", room:"102, К.12"},
+            {pair:3, subject:"Трудовое право", type:"Лекция", teacher:"доц. Н.А. Шеленга", room:"107, К.12"},
+            {pair:4, subject:"Трудовое право", type:"Практика", teacher:"доц. Н.А. Шеленга", room:"107, К.12"}
+        ],
+        4: [
+            {pair:1, subject:"Гражданское право", type:"Лекция", teacher:"доц. Я.Ф. Федорчуков", room:"107, К.12"},
+            {pair:2, subject:"Гражданское право", type:"Лекция", teacher:"доц. Я.Ф. Федорчуков", room:"107, К.12"},
+            {pair:3, subject:"Жилищное право", type:"Лекция", teacher:"доц. Н.А. Шеленга", room:"104, К.12"},
+            {pair:4, subject:"Жилищное право", type:"Практика", teacher:"доц. Н.А. Шеленга", room:"104, К.12"}
+        ],
+        5: [
+            {pair:1, subject:"Криминология", type:"Лекция", teacher:"ст.пр. О.А. Салкуцан", room:"211, К.12"},
+            {pair:2, subject:"Криминология", type:"Практика", teacher:"ст.пр. О.А. Салкуцан", room:"211, К.12"},
+            {pair:3, subject:"Избирательное право", type:"Лекция/Практика", teacher:"доц. Г.С. Брусалинская", room:"102, К.12"}
+        ],
+        6: [
+            {pair:1, subject:"Гражданский процесс", type:"Лекция", teacher:"доц. Е.З. Евстигнеева", room:"211, К.12"},
+            {pair:2, subject:"Гражданский процесс", type:"Практика", teacher:"доц. Е.З. Евстигнеева", room:"211, К.12"}
+        ]
+    };
+
+    var DAY_LABEL = {1:"Пн",2:"Вт",3:"Ср",4:"Чт",5:"Пт",6:"Сб"};
+    var DAY_FULL  = {1:"Понедельник",2:"Вторник",3:"Среда",4:"Четверг",5:"Пятница",6:"Суббота"};
+    var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+
+    var todayIdx = new Date().getDay();
+    var selectedDay = (todayIdx >= 1 && todayIdx <= 6) ? todayIdx : 1;
+
+    /* ---------- Учебная неделя (отсчёт с 31.08.2026) ---------- */
+    function weekNumber(now){
+        var dow = now.getDay();
+        var toMon = (dow + 6) % 7;
+        var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - toMon);
+        monday.setHours(0,0,0,0);
+        var ref = new Date(2026, 7, 31);
+        var diffDays = Math.round((monday - ref) / 86400000);
+        return Math.max(Math.floor(diffDays / 7) + 1, 1);
+    }
+
+    function formatDate(now){
+        var months = MONTHS[now.getMonth()];
+        return now.getDate() + " " + months;
+    }
+
+    /* ---------- Переключение темы ---------- */
+    function setTheme(name){
+        document.body.setAttribute('data-theme', name);
+        ['pikmi','light','dark'].forEach(function(t){
+            var el = document.getElementById('dot-'+t);
+            if(el) el.classList.toggle('active', t === name);
+        });
+        safeStorage.set('sched_theme_custom', name);
+    }
+    window.setTheme = setTheme;
+
+    /* ---------- Рендер дней недели ---------- */
+    function renderDayNav(){
+        var nav = document.getElementById('day-nav');
+        nav.innerHTML = '';
+        for(var d=1; d<=6; d++){
+            var count = (SCHEDULE[d] || []).length;
+            var chip = document.createElement('div');
+            chip.className = 'day-chip' + (d===selectedDay ? ' active' : '') + (d===todayIdx ? ' today' : '');
+            chip.innerHTML = '<span class="dname">'+DAY_LABEL[d]+'</span><span class="dcount">'+count+' пар'+(count===1?'а':(count>=2&&count<=4?'ы':''))+'</span>';
+            chip.onclick = (function(day){ return function(){ selectedDay = day; renderDayNav(); renderTimeline(); }; })(d);
+            nav.appendChild(chip);
+        }
+    }
+
+    /* ---------- Рендер карточек пар (Время в одну строку, инновационный UI) ---------- */
+    function renderTimeline(){
+        var wrap = document.getElementById('timeline');
+        var lessons = SCHEDULE[selectedDay] || [];
+        document.getElementById('day-title-text').textContent = DAY_FULL[selectedDay];
+        document.getElementById('day-title-count').textContent = lessons.length ? (lessons.length + (lessons.length===1?' пара':(lessons.length<=4?' пары':' пар'))) : '';
+
+        wrap.innerHTML = '';
+        if(!lessons.length){
+            wrap.innerHTML = '<div class="empty">Пар нет — можно отдыхать 🌸</div>';
+            return;
+        }
+
+        var now = new Date();
+        var nowMin = now.getHours()*60 + now.getMinutes();
+        var isToday = (selectedDay === todayIdx);
+
+        lessons.forEach(function(lesson){
+            var p = PAIR_MAP[lesson.pair];
+            var isLive = isToday && nowMin >= p.start && nowMin < p.end;
+            var isPast = isToday && nowMin >= p.end;
+
+            var card = document.createElement('div');
+            card.className = 'lesson-card' + (isLive ? ' live' : '') + (isPast ? ' past' : '');
+
+            var liveTagHtml = '';
+            var countdownBoxHtml = '';
+            if(isLive){
+                var left = p.end - nowMin;
+                var total = p.end - p.start;
+                var passed = nowMin - p.start;
+                var pct = Math.min(100, Math.max(3, Math.round((passed / total) * 100)));
+
+                liveTagHtml = '<span class="live-chip"><span class="status-dot"></span>Идёт сейчас</span>';
+                countdownBoxHtml =
+                    '<div class="card-countdown-box">' +
+                        '<div class="countdown-row">' +
+                            '<span>Осталось ' + left + ' мин</span>' +
+                            '<span>' + pct + '%</span>' +
+                        '</div>' +
+                        '<div class="card-progress-track">' +
+                            '<div class="card-progress-fill" style="width:' + pct + '%"></div>' +
+                        '</div>' +
+                    '</div>';
+            }
+
+            var pastTagHtml = '';
+            if(isPast){
+                pastTagHtml = '<span class="past-chip">✓ Прошла</span>';
+            }
+
+            var typeClass = 'lecture';
+            if(lesson.type.indexOf('Практика') !== -1 && lesson.type.indexOf('Лекция') === -1) typeClass = 'practice';
+            else if(lesson.type.indexOf('/') !== -1) typeClass = 'mix';
+
+            // Время строго в одной строке: p.label ("8:00–9:30") без переносов!
+            card.innerHTML =
+                '<div class="lesson-header">' +
+                    '<div class="lesson-badge-wrap">' +
+                        '<span class="lesson-num">' + p.n + ' пара</span>' +
+                        '<span class="lesson-time-pill">' + p.label.replace('–', ' – ') + '</span>' +
+                    '</div>' +
+                    '<div class="lesson-tags">' +
+                        liveTagHtml +
+                        pastTagHtml +
+                        '<span class="type-chip ' + typeClass + '">' + lesson.type + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="subject">' + lesson.subject + '</div>' +
+                '<div class="meta">' +
+                    '<span><b>' + lesson.teacher + '</b></span>' +
+                    '<span class="room-badge">ауд. ' + lesson.room + '</span>' +
+                '</div>' +
+                countdownBoxHtml;
+
+            wrap.appendChild(card);
+        });
+    }
+
+    /* ---------- Обновление шапки ---------- */
+    function updateHeader(){
+        var now = new Date();
+        var nowMin = now.getHours()*60 + now.getMinutes();
+
+        document.getElementById('date-text').textContent = formatDate(now);
+        document.getElementById('week-badge').textContent = weekNumber(now) + '-я учебная неделя';
+
+        var todayLessons = SCHEDULE[todayIdx] || [];
+        var pill = document.getElementById('status-pill');
+        var dot = document.getElementById('status-dot');
+        var text = document.getElementById('status-text');
+        var track = document.getElementById('progress-track');
+        var fill = document.getElementById('progress-fill');
+
+        if(!todayLessons.length){
+            pill.className = 'status-pill idle';
+            dot.style.display = 'none';
+            text.textContent = 'Сегодня пар нет 🏖';
+            track.style.display = 'none';
+            return;
+        }
+
+        track.style.display = 'block';
+        var doneCount = 0, liveFraction = 0, active = null, next = null;
+        todayLessons.forEach(function(lesson){
+            var p = PAIR_MAP[lesson.pair];
+            if(nowMin >= p.end){
+                doneCount++;
+            } else if(nowMin >= p.start && nowMin < p.end){
+                active = {lesson:lesson, p:p};
+                liveFraction = (nowMin - p.start) / (p.end - p.start);
+            } else if(!next){
+                next = {lesson:lesson, p:p};
+            }
+        });
+        var ratio = (doneCount + liveFraction) / todayLessons.length;
+        fill.style.width = Math.min(100, Math.max(0, ratio*100)) + '%';
+
+        if(active){
+            pill.className = 'status-pill';
+            dot.style.display = 'inline-block';
+            var h = Math.floor(active.p.end/60), m = String(active.p.end%60); if(m.length<2) m='0'+m;
+            text.textContent = 'Идёт ' + active.p.n + ' пара · до ' + h + ':' + m;
+        } else if(next){
+            pill.className = 'status-pill idle';
+            dot.style.display = 'none';
+            var minsLeft = next.p.start - nowMin;
+            text.textContent = 'Следующая пара через ' + minsLeft + ' мин';
+        } else {
+            pill.className = 'status-pill idle';
+            dot.style.display = 'none';
+            text.textContent = 'Пары на сегодня закончились ✨';
+        }
+    }
+
+    /* ---------- Шторка звонков ---------- */
+    function renderBells(){
+        var now = new Date();
+        var nowMin = now.getHours()*60 + now.getMinutes();
+        var list = document.getElementById('bells-list');
+
+        list.innerHTML = PAIRS.map(function(p){
+            var isCurrent = (nowMin >= p.start && nowMin < p.end);
+            return '<div class="bell-row' + (isCurrent ? ' live' : '') + '">' +
+                '<span class="bell-num">' +
+                    p.n + ' пара' +
+                    (isCurrent ? ' <span class="status-dot"></span>' : '') +
+                '</span>' +
+                '<span class="bell-range">' + p.label.replace('–',' – ') + '</span>' +
+            '</div>';
+        }).join('');
+    }
+
+    function openSheet(){
+        renderBells();
+        document.getElementById('overlay').classList.add('show');
+        document.getElementById('sheet').classList.add('show');
+    }
+    function closeSheet(){
+        document.getElementById('overlay').classList.remove('show');
+        document.getElementById('sheet').classList.remove('show');
+    }
+
+    document.getElementById('bells-fab').onclick = openSheet;
+    document.getElementById('overlay').onclick = closeSheet;
+    document.getElementById('sheet-close').onclick = closeSheet;
+
+    /* ---------- Toast + копирование ---------- */
+    function showToast(msg){
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(function(){ t.classList.remove('show'); }, 2400);
+    }
+
+    function fallbackCopy(text){
+        try{
+            var ta = document.createElement('textarea');
+            ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+            document.body.appendChild(ta); ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('📋 Расписание скопировано!');
+        }catch(e){ showToast('Не удалось скопировать'); }
+    }
+
+    document.getElementById('copy-btn').onclick = function(){
+        var lessons = SCHEDULE[selectedDay] || [];
+        var lines = ['Расписание — ' + DAY_FULL[selectedDay] + ':', '━━━━━━━━━━━━━━━━━━━━'];
+        lessons.forEach(function(lesson){
+            var p = PAIR_MAP[lesson.pair];
+            lines.push(p.n + ' пара (' + p.label + '): ' + lesson.subject + ' [' + lesson.type + ']');
+            lines.push('  ' + lesson.teacher + ' · ауд. ' + lesson.room);
+        });
+        var full = lines.join('\n');
+        if(navigator.clipboard && navigator.clipboard.writeText){
+            navigator.clipboard.writeText(full).then(function(){ showToast('📋 Расписание скопировано!'); }).catch(function(){ fallbackCopy(full); });
+        } else {
+            fallbackCopy(full);
+        }
+    };
+
+    /* ---------- Инициализация ---------- */
+    function init(){
+        // Дефолтная тема: ВСЕГДА Pikmi при первом входе!
+        var savedTheme = safeStorage.get('sched_theme_custom') || 'pikmi';
+        setTheme(savedTheme);
+        renderDayNav();
+        renderTimeline();
+        renderBells();
+        updateHeader();
+        setInterval(function(){
+            updateHeader();
+            renderTimeline();
+            renderBells();
+        }, 15000);
+    }
+
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
 </body>
 </html>
