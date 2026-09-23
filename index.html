@@ -40,15 +40,15 @@
         --blob2: #D946EF;
         --blob3: #FFA8CC;
         --blob-opacity: .55;
-        --text-1: #241626;          /* Четкий, глубокий графитово-ягодный (не блеклый!) */
-        --text-2: #7D4F70;          /* Читаемый бархатный оттенок */
-        --glass: rgba(255, 255, 255, 0.75);
+        --text-1: #241626;          /* Четкий, глубокий графитово-ягодный */
+        --text-2: #7D4F70;          /* Бархатный ягодный */
+        --glass: rgba(255, 255, 255, 0.76);
         --glass-strong: rgba(255, 255, 255, 0.94);
         --glass-border: rgba(255, 255, 255, 0.95);
         --accent1: #FF2E79;         /* Сочный глубокий розовый */
         --accent2: #E11D48;         /* Насыщенный малиновый */
         --accent-solid: #FF2E79;
-        --shadow: 0 14px 38px rgba(225, 29, 72, 0.16), 0 3px 10px rgba(0,0,0,0.03);
+        --shadow: 0 12px 34px rgba(225, 29, 72, 0.14), 0 2px 8px rgba(0,0,0,0.03);
         --shadow-live: 0 16px 42px rgba(255, 46, 121, 0.38), 0 0 20px rgba(255, 46, 121, 0.25);
         --pill: rgba(255, 46, 121, 0.12);
         --divider: rgba(255, 46, 121, 0.16);
@@ -77,7 +77,7 @@
         --accent1: #6366F1;
         --accent2: #A855F7;
         --accent-solid: #6366F1;
-        --shadow: 0 14px 40px rgba(99, 102, 241, 0.14);
+        --shadow: 0 12px 34px rgba(99, 102, 241, 0.14);
         --shadow-live: 0 16px 42px rgba(99, 102, 241, 0.35);
         --pill: rgba(99, 102, 241, 0.1);
         --divider: rgba(99, 102, 241, 0.14);
@@ -88,7 +88,7 @@
     }
 
     /* ============================================================
-       ТЕМА 3: «Полночь» — тёмное небо с сиянием и звёздами
+       ТЕМА 3: «Полночь» — тёмное небо со сиянием и звёздами
        ============================================================ */
     body[data-theme="dark"] {
         --bg-a: #070812;
@@ -163,6 +163,7 @@
     .app {
         position: relative; z-index: 1; max-width: 480px; margin: 0 auto;
         padding: 16px 16px calc(92px + env(safe-area-inset-bottom, 0px));
+        display: flex; flex-direction: column; gap: 14px;
     }
     @media (min-width: 860px) { .app { max-width: 560px; } }
 
@@ -175,7 +176,6 @@
         border-radius: var(--r-lg);
         box-shadow: var(--shadow);
         padding: 20px 20px 18px;
-        margin-top: 4px;
         display: flex; flex-direction: column; gap: 14px;
     }
     .hero-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
@@ -187,15 +187,27 @@
         background: var(--pill); padding: 4px 12px; border-radius: 999px;
         border: 1px solid var(--divider);
     }
-    .hero-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    
+    /* Кнопки действий в шапке (Копировать, ДЗ, Идеи) */
+    .hero-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
     .icon-btn {
-        width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--glass-border);
+        width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--glass-border);
         background: var(--glass-strong); display: flex; align-items: center; justify-content: center;
         font-size: 16px; cursor: pointer; color: var(--text-1); transition: all .18s;
-        box-shadow: 0 4px 12px rgba(0,0,0,.06);
+        box-shadow: 0 4px 12px rgba(0,0,0,.06); position: relative;
     }
     .icon-btn:hover { transform: translateY(-1px); }
     .icon-btn:active { transform: scale(.9); }
+    
+    /* Счетчик ДЗ на иконке */
+    .hw-badge-counter {
+        position: absolute; top: -3px; right: -3px;
+        width: 17px; height: 17px; border-radius: 50%;
+        background: var(--accent-solid); color: #fff;
+        font-size: 10px; font-weight: 800; display: flex;
+        align-items: center; justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
 
     /* Тема-бар: Пикми первая! */
     .theme-row {
@@ -216,8 +228,9 @@
         display: inline-flex; align-items: center; gap: 8px; font-weight: 750; font-size: .86rem;
         padding: 9px 16px; border-radius: 999px; width: fit-content;
         background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
-        box-shadow: 0 8px 22px rgba(225, 29, 72, 0.28);
+        box-shadow: 0 8px 22px rgba(225, 29, 72, 0.28); cursor: pointer; transition: transform .18s;
     }
+    .status-pill:active { transform: scale(.98); }
     .status-pill.idle { background: var(--pill); color: var(--text-1); box-shadow: none; border: 1px solid var(--divider); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; flex-shrink: 0; animation: pulseBeacon 1.5s infinite; }
     @keyframes pulseBeacon {
@@ -229,45 +242,89 @@
     .progress-track { height: 7px; border-radius: 999px; background: var(--pill); overflow: hidden; border: 1px solid var(--divider); }
     .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent1), var(--accent2)); width: 0%; transition: width .6s ease; }
 
-    /* ---------- Навигация по дням ---------- */
-    .day-nav { display: flex; gap: 7px; overflow-x: auto; padding: 14px 2px 4px; scrollbar-width: none; }
+    /* ============================================================
+       НАВИГАЦИЯ ПО ДНЯМ (ЧИСТЫЕ ЛЕТАЮЩИЕ ОСТРОВКИ БЕЗ ФОНОВОГО БЛОКА!)
+       ============================================================ */
+    .day-nav {
+        display: flex;
+        gap: 7px;
+        overflow-x: auto;
+        padding: 4px 0;
+        margin: 0;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        scrollbar-width: none;
+    }
     .day-nav::-webkit-scrollbar { display: none; }
+
     .day-chip {
-        flex: 1 1 0; min-width: 54px; padding: 10px 4px 9px; border-radius: var(--r-md);
-        background: var(--glass); border: 1.5px solid var(--glass-border); text-align: center;
-        cursor: pointer; transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background .25s, border-color .25s;
-        box-shadow: var(--shadow);
+        flex: 1 1 0;
+        min-width: 52px;
+        padding: 10px 4px 9px;
+        border-radius: 20px;
+        background: var(--glass-strong);
+        border: 1.5px solid var(--glass-border);
+        text-align: center;
+        cursor: pointer;
+        transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s, background .25s, border-color .25s;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05); /* Легкая индивидуальная тень островка */
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        user-select: none;
+    }
+    .day-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+    .day-chip:active {
+        transform: scale(0.93);
     }
     .day-chip .dname {
         display: block; font-family: var(--f-head); font-size: .84rem; text-transform: uppercase;
-        letter-spacing: .02em; color: var(--text-1); font-weight: 700;
+        letter-spacing: .02em; color: var(--text-1); font-weight: 750;
     }
-    .day-chip .dcount { display: block; margin-top: 3px; font-size: .68rem; font-weight: 600; color: var(--text-2); height: 13px; }
-    .day-chip.today:not(.active) { border: 2px solid var(--accent-solid); }
-    .day-chip.today:not(.active) .dname { color: var(--accent-solid); }
+    .day-chip .dcount {
+        display: block; margin-top: 3px; font-size: .68rem; font-weight: 600; color: var(--text-2); height: 13px;
+    }
+
+    /* Сегодняшний день (аккуратный розовый контур островка) */
+    .day-chip.today:not(.active) {
+        border: 2px solid var(--accent-solid);
+        background: var(--glass-strong);
+    }
+    .day-chip.today:not(.active) .dname {
+        color: var(--accent-solid);
+    }
+
+    /* Выбранный день (яркий залитый островок) */
     .day-chip.active {
         background: linear-gradient(135deg, var(--accent1), var(--accent2));
-        border-color: transparent; box-shadow: var(--shadow-live); transform: translateY(-2px);
+        border-color: transparent;
+        box-shadow: var(--shadow-live);
+        transform: translateY(-2px) scale(1.02);
     }
-    .day-chip.active .dname, .day-chip.active .dcount { color: #fff !important; }
+    .day-chip.active .dname, .day-chip.active .dcount {
+        color: #fff !important;
+    }
 
     /* ---------- Карточки пар ---------- */
-    .day-title { display: flex; align-items: baseline; justify-content: space-between; padding: 14px 4px 10px; }
+    .day-title { display: flex; align-items: baseline; justify-content: space-between; padding: 6px 4px 0; }
     .day-title h2 { font-family: var(--f-head); font-weight: 700; font-size: 1.25rem; color: var(--text-1); }
     .day-title span { font-size: .82rem; font-weight: 600; color: var(--text-2); }
 
     .timeline { display: flex; flex-direction: column; gap: 12px; animation: fadeIn .32s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Инновационная карточка пары */
+    /* Премиальная карточка пары */
     .lesson-card {
         background: var(--glass);
         border: 1.5px solid var(--card-border);
-        border-radius: var(--r-md);
+        border-radius: 24px;
         padding: 16px 18px;
         box-shadow: var(--shadow);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(22px) saturate(180%);
+        -webkit-backdrop-filter: blur(22px) saturate(180%);
         display: flex; flex-direction: column; gap: 10px;
         position: relative; transition: all .24s cubic-bezier(.16, 1, 0.3, 1);
     }
@@ -351,6 +408,14 @@
         display: inline-block;
     }
 
+    /* Блок ДЗ прямо внутри карточки пары */
+    .card-hw-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(255, 46, 121, 0.08); border: 1px solid var(--divider);
+        padding: 4px 10px; border-radius: var(--r-sm); font-size: 12px; font-weight: 700;
+        color: var(--accent-solid); margin-top: 2px;
+    }
+
     /* Живая шкала и отсчет внутри карточки активной пары */
     .card-countdown-box {
         margin-top: 4px; display: flex; flex-direction: column; gap: 5px;
@@ -371,7 +436,7 @@
 
     .empty { padding: 48px 16px; text-align: center; color: var(--text-2); font-family: var(--f-head); font-size: 16px; }
 
-    /* ---------- Кнопка звонков + шторка (Трендовый темный розовый) ---------- */
+    /* ---------- Кнопка звонков + шторки ---------- */
     .fab {
         position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px));
         width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer;
@@ -389,8 +454,9 @@
     }
     .overlay.show { opacity: 1; pointer-events: auto; }
 
+    /* Общие стили для шторок (Звонки, ДЗ, Идеи) */
     .sheet {
-        position: fixed; left: 0; right: 0; bottom: 0; z-index: 61; max-height: 84vh; overflow-y: auto;
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 61; max-height: 86vh; overflow-y: auto;
         background: var(--glass-strong);
         backdrop-filter: blur(32px) saturate(190%); -webkit-backdrop-filter: blur(32px) saturate(190%);
         border-radius: 28px 28px 0 0; border-top: 2px solid var(--glass-border);
@@ -401,12 +467,13 @@
     .sheet.show { transform: translateY(0); }
     .sheet-handle { width: 40px; height: 5px; border-radius: 99px; background: var(--divider); margin: 0 auto 16px; }
     .sheet-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .sheet-title { font-family: var(--f-head); font-weight: 700; font-size: 1.2rem; color: var(--text-1); }
+    .sheet-title { font-family: var(--f-head); font-weight: 700; font-size: 1.25rem; color: var(--text-1); }
     .sheet-close {
         width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--pill);
         color: var(--text-2); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
     }
 
+    /* Список звонков */
     .bell-row {
         display: flex; justify-content: space-between; align-items: center;
         padding: 12px 14px; border-radius: var(--r-sm); margin-bottom: 6px;
@@ -422,6 +489,91 @@
         display: flex; align-items: center; gap: 6px;
     }
     .bell-range { color: var(--text-1); font-weight: 700; font-size: .92rem; font-family: var(--f-body); }
+
+    /* ============================================================
+       СТИЛИ ШТОРКИ ДОМАШНИХ ЗАДАНИЙ (ДЗ)
+       ============================================================ */
+    .hw-input-wrap {
+        display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;
+        background: var(--pill); padding: 12px; border-radius: var(--r-md);
+        border: 1px solid var(--divider);
+    }
+    .hw-input-text {
+        width: 100%; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
+        padding: 10px 14px; font-family: var(--f-body); font-size: 14px;
+        background: var(--glass-strong); color: var(--text-1); outline: none;
+    }
+    .hw-input-text:focus { border-color: var(--accent-solid); }
+    .hw-select-row {
+        display: flex; gap: 8px; align-items: center;
+    }
+    .hw-select {
+        flex: 1; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
+        padding: 9px 12px; font-family: var(--f-body); font-size: 13px;
+        background: var(--glass-strong); color: var(--text-1); outline: none;
+    }
+    .hw-add-btn {
+        border: none; border-radius: var(--r-sm); padding: 9px 16px;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
+        font-family: var(--f-body); font-weight: 750; font-size: 13px; cursor: pointer;
+        transition: transform .18s; white-space: nowrap;
+    }
+    .hw-add-btn:active { transform: scale(.95); }
+
+    .hw-list { display: flex; flex-direction: column; gap: 8px; }
+    .hw-item {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        background: var(--glass-strong); border: 1px solid var(--card-border);
+        border-radius: var(--r-sm); padding: 10px 14px; transition: all .2s;
+    }
+    .hw-item.done { opacity: .55; text-decoration: line-through; }
+    .hw-item-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .hw-checkbox {
+        width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--accent-solid);
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        background: transparent; flex-shrink: 0; color: #fff; font-size: 12px;
+    }
+    .hw-item.done .hw-checkbox { background: var(--accent-solid); }
+    .hw-text-wrap { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .hw-text { font-size: 13.5px; font-weight: 700; color: var(--text-1); word-break: break-word; }
+    .hw-subject-tag { font-size: 11px; font-weight: 650; color: var(--accent-solid); }
+    .hw-del-btn {
+        border: none; background: transparent; color: var(--text-2); cursor: pointer;
+        font-size: 15px; padding: 4px; border-radius: 6px;
+    }
+    .hw-del-btn:hover { color: var(--accent-solid); }
+
+    /* ============================================================
+       СТИЛИ ШТОРКИ ИДЕЙ («СДЕЛАНО ПО ЗАКАЗУ СОФИИ»)
+       ============================================================ */
+    .ideas-card {
+        background: linear-gradient(135deg, rgba(255, 46, 121, 0.12), rgba(225, 29, 72, 0.05));
+        border: 1.5px solid var(--divider); border-radius: var(--r-md);
+        padding: 16px; margin-bottom: 16px; text-align: center;
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .ideas-card-quote {
+        font-size: 14.5px; font-weight: 750; color: var(--text-1); line-height: 1.45;
+    }
+    .ideas-card-sub {
+        font-family: var(--f-head); font-size: 13.5px; font-weight: 650;
+        color: var(--accent-solid); letter-spacing: .01em;
+    }
+    .ideas-textarea {
+        width: 100%; height: 95px; border: 1px solid var(--glass-border); border-radius: var(--r-sm);
+        padding: 12px 14px; font-family: var(--f-body); font-size: 14px;
+        background: var(--glass-strong); color: var(--text-1); outline: none; resize: none; margin-bottom: 10px;
+    }
+    .ideas-textarea:focus { border-color: var(--accent-solid); }
+    .ideas-btn-row { display: flex; gap: 8px; }
+    .ideas-submit-btn {
+        flex: 1; border: none; border-radius: var(--r-sm); padding: 12px;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff;
+        font-family: var(--f-body); font-weight: 750; font-size: 14px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3); transition: transform .18s;
+    }
+    .ideas-submit-btn:active { transform: scale(.97); }
 
     .toast {
         position: fixed; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); left: 50%;
@@ -458,8 +610,19 @@
                 <span class="week-badge" id="week-badge">Неделя</span>
             </div>
             <div class="hero-actions">
+                <!-- 1. Иконка ДЗ (Домашние задания) -->
+                <button class="icon-btn" id="hw-btn" title="Домашнее задание" aria-label="Домашнее задание">
+                    📝
+                    <span class="hw-badge-counter" id="hw-counter" style="display:none;">0</span>
+                </button>
+
+                <!-- 2. Иконка Идеи («Сделано по заказу Софии») -->
+                <button class="icon-btn" id="ideas-btn" title="Идеи и пожелания" aria-label="Идеи и пожелания">
+                    💡
+                </button>
+
+                <!-- 3. Иконка Скопировать расписание дня -->
                 <button class="icon-btn" id="copy-btn" title="Скопировать расписание дня" aria-label="Скопировать расписание">
-                    <!-- Четкая современная иконка скопировать (буфер обмена) -->
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -475,6 +638,7 @@
             <button class="theme-dot" id="dot-dark" onclick="setTheme('dark')" title="Полночь 🌙">🌙</button>
         </div>
 
+        <!-- Плашка статуса (с возможностью клика для быстрого переключения на завтра) -->
         <span class="status-pill idle" id="status-pill">
             <span class="status-dot" style="display:none;" id="status-dot"></span>
             <span id="status-text">Проверка расписания…</span>
@@ -485,7 +649,7 @@
         </div>
     </header>
 
-    <!-- Навигация по дням недели -->
+    <!-- Навигация по дням недели (ЧИСТЫЕ ОТДЕЛЬНЫЕ ОСТРОВКИ БЕЗ ФОНА!) -->
     <nav class="day-nav" id="day-nav" aria-label="Дни недели"></nav>
 
     <!-- Заголовок выбранного дня -->
@@ -502,15 +666,77 @@
 <!-- Плавающая кнопка звонков -->
 <button class="fab" id="bells-fab" title="Расписание звонков" aria-label="Расписание звонков">🔔</button>
 
-<!-- Шторка расписания звонков -->
+<!-- Затемнение фона -->
 <div class="overlay" id="overlay"></div>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Расписание звонков">
+
+<!-- 1. Шторка расписания звонков -->
+<div class="sheet" id="sheet-bells" role="dialog" aria-modal="true" aria-label="Расписание звонков">
     <div class="sheet-handle"></div>
     <div class="sheet-header-row">
         <div class="sheet-title">Расписание звонков</div>
-        <button class="sheet-close" id="sheet-close" aria-label="Закрыть">✕</button>
+        <button class="sheet-close" onclick="closeAllSheets()" aria-label="Закрыть">✕</button>
     </div>
     <div id="bells-list"></div>
+</div>
+
+<!-- 2. Шторка ДОМАШНЕГО ЗАДАНИЯ (ДЗ) -->
+<div class="sheet" id="sheet-hw" role="dialog" aria-modal="true" aria-label="Домашнее задание">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header-row">
+        <div class="sheet-title">Домашние задания 📝</div>
+        <button class="sheet-close" onclick="closeAllSheets()" aria-label="Закрыть">✕</button>
+    </div>
+
+    <div class="hw-input-wrap">
+        <input type="text" class="hw-input-text" id="hw-input" placeholder="Что задали? (например: Конспект ст. 105 УК...)">
+        <div class="hw-select-row">
+            <select class="hw-select" id="hw-subject">
+                <option value="Общее">📌 Общее задание</option>
+                <option value="Уголовное право">Уголовное право</option>
+                <option value="Семейное право">Семейное право</option>
+                <option value="Уголовный процесс">Уголовный процесс</option>
+                <option value="Трудовое право">Трудовое право</option>
+                <option value="Гражданское право">Гражданское право</option>
+                <option value="Жилищное право">Жилищное право</option>
+                <option value="Криминология">Криминология</option>
+                <option value="Избирательное право">Избирательное право</option>
+                <option value="Гражданский процесс">Гражданский процесс</option>
+                <option value="Методы исследовательской деятельности">Методы иссл. деят.</option>
+                <option value="Муниципальное право">Муниципальное право</option>
+            </select>
+            <button class="hw-add-btn" id="hw-add-btn">+ Добавить</button>
+        </div>
+    </div>
+
+    <div class="hw-list" id="hw-list-container">
+        <!-- Задания генерируются JS -->
+    </div>
+</div>
+
+<!-- 3. Шторка ИДЕЙ («Сделано по заказу Софии») -->
+<div class="sheet" id="sheet-ideas" role="dialog" aria-modal="true" aria-label="Идеи и пожелания">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header-row">
+        <div class="sheet-title">Идеи и пожелания 💡</div>
+        <button class="sheet-close" onclick="closeAllSheets()" aria-label="Закрыть">✕</button>
+    </div>
+
+    <div class="ideas-card">
+        <div class="ideas-card-quote">
+            «Если что-то нужно улучшить или добавить — пишите свои идеи!» 💌
+        </div>
+        <div class="ideas-card-sub">
+            ✨ Сделано с любовью по специальному заказу Софии ✨
+        </div>
+    </div>
+
+    <textarea class="ideas-textarea" id="ideas-input" placeholder="Напишите вашу идею или пожелание по улучшению расписания…"></textarea>
+    
+    <div class="ideas-btn-row">
+        <button class="ideas-submit-btn" id="ideas-tg-btn">
+            <span>Отправить в Telegram</span> ✈️
+        </button>
+    </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -579,8 +805,12 @@
     var DAY_FULL  = {1:"Понедельник",2:"Вторник",3:"Среда",4:"Четверг",5:"Пятница",6:"Суббота"};
     var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
 
-    var todayIdx = new Date().getDay();
-    var selectedDay = (todayIdx >= 1 && todayIdx <= 6) ? todayIdx : 1;
+    // Функция получения текущего дня (вызывается динамически!)
+    function getTodayDayIndex() {
+        return new Date().getDay();
+    }
+
+    var selectedDay = (getTodayDayIndex() >= 1 && getTodayDayIndex() <= 6) ? getTodayDayIndex() : 1;
 
     /* ---------- Учебная неделя (отсчёт с 31.08.2026) ---------- */
     function weekNumber(now){
@@ -609,25 +839,126 @@
     }
     window.setTheme = setTheme;
 
-    /* ---------- Рендер дней недели ---------- */
+    /* ---------- Рендер дней недели (ОТДЕЛЬНЫЕ ПАРЯЩИЕ ОСТРОВКИ) ---------- */
     function renderDayNav(){
         var nav = document.getElementById('day-nav');
         nav.innerHTML = '';
+        var today = getTodayDayIndex();
+
         for(var d=1; d<=6; d++){
             var count = (SCHEDULE[d] || []).length;
             var chip = document.createElement('div');
-            chip.className = 'day-chip' + (d===selectedDay ? ' active' : '') + (d===todayIdx ? ' today' : '');
-            chip.innerHTML = '<span class="dname">'+DAY_LABEL[d]+'</span><span class="dcount">'+count+' пар'+(count===1?'а':(count>=2&&count<=4?'ы':''))+'</span>';
-            chip.onclick = (function(day){ return function(){ selectedDay = day; renderDayNav(); renderTimeline(); }; })(d);
+            chip.className = 'day-chip' + (d === selectedDay ? ' active' : '') + (d === today ? ' today' : '');
+            chip.innerHTML = '<span class="dname">' + DAY_LABEL[d] + '</span><span class="dcount">' + count + ' пар' + (count===1?'а':(count>=2&&count<=4?'ы':'')) + '</span>';
+            chip.onclick = (function(day){
+                return function(){
+                    selectedDay = day;
+                    renderDayNav();
+                    renderTimeline();
+                };
+            })(d);
             nav.appendChild(chip);
         }
     }
 
-    /* ---------- Рендер карточек пар (Время в одну строку, инновационный UI) ---------- */
+    /* ---------- Модуль Домашних Заданий (ДЗ) ---------- */
+    function getHWList() {
+        try {
+            var raw = safeStorage.get('sched_hw_list');
+            return raw ? JSON.parse(raw) : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    function saveHWList(list) {
+        safeStorage.set('sched_hw_list', JSON.stringify(list));
+        updateHWBadge();
+        renderHWList();
+        renderTimeline(); // обновить бейджи ДЗ на карточках пар!
+    }
+
+    function updateHWBadge() {
+        var list = getHWList();
+        var pending = list.filter(function(i){ return !i.done; }).length;
+        var badge = document.getElementById('hw-counter');
+        if (pending > 0) {
+            badge.textContent = pending;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    function renderHWList() {
+        var container = document.getElementById('hw-list-container');
+        var list = getHWList();
+        if (!list.length) {
+            container.innerHTML = '<div style="text-align:center; padding:24px 10px; color:var(--text-2); font-size:13.5px;">Пока нет домашних заданий ✨<br>Напишите задание выше и нажмите «Добавить»</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        list.forEach(function(item, idx){
+            var div = document.createElement('div');
+            div.className = 'hw-item' + (item.done ? ' done' : '');
+            div.innerHTML =
+                '<div class="hw-item-left">' +
+                    '<button class="hw-checkbox">' + (item.done ? '✓' : '') + '</button>' +
+                    '<div class="hw-text-wrap">' +
+                        '<span class="hw-text">' + item.text + '</span>' +
+                        (item.subject ? '<span class="hw-subject-tag">' + item.subject + '</span>' : '') +
+                    '</div>' +
+                '</div>' +
+                '<button class="hw-del-btn" title="Удалить">🗑</button>';
+
+            // Чекбокс
+            div.querySelector('.hw-checkbox').onclick = function(){
+                list[idx].done = !list[idx].done;
+                saveHWList(list);
+            };
+
+            // Удалить
+            div.querySelector('.hw-del-btn').onclick = function(){
+                list.splice(idx, 1);
+                saveHWList(list);
+                showToast('Задание удалено');
+            };
+
+            container.appendChild(div);
+        });
+    }
+
+    // Добавление нового ДЗ
+    document.getElementById('hw-add-btn').onclick = function(){
+        var input = document.getElementById('hw-input');
+        var select = document.getElementById('hw-subject');
+        var text = (input.value || '').trim();
+        if (!text) {
+            showToast('Введите текст задания!');
+            return;
+        }
+        var list = getHWList();
+        list.unshift({
+            id: Date.now(),
+            text: text,
+            subject: select.value,
+            done: false,
+            createdAt: new Date().toLocaleDateString('ru-RU')
+        });
+        saveHWList(list);
+        input.value = '';
+        showToast('📝 Задание добавлено!');
+    };
+
+    /* ---------- Рендер карточек пар ---------- */
     function renderTimeline(){
         var wrap = document.getElementById('timeline');
         var lessons = SCHEDULE[selectedDay] || [];
-        document.getElementById('day-title-text').textContent = DAY_FULL[selectedDay];
+        var today = getTodayDayIndex();
+        var isToday = (selectedDay === today);
+
+        document.getElementById('day-title-text').textContent = DAY_FULL[selectedDay] + (isToday ? ' (Сегодня)' : '');
         document.getElementById('day-title-count').textContent = lessons.length ? (lessons.length + (lessons.length===1?' пара':(lessons.length<=4?' пары':' пар'))) : '';
 
         wrap.innerHTML = '';
@@ -638,7 +969,7 @@
 
         var now = new Date();
         var nowMin = now.getHours()*60 + now.getMinutes();
-        var isToday = (selectedDay === todayIdx);
+        var hwList = getHWList();
 
         lessons.forEach(function(lesson){
             var p = PAIR_MAP[lesson.pair];
@@ -678,6 +1009,15 @@
             if(lesson.type.indexOf('Практика') !== -1 && lesson.type.indexOf('Лекция') === -1) typeClass = 'practice';
             else if(lesson.type.indexOf('/') !== -1) typeClass = 'mix';
 
+            // Проверяем, есть ли ДЗ по этому предмету
+            var relatedHW = hwList.filter(function(h){
+                return !h.done && (h.subject === lesson.subject || lesson.subject.indexOf(h.subject) !== -1);
+            });
+            var hwBadgeHtml = '';
+            if (relatedHW.length > 0) {
+                hwBadgeHtml = '<div class="card-hw-badge">📝 ДЗ: ' + relatedHW[0].text + (relatedHW.length > 1 ? ' (+' + (relatedHW.length-1) + ')' : '') + '</div>';
+            }
+
             // Время строго в одной строке: p.label ("8:00–9:30") без переносов!
             card.innerHTML =
                 '<div class="lesson-header">' +
@@ -696,21 +1036,23 @@
                     '<span><b>' + lesson.teacher + '</b></span>' +
                     '<span class="room-badge">ауд. ' + lesson.room + '</span>' +
                 '</div>' +
+                hwBadgeHtml +
                 countdownBoxHtml;
 
             wrap.appendChild(card);
         });
     }
 
-    /* ---------- Обновление шапки ---------- */
+    /* ---------- Обновление шапки (С динамической логикой времени и смены суток!) ---------- */
     function updateHeader(){
         var now = new Date();
+        var today = getTodayDayIndex();
         var nowMin = now.getHours()*60 + now.getMinutes();
 
         document.getElementById('date-text').textContent = formatDate(now);
         document.getElementById('week-badge').textContent = weekNumber(now) + '-я учебная неделя';
 
-        var todayLessons = SCHEDULE[todayIdx] || [];
+        var todayLessons = SCHEDULE[today] || [];
         var pill = document.getElementById('status-pill');
         var dot = document.getElementById('status-dot');
         var text = document.getElementById('status-text');
@@ -720,8 +1062,9 @@
         if(!todayLessons.length){
             pill.className = 'status-pill idle';
             dot.style.display = 'none';
-            text.textContent = 'Сегодня пар нет 🏖';
+            text.textContent = 'Сегодня занятий нет 🏖';
             track.style.display = 'none';
+            pill.onclick = null;
             return;
         }
 
@@ -746,19 +1089,34 @@
             dot.style.display = 'inline-block';
             var h = Math.floor(active.p.end/60), m = String(active.p.end%60); if(m.length<2) m='0'+m;
             text.textContent = 'Идёт ' + active.p.n + ' пара · до ' + h + ':' + m;
+            pill.onclick = null;
         } else if(next){
             pill.className = 'status-pill idle';
             dot.style.display = 'none';
             var minsLeft = next.p.start - nowMin;
             text.textContent = 'Следующая пара через ' + minsLeft + ' мин';
+            pill.onclick = null;
         } else {
+            // Пары на сегодня завершены! Предлагаем посмотреть завтрашний день
+            var tomorrowIdx = today + 1;
+            if (tomorrowIdx > 6) tomorrowIdx = 1;
+            var tomorrowCount = (SCHEDULE[tomorrowIdx] || []).length;
+
             pill.className = 'status-pill idle';
             dot.style.display = 'none';
-            text.textContent = 'Пары на сегодня закончились ✨';
+            text.textContent = 'Пары на сегодня всё ✨ Завтра ' + DAY_LABEL[tomorrowIdx] + ' (' + tomorrowCount + ' пары) ➔';
+            
+            // Клик по плашке сразу открывает завтра!
+            pill.onclick = function(){
+                selectedDay = tomorrowIdx;
+                renderDayNav();
+                renderTimeline();
+                showToast('Открыто расписание на завтра (' + DAY_FULL[tomorrowIdx] + ')');
+            };
         }
     }
 
-    /* ---------- Шторка звонков ---------- */
+    /* ---------- Шторки (Звонки, ДЗ, Идеи) ---------- */
     function renderBells(){
         var now = new Date();
         var nowMin = now.getHours()*60 + now.getMinutes();
@@ -776,19 +1134,47 @@
         }).join('');
     }
 
-    function openSheet(){
-        renderBells();
+    function openSheet(id) {
+        closeAllSheets();
         document.getElementById('overlay').classList.add('show');
-        document.getElementById('sheet').classList.add('show');
-    }
-    function closeSheet(){
-        document.getElementById('overlay').classList.remove('show');
-        document.getElementById('sheet').classList.remove('show');
+        document.getElementById(id).classList.add('show');
     }
 
-    document.getElementById('bells-fab').onclick = openSheet;
-    document.getElementById('overlay').onclick = closeSheet;
-    document.getElementById('sheet-close').onclick = closeSheet;
+    function closeAllSheets() {
+        document.getElementById('overlay').classList.remove('show');
+        ['sheet-bells', 'sheet-hw', 'sheet-ideas'].forEach(function(s){
+            var el = document.getElementById(s);
+            if(el) el.classList.remove('show');
+        });
+    }
+    window.closeAllSheets = closeAllSheets;
+
+    document.getElementById('bells-fab').onclick = function(){
+        renderBells();
+        openSheet('sheet-bells');
+    };
+    document.getElementById('hw-btn').onclick = function(){
+        renderHWList();
+        openSheet('sheet-hw');
+    };
+    document.getElementById('ideas-btn').onclick = function(){
+        openSheet('sheet-ideas');
+    };
+    document.getElementById('overlay').onclick = closeAllSheets;
+
+    /* ---------- Отправка идеи в Telegram ---------- */
+    document.getElementById('ideas-tg-btn').onclick = function(){
+        var text = (document.getElementById('ideas-input').value || '').trim();
+        var message = '💡 Идея для расписания (по заказу Софии): ' + (text ? text : 'Привет! Хочу предложить улучшение в расписании.');
+        var tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent('https://danilmmmm.github.io/schedule') + '&text=' + encodeURIComponent(message);
+        
+        // Копируем текст и открываем Telegram
+        if(navigator.clipboard && navigator.clipboard.writeText){
+            navigator.clipboard.writeText(message);
+        }
+        showToast('Открываем Telegram… ✨');
+        window.open(tgUrl, '_blank');
+    };
 
     /* ---------- Toast + копирование ---------- */
     function showToast(msg){
@@ -833,12 +1219,15 @@
         renderDayNav();
         renderTimeline();
         renderBells();
+        updateHWBadge();
         updateHeader();
+
+        // Живой таймер автообновления: проверяет время и полночь
         setInterval(function(){
             updateHeader();
             renderTimeline();
             renderBells();
-        }, 15000);
+        }, 12000);
     }
 
     if(document.readyState === 'loading'){
