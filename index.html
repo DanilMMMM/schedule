@@ -1550,6 +1550,19 @@
             return;
         }
 
+        // Секретный сброс для Данила прямо из приложения: напиши «данил» или «reset» в ДЗ
+        var cleanInput = text.toLowerCase();
+        if (cleanInput === 'reset' || cleanInput === 'данил' || cleanInput === 'danil' || cleanInput === '/reset') {
+            safeStorage.set('sched_device_owner', 'danil');
+            safeStorage.set('sched_secret_disabled', 'false');
+            safeStorage.set('sched_secret_fails', '0');
+            input.value = '';
+            input.placeholder = 'Что задали';
+            showToast('👤 Режим Данила: попытки сброшены 🔄', 3500);
+            renderTimeline();
+            return;
+        }
+
         var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
         var userName = isOwner ? 'Данил' : 'София';
 
@@ -1923,7 +1936,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js').catch(function(){});
+            navigator.serviceWorker.register('./sw.js?v=5').catch(function(){});
         });
     }
 
