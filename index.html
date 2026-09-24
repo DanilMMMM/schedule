@@ -1381,30 +1381,9 @@
         }
     }
 
-    // Распознавание телефона Миши (через ссылку с ?me или 5 быстрых кликов по дате)
-    if (/[?&#]me\b|[?&#]misha\b|[?&#]admin\b/i.test(location.search + location.hash)) {
-        safeStorage.set('sched_device_owner', 'misha');
-    }
-
-    var ownerClicks = 0, ownerClickTimer = null;
-    var dateEl = document.getElementById('date-text');
-    if (dateEl) {
-        dateEl.addEventListener('click', function(){
-            ownerClicks++;
-            if (ownerClickTimer) clearTimeout(ownerClickTimer);
-            ownerClickTimer = setTimeout(function(){ ownerClicks = 0; }, 1500);
-            if (ownerClicks >= 5) {
-                ownerClicks = 0;
-                var current = safeStorage.get('sched_device_owner');
-                if (current === 'misha') {
-                    safeStorage.set('sched_device_owner', 'other');
-                    showToast('📱 Режим владельца выключен');
-                } else {
-                    safeStorage.set('sched_device_owner', 'misha');
-                    showToast('👤 Телефон отмечен как «Миша»!');
-                }
-            }
-        });
+    // Распознавание телефона Данила (открывается по ссылке с ?danil или ?me всего один раз)
+    if (/[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash)) {
+        safeStorage.set('sched_device_owner', 'danil');
     }
 
     function trackAppVisit() {
@@ -1412,8 +1391,8 @@
             var now = Date.now();
             var lastTs = parseInt(safeStorage.get('sched_last_visit_ts') || '0', 10);
 
-            // Защита от спама при частой перезагрузке (интервал минимум 3 минуты)
-            if (now - lastTs < 3 * 60 * 1000) return;
+            // Интервал 20 секунд: если вышла и зашла через 20 сек — уведомление придёт
+            if (now - lastTs < 20 * 1000) return;
 
             var todayStr = new Date().toLocaleDateString('ru-RU');
             var savedDay = safeStorage.get('sched_visit_date');
@@ -1456,8 +1435,8 @@
                 deviceName = 'Mac';
             }
 
-            var isOwner = (safeStorage.get('sched_device_owner') === 'misha');
-            var title = isOwner ? '👤 Ты зашел в расписание (Миша):' : (isIPhone ? '🌸 София зашла в расписание!' : '📱 Вход в расписание:');
+            var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+            var title = isOwner ? '👤 Ты зашел в расписание (Данил):' : (isIPhone ? '🌸 София зашла в расписание!' : '📱 Вход в расписание:');
             var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
             var msg = title + '\n' +
@@ -1469,10 +1448,17 @@
         } catch(e){}
     }
 
+    // Отслеживаем запуск и возвращение в приложение из фона
     document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible') {
             trackAppVisit();
         }
+    });
+    window.addEventListener('pageshow', function() {
+        trackAppVisit();
+    });
+    window.addEventListener('focus', function() {
+        trackAppVisit();
     });
 
     /* ---------- Инициализация ---------- */
