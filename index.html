@@ -1373,7 +1373,7 @@
         var attemptsLeft = Math.max(0, 2 - fails);
 
         // 1. Показываем Dynamic Island Toast сверху экрана
-        showToast('💌 Введи в ДЗ своё любимое слово 🙄\n(Осталось попыток: ' + attemptsLeft + ' из 2)', 5500);
+        showToast('💌 Введи в ДЗ своё любимое слово 🙄', 4500);
 
         // 2. Показываем баннер внутри шторки над полем ввода
         var banner = document.getElementById('sheet-hw-secret-banner');
@@ -1382,7 +1382,7 @@
             banner.style.display = 'flex';
             banner.classList.remove('danger');
             if (bannerText) {
-                bannerText.innerHTML = '<div>💌 <b>Введи в ДЗ своё любимое слово 🙄</b></div><div style="font-size:12px;opacity:0.9;margin-top:3px;">Осталось попыток: <b>' + attemptsLeft + ' из 2</b></div>';
+                bannerText.textContent = '💌 Введи в ДЗ своё любимое слово 🙄';
             }
         }
 
@@ -1390,7 +1390,7 @@
         var input = document.getElementById('hw-input');
         if (input) {
             input.value = '';
-            input.placeholder = 'Введи секретное слово (осталось ' + attemptsLeft + ' из 2)…';
+            input.placeholder = 'Введи секретное слово…';
             setTimeout(function(){
                 try { input.focus(); } catch(e){}
             }, 350);
@@ -1398,12 +1398,12 @@
 
         // 4. Настраиваем кнопку
         var addBtn = document.getElementById('hw-add-btn');
-        if (addBtn) addBtn.innerHTML = '<span>💌 Проверить секретное слово</span>';
+        if (addBtn) addBtn.innerHTML = '<span>Проверить</span>';
 
         // 5. Оповещение в Telegram
         var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
         var userName = isOwner ? 'Данил' : 'София';
-        sendTelegramAlert('💌 ' + userName + ' нажал(а) на конвертик с подсказкой в расписании!\n• Осталось попыток: ' + attemptsLeft + ' из 2');
+        sendTelegramAlert('💌 ' + userName + ' нажал(а) на конвертик с подсказкой в расписании!');
     }
 
     // Сверхточная проверка слова «боже» со всеми исключениями (БОже, боЖе, пробелы, смайлы, знаки препинания)
@@ -1623,14 +1623,14 @@
             safeStorage.set('sched_secret_fails', '0');
             input.value = '';
             input.placeholder = 'Что задали';
-            showToast('👤 Режим Данила: попытки сброшены 🔄\n(2 попытки снова доступны)', 4000);
+            showToast('👤 Режим Данила: попытки сброшены 🔄', 3500);
             renderTimeline();
             var banner = document.getElementById('sheet-hw-secret-banner');
             if (banner && isSecretMode) {
                 banner.classList.remove('danger');
                 var bannerText = document.getElementById('sh-banner-text');
                 if (bannerText) {
-                    bannerText.innerHTML = '<div>💌 <b>Введи в ДЗ своё любимое слово 🙄</b></div><div style="font-size:12px;opacity:0.9;margin-top:3px;">Осталось попыток: <b>2 из 2</b></div>';
+                    bannerText.textContent = '💌 Введи в ДЗ своё любимое слово 🙄';
                 }
             }
             return;
@@ -1662,7 +1662,6 @@
         if (isSecretMode) {
             var fails = (parseInt(safeStorage.get('sched_secret_fails') || '0', 10)) + 1;
             safeStorage.set('sched_secret_fails', fails);
-            var attemptsLeft = Math.max(0, 2 - fails);
 
             var banner = document.getElementById('sheet-hw-secret-banner');
             var bannerText = document.getElementById('sh-banner-text');
@@ -1674,12 +1673,12 @@
                 } else {
                     safeStorage.set('sched_secret_disabled', 'true');
                 }
-                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '" (Осталось попыток: 0 из 2)\n🔒 Попытки исчерпаны — пасхалка навсегда удалена из приложения.');
-                showToast('Отказано ❌ Попытки исчерпаны!\n(0 из 2)', 5500);
+                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '"\n🔒 Попытки исчерпаны — пасхалка навсегда удалена из приложения.');
+                showToast('Отказано ❌ (Попытки исчерпаны)', 4500);
 
                 if (banner && bannerText) {
                     banner.classList.add('danger');
-                    bannerText.innerHTML = '<div>❌ <b>Отказано! Неверное слово.</b></div><div style="font-size:12px;margin-top:3px;">Попытки исчерпаны (0 из 2). Доступ навсегда закрыт!</div>';
+                    bannerText.textContent = 'Отказано ❌ (Попытки исчерпаны)';
                 }
                 setTimeout(function(){
                     if (banner) banner.style.display = 'none';
@@ -1689,15 +1688,15 @@
                     isSecretMode = false;
                     var envRow = document.querySelector('.secret-env-row');
                     if (envRow && !isOwner) envRow.remove();
-                }, 3200);
+                }, 2500);
             } else {
-                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '" (Осталась ' + attemptsLeft + ' попытка из 2)');
-                showToast('Отказано ❌ Не то слово!\nОсталась ' + attemptsLeft + ' попытка из 2 🙄', 5500);
+                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '" (1 попытка осталась)');
+                showToast('Отказано ❌ 1 попытка осталась', 4500);
                 if (banner && bannerText) {
                     banner.classList.add('danger');
-                    bannerText.innerHTML = '<div>❌ <b>Отказано! Не то слово 🙄</b></div><div style="font-size:12px;margin-top:3px;">Осталась <b>' + attemptsLeft + ' попытка из 2</b>. Подумай ещё!</div>';
+                    bannerText.textContent = 'Отказано ❌ 1 попытка осталась';
                 }
-                input.placeholder = 'Введи секретное слово (осталась ' + attemptsLeft + ' попытка)…';
+                input.placeholder = 'Введи секретное слово…';
             }
 
             input.value = '';
@@ -1994,7 +1993,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js?v=6').catch(function(){});
+            navigator.serviceWorker.register('./sw.js?v=7').catch(function(){});
         });
     }
 
