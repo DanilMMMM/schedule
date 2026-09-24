@@ -1360,6 +1360,121 @@
         setTimeout(function(){ t.classList.remove('show'); }, 2400);
     }
 
+    /* ---------- Telegram-уведомления о входе в приложение ---------- */
+    var TG_NOTIFY = {
+        botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
+        chatId: '869126840'
+    };
+
+    function sendTelegramAlert(msg) {
+        if (!TG_NOTIFY.botToken || !TG_NOTIFY.chatId) return;
+        var url = 'https://api.telegram.org/bot' + TG_NOTIFY.botToken +
+                  '/sendMessage?chat_id=' + TG_NOTIFY.chatId +
+                  '&text=' + encodeURIComponent(msg);
+        try {
+            fetch(url, { method: 'GET', mode: 'no-cors' });
+        } catch(e) {
+            try {
+                var img = new Image();
+                img.src = url;
+            } catch(e2){}
+        }
+    }
+
+    // Распознавание телефона Миши (через ссылку с ?me или 5 быстрых кликов по дате)
+    if (/[?&#]me\b|[?&#]misha\b|[?&#]admin\b/i.test(location.search + location.hash)) {
+        safeStorage.set('sched_device_owner', 'misha');
+    }
+
+    var ownerClicks = 0, ownerClickTimer = null;
+    var dateEl = document.getElementById('date-text');
+    if (dateEl) {
+        dateEl.addEventListener('click', function(){
+            ownerClicks++;
+            if (ownerClickTimer) clearTimeout(ownerClickTimer);
+            ownerClickTimer = setTimeout(function(){ ownerClicks = 0; }, 1500);
+            if (ownerClicks >= 5) {
+                ownerClicks = 0;
+                var current = safeStorage.get('sched_device_owner');
+                if (current === 'misha') {
+                    safeStorage.set('sched_device_owner', 'other');
+                    showToast('📱 Режим владельца выключен');
+                } else {
+                    safeStorage.set('sched_device_owner', 'misha');
+                    showToast('👤 Телефон отмечен как «Миша»!');
+                }
+            }
+        });
+    }
+
+    function trackAppVisit() {
+        try {
+            var now = Date.now();
+            var lastTs = parseInt(safeStorage.get('sched_last_visit_ts') || '0', 10);
+
+            // Защита от спама при частой перезагрузке (интервал минимум 3 минуты)
+            if (now - lastTs < 3 * 60 * 1000) return;
+
+            var todayStr = new Date().toLocaleDateString('ru-RU');
+            var savedDay = safeStorage.get('sched_visit_date');
+            var count = parseInt(safeStorage.get('sched_visit_count') || '0', 10);
+
+            if (savedDay !== todayStr) {
+                count = 1;
+                safeStorage.set('sched_visit_date', todayStr);
+            } else {
+                count++;
+            }
+            safeStorage.set('sched_visit_count', count);
+            safeStorage.set('sched_last_visit_ts', now);
+
+            var ua = navigator.userAgent || '';
+            var isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            var appMode = isPWA ? '📱 Экран «Домой» (PWA)' : '🌐 Браузер';
+
+            var sw = window.screen.width;
+            var sh = window.screen.height;
+            var isIPhone = /iPhone/i.test(ua);
+            var isIPad = /iPad/i.test(ua);
+            var isAndroid = /Android/i.test(ua);
+
+            var deviceName = 'Неизвестное устройство';
+            if (isIPhone) {
+                // Разрешение iPhone 13 / 13 Pro / 14: 390x844
+                if ((sw === 390 && sh === 844) || (sw === 844 && sh === 390)) {
+                    deviceName = 'iPhone 13';
+                } else {
+                    deviceName = 'iPhone';
+                }
+            } else if (isIPad) {
+                deviceName = 'iPad';
+            } else if (isAndroid) {
+                deviceName = 'Android';
+            } else if (/Windows/i.test(ua)) {
+                deviceName = 'ПК (Windows)';
+            } else if (/Mac/i.test(ua)) {
+                deviceName = 'Mac';
+            }
+
+            var isOwner = (safeStorage.get('sched_device_owner') === 'misha');
+            var title = isOwner ? '👤 Ты зашел в расписание (Миша):' : (isIPhone ? '🌸 София зашла в расписание!' : '📱 Вход в расписание:');
+            var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+            var msg = title + '\n' +
+                      '• Вход №' + count + ' за сегодня\n' +
+                      '• Время: ' + timeNow + '\n' +
+                      '• Устройство: ' + deviceName + ' · ' + appMode;
+
+            sendTelegramAlert(msg);
+        } catch(e){}
+    }
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            trackAppVisit();
+        }
+    });
+
     /* ---------- Инициализация ---------- */
     function init(){
         // Дефолтная тема: ВСЕГДА Pikmi при первом входе!
@@ -1370,6 +1485,7 @@
         renderBells();
         updateHWBadge();
         updateHeader();
+        trackAppVisit();
 
         // Живой таймер автообновления: проверяет время и полночь
         setInterval(function(){
