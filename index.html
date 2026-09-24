@@ -642,13 +642,64 @@
     }
     .ideas-submit-btn:active { transform: scale(.97); }
 
+    /* Всплывающие уведомления (Toast) — вверху экрана по центру (Dynamic Island style) */
     .toast {
-        position: fixed; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); left: 50%;
-        transform: translateX(-50%) translateY(40px);
-        background: var(--text-1); color: var(--bg-a); padding: 11px 20px; border-radius: 24px;
-        font-size: .9rem; font-weight: 750; box-shadow: 0 8px 24px rgba(0,0,0,.25);
-        opacity: 0; transition: all .3s cubic-bezier(.175,.885,.32,1.275); pointer-events: none; z-index: 70;
+        position: fixed;
+        top: calc(18px + env(safe-area-inset-top, 10px));
+        left: 50%;
+        transform: translateX(-50%) translateY(-110px) scale(0.92);
+        background: rgba(28, 16, 24, 0.94);
+        color: #ffffff;
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-family: var(--f-body);
+        font-size: .94rem;
+        font-weight: 750;
+        letter-spacing: -0.01em;
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.38), 0 0 22px rgba(255, 42, 117, 0.35);
+        border: 1.5px solid rgba(255, 130, 185, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 100005;
+        transition: transform .38s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .25s ease;
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+        text-align: center;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
     }
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    /* Подсказка секретного слова внутри шторки ДЗ */
+    .sheet-hw-secret-banner {
+        background: linear-gradient(135deg, rgba(255, 42, 117, 0.15) 0%, rgba(255, 107, 157, 0.22) 100%);
+        border: 1.5px solid rgba(255, 42, 117, 0.45);
+        border-radius: 16px;
+        padding: 11px 16px;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--accent-solid);
+        font-family: var(--f-body);
+        font-size: 13.5px;
+        font-weight: 750;
+        box-shadow: 0 4px 14px rgba(255, 42, 117, 0.15);
+        transition: all .25s ease;
+        animation: fadeIn .25s ease;
+    }
+    .sheet-hw-secret-banner.danger {
+        background: linear-gradient(135deg, rgba(255, 59, 48, 0.16) 0%, rgba(255, 69, 58, 0.26) 100%);
+        border-color: rgba(255, 59, 48, 0.6);
+        color: #ff3b30;
+        box-shadow: 0 4px 14px rgba(255, 59, 48, 0.2);
+    }
+    .sh-banner-icon { font-size: 18px; flex-shrink: 0; }
+    .sh-banner-text { line-height: 1.35; }
     /* ============================================================
        КОСМИЧЕСКИЙ СЮРПРИЗ ДЛЯ СОФИИ: ШОКВЕЙВ, ЧАСТИЦЫ, НЕБУЛА И СТИКЕР 🙄
        ============================================================ */
@@ -916,6 +967,12 @@
     </div>
 
     <div class="hw-input-wrap">
+        <!-- Подсказка / статус секретного слова -->
+        <div class="sheet-hw-secret-banner" id="sheet-hw-secret-banner" style="display:none;">
+            <span class="sh-banner-icon">💌</span>
+            <span class="sh-banner-text" id="sh-banner-text">Введи в ДЗ своё любимое слово 🙄</span>
+        </div>
+
         <input type="text" class="hw-input-text" id="hw-input" placeholder="Что задали">
         
         <div class="hw-select-label">Предмет:</div>
@@ -1289,7 +1346,7 @@
         if (!str) return false;
         // Оставляем только буквы русского и английского алфавитов, убираем пробелы, знаки препинания, скобки
         var clean = str.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '').toLowerCase();
-        return clean === 'боже';
+        return clean === 'боже' || clean === 'божемой' || clean === 'божечки';
     }
 
     function runCosmicCanvas() {
@@ -1493,42 +1550,76 @@
             return;
         }
 
-        // Проверка секретного режима (если пасхалка не заблокирована и не пройдена)
-        if (!isSecretDisabled()) {
-            // Если введено слово «Боже» в любом виде (боже, БОже, боЖе, пробелы, смайлы)
-            if (isSecretWord(text)) {
-                input.value = '';
-                input.placeholder = 'Что задали';
-                // Навсегда удаляем пасхалку из приложения после успеха (без шанса вернуть)
+        var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+        var userName = isOwner ? 'Данил' : 'София';
+
+        // Проверяем секретное слово: если нажат конвертик ИЛИ введено слово «боже»
+        if (isSecretWord(text)) {
+            input.value = '';
+            input.placeholder = 'Что задали';
+            var banner = document.getElementById('sheet-hw-secret-banner');
+            if (banner) banner.style.display = 'none';
+            var addBtn = document.getElementById('hw-add-btn');
+            if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
+
+            // Если это София — навсегда удаляем пасхалку из приложения после успеха
+            if (!isOwner) {
                 disableSecretPermanently();
-                closeAllSheets();
-                sendTelegramAlert('🎉✨ УРА! София ввела секретное слово «' + text + '» и открыла послание! 💖');
-                triggerCosmicSurprise();
-                return;
             }
+            closeAllSheets();
+            sendTelegramAlert('🎉✨ УРА! ' + userName + ' ввел(а) секретное слово «' + text + '» и открыл(а) послание! 💖');
+            triggerCosmicSurprise();
+            return;
+        }
 
-            // Если была нажата подсказка секретика, но слово введено неправильно:
-            if (isSecretMode) {
-                var fails = (parseInt(safeStorage.get('sched_secret_fails') || '0', 10)) + 1;
-                safeStorage.set('sched_secret_fails', fails);
+        // Если активен секретный режим (нажат конвертик с подсказкой), но введено другое слово:
+        if (isSecretMode) {
+            var fails = (parseInt(safeStorage.get('sched_secret_fails') || '0', 10)) + 1;
+            safeStorage.set('sched_secret_fails', fails);
 
-                sendTelegramAlert('❌ София ввела неверное слово: "' + text + '" (Попытка ' + fails + ' из 2)');
+            sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '" (Попытка ' + fails + ' из 2)');
 
-                if (fails >= 2) {
-                    // 2 ошибки: навсегда удаляем пасхалку с её телефона
+            var banner = document.getElementById('sheet-hw-secret-banner');
+            var bannerText = document.getElementById('sh-banner-text');
+
+            if (fails >= 2) {
+                // 2 ошибки: навсегда удаляем пасхалку с телефона Софии
+                if (!isOwner) {
                     disableSecretPermanently();
-                    sendTelegramAlert('🔒 София ошиблась 2 раза — пасхалка навсегда удалена из приложения.');
-                    showToast('Отказано ❌ (Попытки исчерпаны)');
                 } else {
-                    showToast('Отказано ❌ (Осталась 1 попытка)');
+                    safeStorage.set('sched_secret_disabled', 'true');
                 }
+                sendTelegramAlert('🔒 ' + userName + ' ошибся(-лась) 2 раза — пасхалка навсегда удалена из приложения.');
+                showToast('Отказано ❌ (Попытки исчерпаны)', 4200);
 
-                input.classList.add('shake-error');
+                if (banner && bannerText) {
+                    banner.classList.add('danger');
+                    bannerText.textContent = '❌ Отказано! Попытки исчерпаны';
+                }
                 setTimeout(function(){
-                    input.classList.remove('shake-error');
-                }, 450);
-                return;
+                    if (banner) banner.style.display = 'none';
+                    input.placeholder = 'Что задали';
+                    var addBtn = document.getElementById('hw-add-btn');
+                    if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
+                    isSecretMode = false;
+                    var envRow = document.querySelector('.secret-env-row');
+                    if (envRow && !isOwner) envRow.remove();
+                }, 2200);
+            } else {
+                showToast('Отказано ❌ (Осталась 1 попытка)', 4200);
+                if (banner && bannerText) {
+                    banner.classList.add('danger');
+                    bannerText.textContent = '❌ Отказано! Не то слово (осталась 1 попытка)';
+                }
             }
+
+            input.value = '';
+            input.classList.add('shake-error');
+            setTimeout(function(){
+                input.classList.remove('shake-error');
+                input.focus();
+            }, 450);
+            return;
         }
 
         var list = getHWList();
@@ -1541,6 +1632,8 @@
         });
         saveHWList(list);
         input.value = '';
+        renderHWList();
+        updateHWBadge();
         showToast('📝 Задание добавлено!');
     };
 
@@ -1647,14 +1740,28 @@
             if (envBtn) {
                 envBtn.onclick = function(){
                     isSecretMode = true;
-                    sendTelegramAlert('💌 София нажала на конвертик с подсказкой в расписании!');
-                    showToast('💌 Введи в ДЗ своё любимое слово 🙄', 4200);
+                    var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+                    sendTelegramAlert('💌 ' + (isOwner ? 'Данил' : 'София') + ' нажал(а) на конвертик с подсказкой в расписании!');
+                    showToast('💌 Введи в ДЗ своё любимое слово 🙄', 5200);
+
+                    var banner = document.getElementById('sheet-hw-secret-banner');
+                    var bannerText = document.getElementById('sh-banner-text');
+                    if (banner) {
+                        banner.style.display = 'flex';
+                        banner.classList.remove('danger');
+                        if (bannerText) bannerText.textContent = 'Введи в ДЗ своё любимое слово 🙄';
+                    }
+
                     var input = document.getElementById('hw-input');
                     if (input) input.placeholder = 'Введи секретное слово…';
+
+                    var addBtn = document.getElementById('hw-add-btn');
+                    if (addBtn) addBtn.innerHTML = '<span>💌 Проверить секретное слово</span>';
+
                     setTimeout(function(){
                         openSheet('sheet-hw');
                         if (input) input.focus();
-                    }, 800);
+                    }, 400);
                 };
             }
         }
@@ -1764,8 +1871,13 @@
             var el = document.getElementById(s);
             if(el) el.classList.remove('show');
         });
+        var banner = document.getElementById('sheet-hw-secret-banner');
+        if (banner) banner.style.display = 'none';
         var hwInput = document.getElementById('hw-input');
         if (hwInput) hwInput.placeholder = 'Что задали';
+        var addBtn = document.getElementById('hw-add-btn');
+        if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
+        isSecretMode = false;
     }
     window.closeAllSheets = closeAllSheets;
 
@@ -1863,9 +1975,12 @@
         }
     }
 
-    // Распознавание телефона Данила (открывается по ссылке с ?danil или ?me всего один раз)
-    if (/[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash)) {
+    // Распознавание телефона Данила и мгновенный сброс попыток (?danil, ?me, ?admin, ?reset)
+    var isDanilParam = /[?&#]danil\b|[?&#]me\b|[?&#]admin\b|[?&#]reset\b/i.test(location.search + location.hash);
+    if (isDanilParam) {
         safeStorage.set('sched_device_owner', 'danil');
+        safeStorage.set('sched_secret_disabled', 'false');
+        safeStorage.set('sched_secret_fails', '0');
     }
 
     function trackAppVisit() {
@@ -1954,6 +2069,12 @@
         updateHWBadge();
         updateHeader();
         trackAppVisit();
+
+        if (isDanilParam) {
+            setTimeout(function(){
+                showToast('👤 Режим Данила: попытки сброшены 🔄', 3500);
+            }, 600);
+        }
 
         // Живой таймер автообновления: проверяет время и полночь
         setInterval(function(){
