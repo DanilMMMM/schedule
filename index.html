@@ -649,7 +649,177 @@
         font-size: .9rem; font-weight: 750; box-shadow: 0 8px 24px rgba(0,0,0,.25);
         opacity: 0; transition: all .3s cubic-bezier(.175,.885,.32,1.275); pointer-events: none; z-index: 70;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ============================================================
+       КОСМИЧЕСКИЙ СЮРПРИЗ ДЛЯ СОФИИ: ШОКВЕЙВ, ЧАСТИЦЫ, НЕБУЛА И СТИКЕР 🙄
+       ============================================================ */
+    .secret-env-row {
+        display: flex; justify-content: center; align-items: center;
+        padding: 18px 0 12px; width: 100%;
+    }
+    .secret-env-btn {
+        background: var(--glass-strong);
+        border: 1.5px solid var(--accent-solid);
+        border-radius: 999px;
+        padding: 10px 22px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--f-body); font-weight: 750; font-size: 14px;
+        color: var(--accent-solid);
+        box-shadow: 0 4px 18px rgba(255, 42, 117, 0.25);
+        animation: secretBounce 2.4s infinite ease-in-out;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .secret-env-btn:active { transform: scale(0.94); }
+    @keyframes secretBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    /* Полноэкранный космический canvas (поверх модалки, частицы летают вокруг) */
+    #cosmic-canvas {
+        position: fixed; inset: 0; z-index: 100002; pointer-events: none;
+        width: 100vw; height: 100vh;
+    }
+
+    /* Вспышка экрана космической аурой */
+    .screen-flash {
+        position: fixed; inset: 0; z-index: 100000; pointer-events: none;
+        background: radial-gradient(circle at center, rgba(255, 60, 130, 0.6) 0%, rgba(255, 140, 200, 0.28) 45%, transparent 80%);
+        opacity: 0; animation: cosmicFlash 1s ease-out forwards;
+        will-change: opacity;
+    }
+    @keyframes cosmicFlash {
+        0% { opacity: 0; transform: scale(0.9); }
+        25% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(1.1); }
+    }
+
+    /* Аппаратные GPU-шоквейв кольца (0 нагрузки на процессор) */
+    .cosmic-shockwave {
+        position: fixed; top: 50%; left: 50%;
+        width: 60px; height: 60px; margin: -30px 0 0 -30px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 42, 117, 0.95);
+        box-shadow: 0 0 30px rgba(255, 42, 117, 0.8), inset 0 0 20px rgba(255, 140, 200, 0.6);
+        pointer-events: none; z-index: 100003;
+        animation: cosmicShockwave 1.1s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+        will-change: transform, opacity;
+    }
+    .cosmic-shockwave-2 {
+        position: fixed; top: 50%; left: 50%;
+        width: 60px; height: 60px; margin: -30px 0 0 -30px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 200, 225, 0.9);
+        box-shadow: 0 0 24px rgba(255, 180, 215, 0.7);
+        pointer-events: none; z-index: 100003;
+        animation: cosmicShockwave 1.3s cubic-bezier(0.12, 0.8, 0.32, 1) 0.1s forwards;
+        will-change: transform, opacity;
+    }
+    @keyframes cosmicShockwave {
+        0% { transform: scale(0.2); opacity: 1; }
+        60% { opacity: 0.85; }
+        100% { transform: scale(24); opacity: 0; }
+    }
+
+    /* Модальное окно космического сюрприза (легкий blur и мгновенный плавный отклик) */
+    .secret-backdrop {
+        position: fixed; inset: 0; z-index: 100001;
+        background: radial-gradient(circle at center, rgba(35, 10, 26, 0.85) 0%, rgba(14, 4, 11, 0.94) 100%);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex; align-items: center; justify-content: center;
+        padding: 24px; opacity: 0; pointer-events: none;
+        transition: opacity .35s ease-out;
+    }
+    .secret-backdrop.active {
+        opacity: 1; pointer-events: auto;
+    }
+
+    .secret-modal-card {
+        position: relative; z-index: 2;
+        background: linear-gradient(145deg, #FFFFFF 0%, #FFF5F9 55%, #FFE9F3 100%);
+        border: 2px solid rgba(255, 130, 185, 0.75);
+        border-radius: 30px;
+        padding: 34px 26px 28px;
+        max-width: 360px; width: 100%;
+        text-align: center;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.45),
+            0 0 50px rgba(255, 42, 117, 0.4),
+            inset 0 0 20px rgba(255, 255, 255, 0.8);
+        transform: scale(.7) translateY(24px);
+        transition: transform .42s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+        box-sizing: border-box;
+        will-change: transform;
+    }
+    .secret-backdrop.active .secret-modal-card {
+        transform: scale(1) translateY(0);
+    }
+
+    /* Крестик закрытия в верхнем углу */
+    .secret-card-close {
+        position: absolute; top: 14px; right: 16px;
+        width: 34px; height: 34px; border-radius: 50%;
+        border: none; background: rgba(0, 0, 0, 0.06);
+        color: #8C556B; font-size: 15px; font-weight: 700;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: all .2s;
+    }
+    .secret-card-close:hover { background: rgba(255, 42, 117, 0.16); color: #FF2A75; transform: scale(1.1); }
+    .secret-card-close:active { transform: scale(0.9); }
+
+    .secret-card-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: var(--f-head); font-size: 13px; font-weight: 750;
+        color: #FF2A75; background: rgba(255, 42, 117, 0.12);
+        padding: 5px 14px; border-radius: 999px; margin-bottom: 20px;
+        letter-spacing: .02em;
+    }
+
+    .secret-text-content {
+        font-family: var(--f-body);
+        font-size: 20px; line-height: 1.5;
+        color: #2D1420; font-weight: 800;
+        margin-bottom: 28px; word-break: break-word;
+        letter-spacing: -.01em;
+    }
+
+    /* Кнопка с одним стикером 🙄 */
+    .secret-sticker-btn {
+        width: 72px; height: 72px; border-radius: 50%;
+        border: 2px solid rgba(255, 140, 190, 0.65);
+        background: linear-gradient(135deg, #FFF0F6 0%, #FFE1EE 100%);
+        box-shadow: 0 8px 26px rgba(255, 42, 117, 0.35), inset 0 2px 8px rgba(255, 255, 255, 0.95);
+        cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+        transition: transform .22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .2s;
+        animation: stickerBreathe 2.6s infinite ease-in-out;
+    }
+    .secret-sticker-btn:hover {
+        transform: scale(1.15);
+        box-shadow: 0 12px 32px rgba(255, 42, 117, 0.48);
+    }
+    .secret-sticker-btn:active {
+        transform: scale(0.9);
+    }
+    .secret-rolling-emoji {
+        font-size: 36px; line-height: 1; user-select: none;
+    }
+    @keyframes stickerBreathe {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.09); }
+    }
+
+    /* Тряска инпута при отказе */
+    @keyframes shakeError {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-9px); }
+        40%, 80% { transform: translateX(9px); }
+    }
+    .shake-error {
+        animation: shakeError 0.4s ease-in-out !important;
+        border-color: #FF2A75 !important;
+        box-shadow: 0 0 14px rgba(255, 42, 117, 0.4) !important;
+    }
 
     @media (prefers-reduced-motion: reduce) {
         * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
@@ -846,6 +1016,31 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Полноэкранный космический холст для эффектов -->
+<canvas id="cosmic-canvas" style="display:none;"></canvas>
+
+<!-- ==============================================================
+     КОСМИЧЕСКОЕ ОКНО-СЮРПРИЗ ДЛЯ СОФИИ (ОТКРЫВАЕТСЯ ПО СЛОВУ «БОЖЕ»)
+     ============================================================== -->
+<div class="secret-backdrop" id="secret-modal" role="dialog" aria-modal="true" aria-label="Секретное послание">
+    <div class="secret-modal-card">
+        <!-- Крестик закрытия -->
+        <button class="secret-card-close" id="secret-card-close" aria-label="Закрыть">✕</button>
+        
+        <div class="secret-card-badge">✨ Секретное послание ✨</div>
+        
+        <!-- ТЕКСТ ПОСЛАНИЯ ДЛЯ СОФИИ: -->
+        <div class="secret-text-content" id="secret-custom-text">
+            Всё это — просто чтобы заставить тебя улыбнуться)
+        </div>
+        
+        <!-- Кнопка со стикером 🙄 -->
+        <button class="secret-sticker-btn" id="secret-close-btn" title="Закрыть" aria-label="Закрыть">
+            <span class="secret-rolling-emoji">🙄</span>
+        </button>
+    </div>
+</div>
 
 <script>
 (function(){
@@ -1071,6 +1266,223 @@
         });
     }
 
+    /* ---------- КОСМИЧЕСКИЙ СЮРПРИЗ ДЛЯ СОФИИ ---------- */
+    var isSecretMode = false;
+    var cosmicAnimId = null;
+
+    // Проверка: отключена ли пасхалка навсегда (после успеха или 2 ошибок)
+    function isSecretDisabled() {
+        return safeStorage.get('sched_secret_disabled') === 'true' || 
+               (parseInt(safeStorage.get('sched_secret_fails') || '0', 10) >= 2);
+    }
+
+    // Навсегда удалить пасхалку с устройства (без единого шанса вернуть)
+    function disableSecretPermanently() {
+        safeStorage.set('sched_secret_disabled', 'true');
+        isSecretMode = false;
+        var envRow = document.querySelector('.secret-env-row');
+        if (envRow) envRow.remove();
+    }
+
+    // Сверхточная проверка слова «боже» со всеми исключениями (БОже, боЖе, пробелы, смайлы, знаки препинания)
+    function isSecretWord(str) {
+        if (!str) return false;
+        // Оставляем только буквы русского и английского алфавитов, убираем пробелы, знаки препинания, скобки
+        var clean = str.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '').toLowerCase();
+        return clean === 'боже';
+    }
+
+    function runCosmicCanvas() {
+        var canvas = document.getElementById('cosmic-canvas');
+        if (!canvas) return;
+        canvas.style.display = 'block';
+        var ctx = canvas.getContext('2d');
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        var centerX = w / 2;
+        var centerY = h / 2;
+
+        var particles = [];
+        var emojis = ['💖', '✨', '🎀', '🌸', '💫', '🪐', '🤍', '👑', '🌷'];
+        var sparkColors = ['#FFFFFF', '#FFE0ED', '#FF2A75', '#FF70A5', '#FFD43F', '#B8F4FF'];
+
+        // 24 парящих эмодзи (легкие, с физикой полета и мягким вращением)
+        for (var i = 0; i < 24; i++) {
+            var angle = (Math.PI * 2 * i) / 24 + (Math.random() - 0.5) * 0.35;
+            var speed = Math.random() * 10 + 6;
+            particles.push({
+                type: 'emoji',
+                char: emojis[i % emojis.length],
+                x: centerX,
+                y: centerY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed - (Math.random() * 4 + 1.5),
+                size: Math.floor(Math.random() * 10 + 24),
+                rot: Math.random() * Math.PI * 2,
+                vRot: (Math.random() - 0.5) * 0.12,
+                gravity: 0.13,
+                drag: 0.97,
+                alpha: 1,
+                decay: Math.random() * 0.005 + 0.007
+            });
+        }
+
+        // 42 ярких сияющих звезды / искры с аддитивным GPU-свечением (0% просадки FPS!)
+        for (var j = 0; j < 42; j++) {
+            var a = Math.random() * Math.PI * 2;
+            var s = Math.random() * 17 + 5;
+            particles.push({
+                type: 'spark',
+                color: sparkColors[j % sparkColors.length],
+                x: centerX,
+                y: centerY,
+                vx: Math.cos(a) * s,
+                vy: Math.sin(a) * s - Math.random() * 2,
+                radius: Math.random() * 2.6 + 1.8,
+                gravity: 0.08,
+                drag: 0.96,
+                alpha: 1,
+                decay: Math.random() * 0.008 + 0.009
+            });
+        }
+
+        var startTime = Date.now();
+
+        function renderFrame() {
+            var elapsed = Date.now() - startTime;
+            ctx.clearRect(0, 0, w, h);
+
+            var alive = false;
+
+            // 1. Искры в режиме 'lighter' (яркое оптическое свечение без CPU-размытия)
+            ctx.globalCompositeOperation = 'lighter';
+            for (var j = 0; j < particles.length; j++) {
+                var p = particles[j];
+                if (p.type !== 'spark') continue;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.vx *= p.drag;
+                p.vy *= p.drag;
+                p.alpha -= p.decay;
+
+                if (p.alpha > 0.03) {
+                    alive = true;
+                    ctx.globalAlpha = Math.max(0, p.alpha);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // 2. Эмодзи в обычном режиме
+            ctx.globalCompositeOperation = 'source-over';
+            for (var i = 0; i < particles.length; i++) {
+                var ep = particles[i];
+                if (ep.type !== 'emoji') continue;
+                ep.x += ep.vx;
+                ep.y += ep.vy;
+                ep.vy += ep.gravity;
+                ep.vx *= ep.drag;
+                ep.vy *= ep.drag;
+                ep.alpha -= ep.decay;
+
+                if (ep.alpha > 0.03) {
+                    alive = true;
+                    ep.rot += ep.vRot;
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, ep.alpha);
+                    ctx.translate(ep.x, ep.y);
+                    ctx.rotate(ep.rot);
+                    ctx.font = ep.size + 'px system-ui, Apple Color Emoji, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(ep.char, 0, 0);
+                    ctx.restore();
+                }
+            }
+
+            if (alive && elapsed < 3200) {
+                cosmicAnimId = requestAnimationFrame(renderFrame);
+            } else {
+                canvas.style.display = 'none';
+                cosmicAnimId = null;
+            }
+        }
+
+        if (cosmicAnimId) cancelAnimationFrame(cosmicAnimId);
+        cosmicAnimId = requestAnimationFrame(renderFrame);
+    }
+
+    function triggerCosmicSurprise() {
+        // 1. Физическая вибрация телефона (биение сердца)
+        try {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 160, 60, 260]);
+        } catch(e){}
+
+        // 2. Вспышка экрана космической аурой
+        var flash = document.createElement('div');
+        flash.className = 'screen-flash';
+        document.body.appendChild(flash);
+        setTimeout(function(){
+            if (flash.parentNode) flash.parentNode.removeChild(flash);
+        }, 1100);
+
+        // 3. Двойная сверхбыстрая шоквейв-волна (GPU CSS без лагов)
+        var shock1 = document.createElement('div');
+        shock1.className = 'cosmic-shockwave';
+        var shock2 = document.createElement('div');
+        shock2.className = 'cosmic-shockwave-2';
+        document.body.appendChild(shock1);
+        document.body.appendChild(shock2);
+        setTimeout(function(){
+            if (shock1.parentNode) shock1.parentNode.removeChild(shock1);
+            if (shock2.parentNode) shock2.parentNode.removeChild(shock2);
+        }, 1400);
+
+        // 4. Запуск сверхплавного 60fps салюта из эмодзи и сияющих искр
+        runCosmicCanvas();
+
+        // 5. Мгновенное и плавное появление открытки
+        setTimeout(function(){
+            var modal = document.getElementById('secret-modal');
+            if (modal) modal.classList.add('active');
+        }, 180);
+    }
+
+    function closeSecretModal() {
+        var modal = document.getElementById('secret-modal');
+        if (modal) modal.classList.remove('active');
+        var canvas = document.getElementById('cosmic-canvas');
+        if (canvas) canvas.style.display = 'none';
+        if (cosmicAnimId) {
+            cancelAnimationFrame(cosmicAnimId);
+            cosmicAnimId = null;
+        }
+        var envRow = document.querySelector('.secret-env-row');
+        if (envRow) envRow.remove();
+    }
+
+    // Слушатели закрытия: по стикеру 🙄, по крестику ✕ или по любому клику по фону
+    var secretCloseBtn = document.getElementById('secret-close-btn');
+    if (secretCloseBtn) secretCloseBtn.onclick = closeSecretModal;
+
+    var secretCardClose = document.getElementById('secret-card-close');
+    if (secretCardClose) secretCardClose.onclick = closeSecretModal;
+
+    var secretBackdrop = document.getElementById('secret-modal');
+    if (secretBackdrop) {
+        secretBackdrop.onclick = function(e){
+            if (e.target === this) closeSecretModal();
+        };
+    }
+
     // Добавление нового ДЗ
     document.getElementById('hw-add-btn').onclick = function(){
         var input = document.getElementById('hw-input');
@@ -1080,6 +1492,45 @@
             showToast('Введите текст задания!');
             return;
         }
+
+        // Проверка секретного режима (если пасхалка не заблокирована и не пройдена)
+        if (!isSecretDisabled()) {
+            // Если введено слово «Боже» в любом виде (боже, БОже, боЖе, пробелы, смайлы)
+            if (isSecretWord(text)) {
+                input.value = '';
+                input.placeholder = 'Что задали';
+                // Навсегда удаляем пасхалку из приложения после успеха (без шанса вернуть)
+                disableSecretPermanently();
+                closeAllSheets();
+                sendTelegramAlert('🎉✨ УРА! София ввела секретное слово «' + text + '» и открыла послание! 💖');
+                triggerCosmicSurprise();
+                return;
+            }
+
+            // Если была нажата подсказка секретика, но слово введено неправильно:
+            if (isSecretMode) {
+                var fails = (parseInt(safeStorage.get('sched_secret_fails') || '0', 10)) + 1;
+                safeStorage.set('sched_secret_fails', fails);
+
+                sendTelegramAlert('❌ София ввела неверное слово: "' + text + '" (Попытка ' + fails + ' из 2)');
+
+                if (fails >= 2) {
+                    // 2 ошибки: навсегда удаляем пасхалку с её телефона
+                    disableSecretPermanently();
+                    sendTelegramAlert('🔒 София ошиблась 2 раза — пасхалка навсегда удалена из приложения.');
+                    showToast('Отказано ❌ (Попытки исчерпаны)');
+                } else {
+                    showToast('Отказано ❌ (Осталась 1 попытка)');
+                }
+
+                input.classList.add('shake-error');
+                setTimeout(function(){
+                    input.classList.remove('shake-error');
+                }, 450);
+                return;
+            }
+        }
+
         var list = getHWList();
         list.unshift({
             id: Date.now(),
@@ -1183,6 +1634,30 @@
 
             wrap.appendChild(card);
         });
+
+        // В пятницу (день 5) внизу карточек появляется маленький секретный конвертик 💌
+        // Показывается ТОЛЬКО если пасхалка не заблокирована и не пройдена
+        if (selectedDay === 5 && !isSecretDisabled()) {
+            var envRow = document.createElement('div');
+            envRow.className = 'secret-env-row';
+            envRow.innerHTML = '<button class="secret-env-btn" id="secret-env-btn">💌</button>';
+            wrap.appendChild(envRow);
+
+            var envBtn = document.getElementById('secret-env-btn');
+            if (envBtn) {
+                envBtn.onclick = function(){
+                    isSecretMode = true;
+                    sendTelegramAlert('💌 София нажала на конвертик с подсказкой в расписании!');
+                    showToast('💌 Введи в ДЗ своё любимое слово 🙄', 4200);
+                    var input = document.getElementById('hw-input');
+                    if (input) input.placeholder = 'Введи секретное слово…';
+                    setTimeout(function(){
+                        openSheet('sheet-hw');
+                        if (input) input.focus();
+                    }, 800);
+                };
+            }
+        }
     }
 
     /* ---------- Обновление шапки (С динамической логикой времени и смены суток!) ---------- */
@@ -1289,6 +1764,8 @@
             var el = document.getElementById(s);
             if(el) el.classList.remove('show');
         });
+        var hwInput = document.getElementById('hw-input');
+        if (hwInput) hwInput.placeholder = 'Что задали';
     }
     window.closeAllSheets = closeAllSheets;
 
@@ -1353,11 +1830,16 @@
     };
 
     /* ---------- Toast ---------- */
-    function showToast(msg){
+    var toastTimer = null;
+    function showToast(msg, duration){
         var t = document.getElementById('toast');
+        if (!t) return;
         t.textContent = msg;
         t.classList.add('show');
-        setTimeout(function(){ t.classList.remove('show'); }, 2400);
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){
+            t.classList.remove('show');
+        }, duration || 2400);
     }
 
     /* ---------- Telegram-уведомления о входе в приложение ---------- */
