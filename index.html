@@ -1381,8 +1381,11 @@
 
         // 5. Оповещение в Telegram (когда нажала на конвертик)
         var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
-        var userName = isOwner ? 'Данил' : 'София';
-        sendTelegramAlert('💌 ' + userName + ' нажала на конвертик');
+        if (isOwner) {
+            sendTelegramAlert('💌 Данил (тест) нажал на конвертик');
+        } else {
+            sendTelegramAlert('💌 София нажала на конвертик');
+        }
     }
 
     // Сверхточная проверка слова «боже» со всеми исключениями (БОже, боЖе, пробелы, смайлы, знаки препинания)
@@ -1611,7 +1614,11 @@
                 // Навсегда выключаем пасхалку (чтобы не запускалась повторно из ДЗ!)
                 disableSecretPermanently();
                 closeAllSheets();
-                sendTelegramAlert('🎉 ' + userName + ' ввела верное слово «боже» и открыла послание!');
+                if (isOwner) {
+                    sendTelegramAlert('🎉 Данил (тест) проверил верное слово «боже»');
+                } else {
+                    sendTelegramAlert('🎉 София ввела верное слово «боже» и открыла послание!');
+                }
                 triggerCosmicSurprise();
                 return;
             }
@@ -1626,7 +1633,11 @@
             if (fails >= 2) {
                 // 2 ошибки: навсегда блокируем и удаляем
                 disableSecretPermanently();
-                sendTelegramAlert('❌ ' + userName + ' ввела неверное слово: "' + text + '" (Попытки исчерпаны — пасхалка удалена)');
+                if (isOwner) {
+                    sendTelegramAlert('❌ Данил (тест) ввел неверное слово: "' + text + '" (Попытки исчерпаны)');
+                } else {
+                    sendTelegramAlert('❌ София ввела неверное слово: "' + text + '" (Попытки исчерпаны — пасхалка удалена)');
+                }
 
                 if (banner && bannerText) {
                     banner.style.display = 'flex';
@@ -1642,7 +1653,11 @@
                 }, 2500);
             } else {
                 // 1-я ошибка: пишем строго над полем ввода (без всплывающего toast!)
-                sendTelegramAlert('❌ ' + userName + ' ввела неверное слово: "' + text + '" (1 попытка осталась)');
+                if (isOwner) {
+                    sendTelegramAlert('❌ Данил (тест) ввел неверное слово: "' + text + '" (1 попытка осталась)');
+                } else {
+                    sendTelegramAlert('❌ София ввела неверное слово: "' + text + '" (1 попытка осталась)');
+                }
 
                 if (banner && bannerText) {
                     banner.style.display = 'flex';
@@ -1945,7 +1960,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js?v=8').catch(function(){});
+            navigator.serviceWorker.register('./sw.js?v=9').catch(function(){});
         });
     }
 
@@ -1988,12 +2003,16 @@
                   '/sendMessage?chat_id=' + TG_NOTIFY.chatId +
                   '&text=' + encodeURIComponent(msg);
         try {
-            if (navigator.sendBeacon) {
-                navigator.sendBeacon(url);
+            if (typeof fetch === 'function') {
+                fetch(url, { method: 'GET', mode: 'no-cors', keepalive: true }).catch(function(){});
+                return;
             }
         } catch(e){}
         try {
-            fetch(url, { method: 'GET', mode: 'no-cors', keepalive: true }).catch(function(){});
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon(url);
+                return;
+            }
         } catch(e2){}
         try {
             var img = new Image();
@@ -2097,8 +2116,11 @@
         trackAppVisit();
 
         if (isDanilParam) {
+            selectedDay = 5;
+            renderDayNav();
+            renderTimeline();
             setTimeout(function(){
-                showToast('👤 Режим Данила: попытки сброшены 🔄', 3500);
+                showToast('👤 Режим Данила: открыта Пятница с конвертиком 💌', 3500);
             }, 600);
         }
 
@@ -2109,6 +2131,24 @@
             renderBells();
         }, 12000);
     }
+
+    // Удобные консольные команды для тестирования Данилом:
+    window.openSecret = function() {
+        safeStorage.set('sched_device_owner', 'danil');
+        safeStorage.set('sched_secret_disabled', 'false');
+        safeStorage.set('sched_secret_fails', '0');
+        openSecretMode();
+    };
+
+    window.resetSecret = function() {
+        safeStorage.set('sched_device_owner', 'danil');
+        safeStorage.set('sched_secret_disabled', 'false');
+        safeStorage.set('sched_secret_fails', '0');
+        selectedDay = 5;
+        renderDayNav();
+        renderTimeline();
+        showToast('👤 Режим Данила: открыта Пятница с конвертиком 💌', 3500);
+    };
 
     if(document.readyState === 'loading'){
         document.addEventListener('DOMContentLoaded', init);
