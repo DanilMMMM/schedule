@@ -964,10 +964,7 @@
 <div class="sheet" id="sheet-hw" role="dialog" aria-modal="true" aria-label="Домашнее задание">
     <div class="sheet-handle"></div>
     <div class="sheet-header-row">
-        <div class="sheet-title" style="display:flex;align-items:center;gap:8px;">
-            <span>Домашние задания 📝</span>
-            <button type="button" class="hw-sheet-secret-btn" id="hw-sheet-secret-btn" title="Секретное слово" aria-label="Секретное слово" style="display:none;border:none;background:var(--pill);border:1.5px solid var(--accent-solid);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:750;color:var(--accent-solid);cursor:pointer;animation:secretBounce 2.4s infinite ease-in-out;">💌 Секретик</button>
-        </div>
+        <div class="sheet-title">Домашние задания 📝</div>
         <button class="sheet-close" onclick="closeAllSheets()" aria-label="Закрыть">✕</button>
     </div>
 
@@ -1327,15 +1324,6 @@
             container.appendChild(div);
         });
 
-        // Кнопка секрета в шапке шторки ДЗ
-        var secretBtn = document.getElementById('hw-sheet-secret-btn');
-        if (secretBtn) {
-            secretBtn.style.display = !isSecretDisabled() ? 'inline-flex' : 'none';
-            secretBtn.onclick = function(e){
-                if (e) e.stopPropagation();
-                openSecretMode();
-            };
-        }
     }
 
     /* ---------- КОСМИЧЕСКИЙ СЮРПРИЗ ДЛЯ СОФИИ ---------- */
@@ -1354,14 +1342,13 @@
         isSecretMode = false;
         var envRow = document.querySelector('.secret-env-row');
         if (envRow) envRow.remove();
-        var secBtn = document.getElementById('hw-sheet-secret-btn');
-        if (secBtn) secBtn.style.display = 'none';
+        var banner = document.getElementById('sheet-hw-secret-banner');
+        if (banner) banner.style.display = 'none';
     }
 
     // Открытие секретного режима ввода слова
     function openSecretMode() {
         if (isSecretDisabled()) {
-            showToast('Попытки исчерпаны 🔒 (0 из 2)', 3000);
             return;
         }
 
@@ -1369,21 +1356,13 @@
         renderHWList();
         openSheet('sheet-hw', true);
 
-        var fails = parseInt(safeStorage.get('sched_secret_fails') || '0', 10);
-        var attemptsLeft = Math.max(0, 2 - fails);
+        // 1. Показываем всплывающее Dynamic Island Toast сверху экрана
+        showToast('💌 Введи в ДЗ своё любимое слово 🙄', 4200);
 
-        // 1. Показываем Dynamic Island Toast сверху экрана
-        showToast('💌 Введи в ДЗ своё любимое слово 🙄', 4500);
-
-        // 2. Показываем баннер внутри шторки над полем ввода
+        // 2. Над полем ввода плашку не показываем (она появится только если будет «Отказано»)
         var banner = document.getElementById('sheet-hw-secret-banner');
-        var bannerText = document.getElementById('sh-banner-text');
         if (banner) {
-            banner.style.display = 'flex';
-            banner.classList.remove('danger');
-            if (bannerText) {
-                bannerText.textContent = '💌 Введи в ДЗ своё любимое слово 🙄';
-            }
+            banner.style.display = 'none';
         }
 
         // 3. Настраиваем поле ввода
@@ -1400,10 +1379,10 @@
         var addBtn = document.getElementById('hw-add-btn');
         if (addBtn) addBtn.innerHTML = '<span>Проверить</span>';
 
-        // 5. Оповещение в Telegram
+        // 5. Оповещение в Telegram (когда нажала на конвертик)
         var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
         var userName = isOwner ? 'Данил' : 'София';
-        sendTelegramAlert('💌 ' + userName + ' нажал(а) на конвертик с подсказкой в расписании!');
+        sendTelegramAlert('💌 ' + userName + ' нажала на конвертик');
     }
 
     // Сверхточная проверка слова «боже» со всеми исключениями (БОже, боЖе, пробелы, смайлы, знаки препинания)
@@ -1615,51 +1594,29 @@
             return;
         }
 
-        // Секретный сброс для Данила прямо из приложения: напиши «данил» или «reset» в ДЗ
-        var cleanInput = text.toLowerCase();
-        if (cleanInput === 'reset' || cleanInput === 'данил' || cleanInput === 'danil' || cleanInput === '/reset' || cleanInput === 'сброс') {
-            safeStorage.set('sched_device_owner', 'danil');
-            safeStorage.set('sched_secret_disabled', 'false');
-            safeStorage.set('sched_secret_fails', '0');
-            input.value = '';
-            input.placeholder = 'Что задали';
-            showToast('👤 Режим Данила: попытки сброшены 🔄', 3500);
-            renderTimeline();
-            var banner = document.getElementById('sheet-hw-secret-banner');
-            if (banner && isSecretMode) {
-                banner.classList.remove('danger');
-                var bannerText = document.getElementById('sh-banner-text');
-                if (bannerText) {
-                    bannerText.textContent = '💌 Введи в ДЗ своё любимое слово 🙄';
-                }
-            }
-            return;
-        }
-
         var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
         var userName = isOwner ? 'Данил' : 'София';
 
-        // Проверяем секретное слово: если нажат конвертик ИЛИ введено слово «боже»
-        if (isSecretWord(text)) {
-            input.value = '';
-            input.placeholder = 'Что задали';
-            var banner = document.getElementById('sheet-hw-secret-banner');
-            if (banner) banner.style.display = 'none';
-            var addBtn = document.getElementById('hw-add-btn');
-            if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
+        // СЕКРЕТНЫЙ РЕЖИМ (работает ТОЛЬКО при открытии через конвертик 💌 и пока не завершён):
+        if (isSecretMode && !isSecretDisabled()) {
+            // А. Правильное слово «боже»:
+            if (isSecretWord(text)) {
+                input.value = '';
+                input.placeholder = 'Что задали';
+                var banner = document.getElementById('sheet-hw-secret-banner');
+                if (banner) banner.style.display = 'none';
+                var addBtn = document.getElementById('hw-add-btn');
+                if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
 
-            // Если это София — навсегда удаляем пасхалку из приложения после успеха
-            if (!isOwner) {
+                // Навсегда выключаем пасхалку (чтобы не запускалась повторно из ДЗ!)
                 disableSecretPermanently();
+                closeAllSheets();
+                sendTelegramAlert('🎉 ' + userName + ' ввела верное слово «боже» и открыла послание!');
+                triggerCosmicSurprise();
+                return;
             }
-            closeAllSheets();
-            sendTelegramAlert('🎉✨ УРА! ' + userName + ' ввел(а) верное секретное слово «' + text + '» и открыл(а) послание! 💖');
-            triggerCosmicSurprise();
-            return;
-        }
 
-        // Если активен секретный режим (нажат конвертик с подсказкой), но введено другое слово:
-        if (isSecretMode) {
+            // Б. Неправильное слово:
             var fails = (parseInt(safeStorage.get('sched_secret_fails') || '0', 10)) + 1;
             safeStorage.set('sched_secret_fails', fails);
 
@@ -1667,17 +1624,13 @@
             var bannerText = document.getElementById('sh-banner-text');
 
             if (fails >= 2) {
-                // 2 ошибки: навсегда удаляем пасхалку с телефона Софии
-                if (!isOwner) {
-                    disableSecretPermanently();
-                } else {
-                    safeStorage.set('sched_secret_disabled', 'true');
-                }
-                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '"\n🔒 Попытки исчерпаны — пасхалка навсегда удалена из приложения.');
-                showToast('Отказано ❌ (Попытки исчерпаны)', 4500);
+                // 2 ошибки: навсегда блокируем и удаляем
+                disableSecretPermanently();
+                sendTelegramAlert('❌ ' + userName + ' ввела неверное слово: "' + text + '" (Попытки исчерпаны — пасхалка удалена)');
 
                 if (banner && bannerText) {
-                    banner.classList.add('danger');
+                    banner.style.display = 'flex';
+                    banner.className = 'sheet-hw-secret-banner danger';
                     bannerText.textContent = 'Отказано ❌ (Попытки исчерпаны)';
                 }
                 setTimeout(function(){
@@ -1686,17 +1639,16 @@
                     var addBtn = document.getElementById('hw-add-btn');
                     if (addBtn) addBtn.innerHTML = '<span>➕ Добавить задание</span>';
                     isSecretMode = false;
-                    var envRow = document.querySelector('.secret-env-row');
-                    if (envRow && !isOwner) envRow.remove();
                 }, 2500);
             } else {
-                sendTelegramAlert('❌ ' + userName + ' ввел(а) неверное слово: "' + text + '" (1 попытка осталась)');
-                showToast('Отказано ❌ 1 попытка осталась', 4500);
+                // 1-я ошибка: пишем строго над полем ввода (без всплывающего toast!)
+                sendTelegramAlert('❌ ' + userName + ' ввела неверное слово: "' + text + '" (1 попытка осталась)');
+
                 if (banner && bannerText) {
-                    banner.classList.add('danger');
+                    banner.style.display = 'flex';
+                    banner.className = 'sheet-hw-secret-banner danger';
                     bannerText.textContent = 'Отказано ❌ 1 попытка осталась';
                 }
-                input.placeholder = 'Введи секретное слово…';
             }
 
             input.value = '';
@@ -1993,7 +1945,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js?v=7').catch(function(){});
+            navigator.serviceWorker.register('./sw.js?v=8').catch(function(){});
         });
     }
 
