@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Клуб Романтики: Спастись от 3-го десятка</title>
+    <title>Арканы Судьбы: София • 23.10.2006</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #FFD700;
-            --gold-light: #FFF176;
+            --gold-light: #FFF275;
+            --gold-dark: #C59B27;
             --gold-glow: rgba(255, 215, 0, 0.45);
-            --pink: #FF2D78;
-            --pink-glow: rgba(255, 45, 120, 0.5);
-            --purple-bg: #090314;
-            --f-title: 'Cinzel', serif;
+            --indigo-deep: #080318;
+            --indigo-card: #110729;
+            --f-cinzel: 'Cinzel', serif;
+            --f-dec: 'Cinzel Decorative', serif;
             --f-body: 'Montserrat', sans-serif;
-            --f-story: 'Playfair Display', serif;
+            --f-serif: 'Playfair Display', serif;
             --f-hand: 'Pacifico', cursive;
         }
 
@@ -31,850 +32,495 @@
 
         html, body {
             width: 100%; height: 100%;
-            overflow: hidden;
-            background-color: #06020c;
+            overflow-x: hidden;
+            background-color: var(--indigo-deep);
             font-family: var(--f-body);
             color: #ffffff;
         }
 
-        .rc-app {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            overflow: hidden;
-            background-color: var(--purple-bg);
-            box-shadow: 0 0 60px rgba(0,0,0,0.95);
-        }
-
-        /* ---------- ВЕРХНИЙ БАР ВАЛЮТЫ КЛУБА РОМАНТИКИ ---------- */
-        .rc-topbar {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            z-index: 50;
-            padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(180deg, rgba(6, 2, 12, 0.94) 0%, rgba(6, 2, 12, 0.4) 75%, transparent 100%);
-            pointer-events: auto;
-        }
-
-        .rc-currencies {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .rc-pill {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(24, 10, 42, 0.85);
-            border: 1.5px solid var(--gold-glow);
-            border-radius: 20px;
-            padding: 4px 10px 4px 6px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
-            font-size: 13.5px;
-            font-weight: 800;
-            color: #fff;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
-        .rc-pill:active { transform: scale(0.95); }
-
-        .rc-pill-plus {
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), #FF8F00);
-            color: #000;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 900;
-            margin-left: 2px;
-        }
-
-        .rc-top-tools {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .rc-tool-btn {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: rgba(24, 10, 42, 0.85);
-            border: 1.5px solid var(--gold-glow);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
-        .rc-tool-btn:active { transform: scale(0.92); }
-
-        /* ---------- ЭКРАН 1: ОБЛОЖКА ИСТОРИИ ---------- */
-        .rc-screen {
-            position: absolute;
+        /* Фоновое звездное небо и созвездие Весов */
+        .sky-canvas {
+            position: fixed;
             inset: 0;
             width: 100%; height: 100%;
-            transition: opacity 0.5s ease;
-        }
-
-        .screen-cover {
-            z-index: 40;
-            background: #090314 url('assets/cover.jpg') center center / cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .screen-cover::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(6,2,12,0.4) 0%, rgba(6,2,12,0.2) 40%, rgba(6,2,12,0.92) 80%, #06020c 100%);
             z-index: 1;
+            pointer-events: none;
         }
 
-        .cover-content {
-            position: relative;
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
             z-index: 2;
-            padding: 24px 24px calc(36px + env(safe-area-inset-bottom, 0px));
+            background: radial-gradient(circle at 50% 30%, rgba(138, 43, 226, 0.22) 0%, rgba(255, 45, 120, 0.12) 40%, transparent 75%),
+                        radial-gradient(circle at 50% 85%, rgba(255, 215, 0, 0.14) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .app-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(30px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
-            gap: 14px;
-        }
-
-        .cover-badge {
-            align-self: flex-start;
-            background: linear-gradient(90deg, #FF2D78, #9C27B0);
-            border: 1px solid rgba(255,255,255,0.4);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255, 45, 120, 0.5);
-            animation: pulseGlow 2.5s infinite;
-        }
-
-        .cover-title {
-            font-family: var(--f-title);
-            font-size: 2.2rem;
-            font-weight: 900;
-            line-height: 1.1;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 30px rgba(255, 45, 120, 0.4);
-        }
-
-        .cover-title span {
-            background: linear-gradient(90deg, #FFF, var(--gold-light), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .cover-desc {
-            font-size: 14px;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.88);
-            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-        }
-
-        .cover-meta {
-            display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 12.5px;
-            font-weight: 700;
+        }
+
+        /* Верхняя плашка зодиака */
+        .zodiac-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(138, 43, 226, 0.3) 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 30px;
+            padding: 5px 16px;
+            font-family: var(--f-cinzel);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
             color: var(--gold-light);
-            margin-bottom: 6px;
-        }
-
-        .rc-start-btn {
-            position: relative;
-            width: 100%;
-            padding: 17px 24px;
-            background: linear-gradient(135deg, #FF2D78 0%, #D81B60 40%, #8E24AA 100%);
-            border: 2px solid rgba(255, 215, 0, 0.7);
-            border-radius: 28px;
-            color: #fff;
-            font-family: var(--f-title);
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
             text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 45, 120, 0.55), 0 0 20px rgba(255, 215, 0, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            overflow: hidden;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .rc-start-btn:active { transform: scale(0.96); }
-
-        .rc-start-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -60%;
-            width: 50%; height: 200%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transform: rotate(25deg);
-            animation: lightShine 3.2s infinite;
-        }
-
-        @keyframes lightShine {
-            0% { left: -60%; }
-            35%, 100% { left: 140%; }
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            margin-bottom: 12px;
+            animation: pulseGlow 3s infinite alternate;
         }
 
         @keyframes pulseGlow {
-            0%, 100% { opacity: 0.85; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
+            0% { box-shadow: 0 0 14px rgba(255, 215, 0, 0.25); transform: scale(1); }
+            100% { box-shadow: 0 0 26px rgba(255, 215, 0, 0.55); transform: scale(1.02); }
         }
 
-        /* ---------- ЭКРАН 2: ГЕЙМПЛЕЙ НОВЕЛЛЫ ---------- */
-        .screen-game {
-            z-index: 30;
+        .main-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .main-title {
+            font-family: var(--f-dec);
+            font-size: 1.95rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            line-height: 1.15;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFF59D 45%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            margin-bottom: 6px;
+        }
+
+        .main-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.82);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .milestone-pill {
+            display: inline-block;
+            margin-top: 8px;
+            background: rgba(255, 45, 120, 0.2);
+            border: 1px solid rgba(255, 45, 120, 0.5);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #FF80AB;
+        }
+
+        /* ---------- СТОЛ ТАРО (3 КАРТЫ С 3D ПЕРЕВОРОТОМ) ---------- */
+        .tarot-spread {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .tarot-slot {
+            width: 100%;
+            perspective: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tarot-card {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 480px;
+            transform-style: preserve-3d;
+            transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: pointer;
+            border-radius: 22px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(255, 215, 0, 0.15);
+        }
+
+        .tarot-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            border-radius: 22px;
+            overflow: hidden;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border: 2px solid var(--gold);
+        }
+
+        /* Рубашка карты */
+        .card-back {
+            background: #090318 url('assets/tarot_back.jpg') center center / cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
+        }
+
+        .card-back-hint {
+            background: linear-gradient(135deg, rgba(8, 3, 20, 0.92) 0%, rgba(20, 8, 40, 0.95) 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 18px;
+            padding: 10px 14px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.8), 0 0 15px var(--gold-glow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .card-back-number {
+            font-family: var(--f-cinzel);
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .card-back-action {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Лицевая сторона карты */
+        .card-front {
+            transform: rotateY(180deg);
+            background-color: var(--indigo-card);
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
         }
 
-        .game-bg {
+        .card-front-details {
+            background: linear-gradient(180deg, transparent 0%, rgba(6, 2, 14, 0.85) 25%, rgba(6, 2, 14, 0.98) 100%);
+            padding: 20px 18px 18px;
+        }
+
+        .card-roman-tag {
+            font-family: var(--f-cinzel);
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .card-front-title {
+            font-family: var(--f-serif);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px var(--gold-glow);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .card-front-desc {
+            font-size: 13px;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        /* ---------- КАРТА 3: ИНТЕРАКТИВНЫЙ СКРЕТЧ-СЛОЙ ---------- */
+        .scratch-card-front {
+            position: relative;
+            background: #100624;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Подложка под скретч-слоем (Письмо Данила) */
+        .secret-letter-underlay {
             position: absolute;
             inset: 0;
-            background-size: cover;
-            background-position: center;
-            transition: opacity 0.8s ease, transform 8s ease;
-            transform: scale(1.02);
+            padding: 20px 18px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, rgba(32, 12, 60, 0.98) 0%, rgba(14, 4, 30, 0.99) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
             z-index: 1;
         }
 
-        .game-vignette {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 35%, rgba(6, 2, 14, 0.55) 85%, rgba(6, 2, 14, 0.9) 100%),
-                        linear-gradient(180deg, rgba(6,2,14,0.4) 0%, transparent 25%, transparent 60%, rgba(6,2,14,0.95) 100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .particles-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        /* ---------- СПРАЙТЫ ПЕРСОНАЖЕЙ В ПОЛНЫЙ РОСТ ---------- */
-        .rc-stage {
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-            pointer-events: none;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 150px;
-        }
-
-        .rc-actor {
-            position: absolute;
-            bottom: 120px;
-            width: 82%;
-            max-width: 360px;
-            height: 70vh;
-            max-height: 520px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease, filter 0.45s ease;
-        }
-
-        .rc-actor-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: bottom center;
-            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.8));
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-        }
-
-        .actor-sofa { left: 50%; transform: translateX(-50%); }
-        .actor-danil { left: 50%; transform: translateX(-50%); }
-
-        .rc-actor.active {
-            opacity: 1;
-            filter: brightness(1.04) drop-shadow(0 0 25px rgba(255, 215, 0, 0.35));
-            transform: translateX(-50%) translateY(0) scale(1);
-            animation: spriteBreathing 3.6s ease-in-out infinite alternate;
-        }
-
-        .rc-actor.dimmed {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(-50%) translateY(35px) scale(0.94);
-        }
-
-        @keyframes spriteBreathing {
-            0% { transform: translateX(-50%) translateY(0) scale(1); }
-            100% { transform: translateX(-50%) translateY(-5px) scale(1.01); }
-        }
-
-        /* ---------- ДИАЛОГОВОЕ ОКНО ---------- */
-        .rc-dialogue-wrap {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            z-index: 25;
-            padding: 0 14px calc(18px + env(safe-area-inset-bottom, 0px));
-            cursor: pointer;
-        }
-
-        .rc-dialogue-box {
-            position: relative;
-            background: linear-gradient(135deg, rgba(28, 12, 54, 0.95) 0%, rgba(16, 7, 34, 0.97) 60%, rgba(8, 3, 18, 0.98) 100%);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid var(--gold-glow);
-            border-radius: 26px;
-            padding: 32px 20px 18px 20px;
-            min-height: 140px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.2);
-        }
-
-        .rc-speaker-banner {
-            position: absolute;
-            top: -18px;
-            left: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #FF2D78 0%, #8E24AA 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 20px;
-            padding: 5px 16px 5px 6px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 215, 0, 0.4);
-            font-family: var(--f-title);
-            font-size: 13.5px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .rc-speaker-avatar {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--gold);
-        }
-
-        .rc-dialogue-text {
-            font-size: 15.5px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .rc-tap-next {
-            position: absolute;
-            bottom: 12px;
-            right: 18px;
-            font-size: 14px;
-            color: var(--gold);
-            animation: bounceNext 1.3s infinite ease-in-out;
-        }
-
-        @keyframes bounceNext {
-            0%, 100% { transform: translateY(0); opacity: 0.6; }
-            50% { transform: translateY(4px); opacity: 1; }
-        }
-
-        /* ---------- ВЫБОРЫ ДЕЙСТВИЙ (CHOICES) ---------- */
-        .rc-choices-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 35;
-            background: rgba(6, 2, 14, 0.78);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease;
-        }
-
-        .rc-choices-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .rc-choice-header {
-            font-family: var(--f-title);
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--gold-light);
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.9);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .rc-choice-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 380px;
-        }
-
-        .rc-choice-item {
-            width: 100%;
-            padding: 14px 18px;
-            background: linear-gradient(135deg, rgba(42, 18, 76, 0.95) 0%, rgba(20, 8, 42, 0.98) 100%);
-            border: 1.5px solid var(--gold-glow);
-            border-radius: 20px;
-            color: #ffffff;
-            font-family: var(--f-body);
-            font-size: 14.5px;
-            font-weight: 700;
-            line-height: 1.4;
-            text-align: left;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
-        }
-        .rc-choice-item:active {
-            transform: scale(0.97);
-            border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(74, 20, 108, 0.95) 0%, rgba(44, 8, 70, 0.98) 100%);
-        }
-
-        .rc-choice-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255, 45, 120, 0.25);
-            border: 1px solid rgba(255, 45, 120, 0.6);
-            border-radius: 12px;
-            padding: 3px 8px;
-            font-size: 12px;
-            font-weight: 800;
-            color: #FF80AB;
-            white-space: nowrap;
-        }
-
-        .rc-choice-tag.free {
-            background: rgba(100, 255, 100, 0.15);
-            border-color: rgba(100, 255, 100, 0.4);
-            color: #B9F6CA;
-        }
-
-        /* ---------- МЕМНЫЕ ПЛАШКИ СТАТУСОВ КР ---------- */
-        .rc-toast-banner {
-            position: absolute;
-            top: 75px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-35px);
-            z-index: 60;
-            background: linear-gradient(135deg, rgba(255, 45, 120, 0.96) 0%, rgba(142, 36, 170, 0.96) 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 25px;
-            padding: 10px 22px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.65), 0 0 20px rgba(255, 215, 0, 0.4);
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
-            white-space: nowrap;
-        }
-
-        .rc-toast-banner.active {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .rc-toast-title {
-            font-family: var(--f-title);
+        .letter-content-text {
             font-size: 13px;
-            font-weight: 900;
-            color: var(--gold-light);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .rc-toast-subtitle {
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            margin-top: 2px;
-        }
-
-        /* ---------- КАТСЦЕНА: ИСКРЕННЕЕ ПИСЬМО ДАНИЛА ---------- */
-        .rc-cg-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 70;
-            background: rgba(4, 1, 10, 0.95);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease;
-        }
-
-        .rc-cg-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .rc-letter-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            max-height: 85vh;
-            overflow-y: auto;
-            background: linear-gradient(135deg, rgba(38, 16, 72, 0.97) 0%, rgba(18, 6, 40, 0.98) 100%);
-            border: 2px solid var(--gold);
-            border-radius: 30px;
-            padding: 28px 24px 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 35px var(--pink-glow), inset 0 0 25px rgba(255, 215, 0, 0.15);
-            text-align: center;
-            transform: scale(0.92);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .rc-cg-overlay.open .rc-letter-wrapper {
-            transform: scale(1);
-        }
-
-        .rc-cg-tag {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.18);
-            border: 1px solid var(--gold);
-            border-radius: 14px;
-            padding: 3px 14px;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--gold-light);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 12px;
-        }
-
-        .rc-cg-heading {
-            font-family: var(--f-story);
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 16px;
-            text-shadow: 0 0 15px rgba(255, 45, 120, 0.6);
-        }
-
-        .rc-letter-body {
-            text-align: left;
-            font-size: 14.5px;
-            line-height: 1.65;
+            line-height: 1.6;
             color: rgba(255, 255, 255, 0.95);
-            background: rgba(0, 0, 0, 0.32);
-            border-radius: 20px;
-            padding: 18px 20px;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            margin-bottom: 20px;
         }
 
-        .rc-letter-body p { margin-bottom: 12px; }
-        .rc-letter-body p:last-child { margin-bottom: 0; }
-
-        .rc-letter-signature {
-            display: block;
-            text-align: right;
-            font-family: var(--f-hand);
-            font-size: 1.25rem;
-            color: var(--gold-light);
-            margin-top: 14px;
-            text-shadow: 0 0 12px rgba(255, 45, 120, 0.7);
-        }
-
-        .rc-cg-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #FF2D78 0%, #8E24AA 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 22px;
-            color: #fff;
-            font-family: var(--f-title);
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(255, 45, 120, 0.5);
-        }
-
-        /* ---------- ФИНАЛ: TELEGRAM СЮРПРИЗ ---------- */
-        .rc-tg-modal {
-            position: absolute;
-            inset: 0;
-            z-index: 80;
-            background: rgba(4, 1, 10, 0.96);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-
-        .rc-tg-modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .rc-tg-box {
-            width: 100%;
-            max-width: 380px;
-            background: linear-gradient(135deg, rgba(36, 16, 68, 0.98) 0%, rgba(14, 6, 32, 0.98) 100%);
-            border: 2px solid var(--gold);
-            border-radius: 32px;
-            padding: 32px 24px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 35px var(--pink-glow);
-            animation: zoomBox 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes zoomBox {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .rc-tg-logo {
-            font-size: 64px;
-            margin-bottom: 12px;
-            display: inline-block;
-            filter: drop-shadow(0 6px 20px var(--pink-glow));
-            animation: floatLogo 2.4s infinite ease-in-out;
-        }
-
-        @keyframes floatLogo {
-            0%, 100% { transform: rotate(-5deg) scale(1); }
-            50% { transform: rotate(5deg) scale(1.08); }
-        }
-
-        .rc-tg-head {
-            font-family: var(--f-title);
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #fff;
+        .letter-content-text p {
             margin-bottom: 10px;
         }
 
-        .rc-tg-text {
-            font-size: 15px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.88);
-            margin-bottom: 24px;
+        .letter-sign-hand {
+            font-family: var(--f-hand);
+            font-size: 1.25rem;
+            color: var(--gold-light);
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            text-shadow: 0 0 12px var(--gold-glow);
         }
 
-        .rc-tg-action {
+        /* Кнопка в Telegram внизу письма */
+        .tg-reveal-btn {
+            margin-top: 12px;
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #0088cc 0%, #005588 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-family: var(--f-cinzel);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.5), 0 0 15px var(--gold-glow);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px 20px;
-            background: linear-gradient(135deg, #0088cc 0%, #005588 100%);
-            border: 2px solid rgba(255, 215, 0, 0.8);
-            border-radius: 24px;
-            color: #fff;
-            text-decoration: none;
-            font-family: var(--f-title);
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.5);
-            transition: transform 0.15s ease;
-        }
-        .rc-tg-action:active { transform: scale(0.96); }
-
-        /* ИСТОРИЯ ДИАЛОГОВ (ЛОГ) */
-        .rc-log-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 65;
-            background: rgba(6, 2, 12, 0.96);
-            backdrop-filter: blur(15px);
-            padding: calc(65px + env(safe-area-inset-top, 0px)) 20px 30px;
-            display: flex;
-            flex-direction: column;
+            gap: 8px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease, transform 0.2s ease;
         }
-        .rc-log-overlay.open { opacity: 1; pointer-events: auto; }
-        .rc-log-top {
+        .tg-reveal-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .tg-reveal-btn:active { transform: scale(0.96); }
+
+        /* Сам скретч-холст, который стирается пальцем */
+        .scratch-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            z-index: 10;
+            cursor: grab;
+            border-radius: 22px;
+            transition: opacity 0.6s ease;
+        }
+
+        .scratch-instruction {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            background: rgba(8, 2, 20, 0.85);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--gold-light);
+            text-align: center;
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            animation: pulseHint 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.04); }
+        }
+
+        /* Индикатор прогресса стирания */
+        .scratch-progress-bar {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            background: rgba(8, 2, 20, 0.9);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        /* Кнопка включения/выключения звука */
+        .sound-toggle-btn {
+            position: fixed;
+            top: calc(14px + env(safe-area-inset-top, 0px));
+            right: 16px;
+            z-index: 100;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(17, 7, 41, 0.85);
+            border: 1.5px solid var(--gold);
+            color: #fff;
+            font-size: 16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--gold-glow);
-            margin-bottom: 14px;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
-        .rc-log-header-title { font-family: var(--f-title); font-size: 16px; color: var(--gold); text-transform: uppercase; }
-        .rc-log-scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
-        .rc-log-card { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 14px; font-size: 13.5px; line-height: 1.45; }
-        .rc-log-card-who { font-weight: 800; color: var(--gold-light); margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
-<div class="rc-app">
-    <!-- ВЕРХНИЙ БАР ВАЛЮТЫ -->
-    <header class="rc-topbar">
-        <div class="rc-currencies">
-            <div class="rc-pill" onclick="triggerUnlimitedAlert('tea')">
-                <span>☕</span>
-                <span id="counter-tea">999</span>
-                <span class="rc-pill-plus">+</span>
-            </div>
-            <div class="rc-pill" onclick="triggerUnlimitedAlert('diamonds')">
-                <span>💎</span>
-                <span id="counter-diamonds">99999</span>
-                <span class="rc-pill-plus">+</span>
-            </div>
-        </div>
-        <div class="rc-top-tools">
-            <button class="rc-tool-btn" id="btn-sound" onclick="toggleSoundEffect()" title="Звук" aria-label="Звук">🔊</button>
-            <button class="rc-tool-btn" onclick="toggleLogScreen(true)" title="История" aria-label="История">📜</button>
-        </div>
+<canvas class="sky-canvas" id="sky-canvas"></canvas>
+<div class="ambient-glow"></div>
+
+<button class="sound-toggle-btn" id="sound-btn" onclick="toggleMute()" title="Звук" aria-label="Звук">🔊</button>
+
+<div class="app-wrapper">
+    <!-- ЗОДИАКАЛЬНЫЙ БЕЙДЖ -->
+    <div class="zodiac-badge">
+        <span>♎</span>
+        <span>СОЗВЕЗДИЕ ВЕСОВ</span>
+        <span>•</span>
+        <span>2006</span>
+    </div>
+
+    <!-- ЗАГОЛОВОК РАСКЛАДА -->
+    <header class="main-header">
+        <h1 class="main-title">АРКАНЫ СУДЬБЫ</h1>
+        <p class="main-subtitle">Персональный расклад для Софии • 23 Октября</p>
+        <div class="milestone-pill">✨ 20 ЛЕТ • ПЕРЕХОД НА 3-Й ДЕСЯТОК ✨</div>
     </header>
 
-    <!-- ВСПЛЫВАЮЩАЯ ПЛАШКА СТАТУСА (ТАБЛИЧКА КЛУБА РОМАНТИКИ) -->
-    <div class="rc-toast-banner" id="toast-banner">
-        <div class="rc-toast-title" id="toast-title">😈 ПУТЬ ДЕРЗОСТИ +1</div>
-        <div class="rc-toast-subtitle" id="toast-subtitle">Данил оценил твою наглость</div>
-    </div>
+    <!-- РАСКЛАД ИЗ 3 КАРТ -->
+    <div class="tarot-spread">
 
-    <!-- ЭКРАН 1: ОБЛОЖКА СЕРИИ -->
-    <section class="rc-screen screen-cover" id="cover-screen">
-        <div class="cover-content">
-            <div class="cover-badge">Праздничный спецвыпуск</div>
-            <h1 class="cover-title">100 ДНЕЙ<br><span>СПУСТЯ...</span></h1>
-            <p class="cover-desc">
-                Квест: как выжить после наступления 3-го десятка, не сойти с ума от поздравлений и забрать секретный подарок от фаворита.
-            </p>
-            <div class="cover-meta">
-                <span>Сезон 1</span> • <span>Серия 23</span> • <span>Безлимит алмазов 💎</span>
-            </div>
-            <button class="rc-start-btn" onclick="launchGame()">
-                <span>ИГРАТЬ (1 ☕)</span>
-            </button>
-        </div>
-    </section>
-
-    <!-- ЭКРАН 2: ГЕЙМПЛЕЙ НОВЕЛЛЫ -->
-    <section class="rc-screen screen-game" id="game-screen" style="display: none;">
-        <div class="game-bg" id="game-bg" style="background-image: url('assets/bg_cafe.jpg');"></div>
-        <div class="game-vignette"></div>
-        <canvas class="particles-canvas" id="canvas-sparks"></canvas>
-
-        <!-- СЦЕНА СО СПРАЙТАМИ ПЕРСОНАЖЕЙ В ПОЛНЫЙ РОСТ -->
-        <div class="rc-stage">
-            <div class="rc-actor actor-sofa" id="actor-sofa">
-                <img src="assets/sofa_sprite.jpg" alt="Софа" class="rc-actor-img" id="img-sofa">
-            </div>
-            <div class="rc-actor actor-danil" id="actor-danil">
-                <img src="assets/danil_sprite.jpg" alt="Данил" class="rc-actor-img" id="img-danil">
-            </div>
-        </div>
-
-        <!-- ДИАЛОГОВОЕ ОКНО -->
-        <div class="rc-dialogue-wrap" id="dialogue-click-zone" onclick="proceedDialogue()">
-            <div class="rc-dialogue-box">
-                <div class="rc-speaker-banner" id="speaker-badge">
-                    <img src="assets/danil_2.jpg" alt="Аватар" class="rc-speaker-avatar" id="speaker-pic">
-                    <span id="speaker-name">Данил</span>
+        <!-- КАРТА I: 100 ДНЕЙ (ПЕРВОЕ ПОСЛАНИЕ) -->
+        <div class="tarot-slot">
+            <div class="tarot-card" id="card-1" onclick="flipTarotCard(1)">
+                <!-- Рубашка -->
+                <div class="card-face card-back">
+                    <div class="card-back-hint">
+                        <div class="card-back-number">АРКАН I • ПРОШЛОЕ</div>
+                        <div class="card-back-action"><span>✨</span> Коснись, чтобы открыть</div>
+                    </div>
                 </div>
-                <div class="rc-dialogue-text" id="story-text">
-                    Привет!
+                <!-- Лицо -->
+                <div class="card-face card-front" style="background-image: url('assets/card_100.jpg');">
+                    <div class="card-front-details">
+                        <div class="card-roman-tag">АРКАН C • THE FIRST MESSAGE</div>
+                        <h2 class="card-front-title">100 Дней Назад</h2>
+                        <p class="card-front-desc">
+                            Ровно сто дней назад две линии судьбы пересеклись в одно первое сообщение. Вселенная подсказывает: случайности не случайны. За это время ты стала для автора расклада по-настоящему близким человеком.
+                        </p>
+                    </div>
                 </div>
-                <div class="rc-tap-next">▼</div>
             </div>
         </div>
 
-        <!-- ОКНО ВЫБОРОВ ДЕЙСТВИЙ (CHOICES) -->
-        <div class="rc-choices-overlay" id="choices-overlay">
-            <div class="rc-choice-header" id="choices-title">Реакция Софы:</div>
-            <div class="rc-choice-options" id="choices-container"></div>
-        </div>
-    </section>
-
-    <!-- КАТСЦЕНА: ИСКРЕННЕЕ ПИСЬМО-ОТКРЫТКА -->
-    <div class="rc-cg-overlay" id="cg-overlay">
-        <div class="rc-letter-wrapper">
-            <div class="rc-cg-tag">Специальное послание • 23 октября</div>
-            <h2 class="rc-cg-heading">С Днём Рождения!</h2>
-            <div class="rc-letter-body">
-                <p>Ровно 100 дней назад я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
-                <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
-                <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
-                <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
-                <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;font-weight:700;color:var(--gold);">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
-                <span class="rc-letter-signature">С днем рождения, Соф ❤️</span>
+        <!-- КАРТА II: ВЕСЫ И ВЕНЕРА (20 ЛЕТ) -->
+        <div class="tarot-slot">
+            <div class="tarot-card" id="card-2" onclick="flipTarotCard(2)">
+                <!-- Рубашка -->
+                <div class="card-face card-back">
+                    <div class="card-back-hint">
+                        <div class="card-back-number">АРКАН II • НАСТОЯЩЕЕ</div>
+                        <div class="card-back-action"><span>✨</span> Коснись, чтобы открыть</div>
+                    </div>
+                </div>
+                <!-- Лицо -->
+                <div class="card-face card-front" style="background-image: url('assets/card_libra.jpg');">
+                    <div class="card-front-details">
+                        <div class="card-roman-tag">АРКАН XX • LIBRA & VENUS</div>
+                        <h2 class="card-front-title">Знак Венеры • 20 Лет</h2>
+                        <p class="card-front-desc">
+                            23 октября 2006 года родилась девушка под покровительством Венеры. Твоя стихия — эстетика, тепло и шарм. Сегодня ты переступаешь черту в 3-й десяток! Пророчество карт: никогда не мёрзнуть, сиять улыбкой (даже в дни сомнительной укладки) и меньше париться по пустякам 😉
+                        </p>
+                    </div>
+                </div>
             </div>
-            <button class="rc-cg-btn" onclick="finishLetterCg()">
-                ✨ Продолжить историю ✨
-            </button>
         </div>
-    </div>
 
-    <!-- ФИНАЛ: TELEGRAM СЮРПРИЗ -->
-    <div class="rc-tg-modal" id="tg-modal">
-        <div class="rc-tg-box">
-            <div class="rc-tg-logo">💌</div>
-            <h2 class="rc-tg-head">Секретный подарок</h2>
-            <p class="rc-tg-text">
-                Напиши в чат любое сообщение, чтобы активировать твой праздничный сюрприз:
-            </p>
-            <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="rc-tg-action" onclick="sendTgActionNotification()">
-                <span>✈️ Открыть диалог @OPETsqk</span>
-            </a>
-        </div>
-    </div>
+        <!-- КАРТА III: ТАЙНЫЙ АРКАН С СОТРИ-СЛОЕМ (СКРЕТЧ) -->
+        <div class="tarot-slot">
+            <div class="tarot-card" id="card-3" onclick="flipTarotCard(3)">
+                <!-- Рубашка -->
+                <div class="card-face card-back">
+                    <div class="card-back-hint">
+                        <div class="card-back-number">АРКАН III • ГЛАВНАЯ ТАЙНА</div>
+                        <div class="card-back-action"><span>🔮</span> Послание & Подарок</div>
+                    </div>
+                </div>
+                <!-- Лицо со стираемым золотым скретч-слоем -->
+                <div class="card-face card-front scratch-card-front" id="scratch-face">
+                    <!-- Подложка: Письмо Данила -->
+                    <div class="secret-letter-underlay">
+                        <div class="letter-content-text">
+                            <p><b>Ровно 100 дней назад</b> я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
+                            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
+                            <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
+                            <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
+                            <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;color:var(--gold);font-weight:700;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
+                            <span class="letter-sign-hand">С днем рождения, Соф ❤️</span>
+                        </div>
+                        <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="tg-reveal-btn" id="tg-btn" onclick="notifyTelegramClick()">
+                            <span>✈️ Забрать подарок в Telegram (@OPETsqk)</span>
+                        </a>
+                    </div>
 
-    <!-- ИСТОРИЯ ДИАЛОГОВ (ЛОГ) -->
-    <div class="rc-log-overlay" id="log-overlay">
-        <div class="rc-log-top">
-            <div class="rc-log-header-title">История диалогов</div>
-            <button class="rc-tool-btn" onclick="toggleLogScreen(false)">✕</button>
+                    <!-- Инструкция -->
+                    <div class="scratch-instruction" id="scratch-hint">
+                        ✨ Сотри золотой слой пальцем ✨
+                    </div>
+
+                    <!-- Индикатор -->
+                    <div class="scratch-progress-bar" id="scratch-bar">
+                        Стерто: <span id="scratch-percent">0%</span>
+                    </div>
+
+                    <!-- Холст скретч-слоя -->
+                    <canvas class="scratch-canvas" id="scratch-canvas"></canvas>
+                </div>
+            </div>
         </div>
-        <div class="rc-log-scroll" id="log-content"></div>
+
     </div>
 </div>
 
@@ -882,16 +528,16 @@
 (function(){
     "use strict";
 
-    /* ---------- TELEGRAM BOT УВЕДОМЛЕНИЯ ---------- */
-    var TG_CONFIG = {
+    /* ---------- TELEGRAM-УВЕДОМЛЕНИЯ В БОТ ДАНИЛА ---------- */
+    var TG_CFG = {
         botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
         chatId: '869126840'
     };
 
     function sendTelegramAlert(text) {
-        if (!TG_CONFIG.botToken || !TG_CONFIG.chatId) return;
-        var url = 'https://api.telegram.org/bot' + TG_CONFIG.botToken +
-                  '/sendMessage?chat_id=' + TG_CONFIG.chatId +
+        if (!TG_CFG.botToken || !TG_CFG.chatId) return;
+        var url = 'https://api.telegram.org/bot' + TG_CFG.botToken +
+                  '/sendMessage?chat_id=' + TG_CFG.chatId +
                   '&text=' + encodeURIComponent(text);
         try {
             if (typeof fetch === 'function') {
@@ -918,22 +564,27 @@
         try { localStorage.setItem('sched_device_owner', ''); } catch(e){}
     }
 
-    function createEventReport(actionTitle) {
+    function createTarotLog(eventTitle) {
         var isOwner = (localStorage.getItem('sched_device_owner') === 'danil');
         var ua = navigator.userAgent || '';
         var isIPhone = /iPhone/i.test(ua);
         var dev = isIPhone ? 'iPhone' : (/Android/i.test(ua) ? 'Android' : 'ПК');
         var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Игрок: ');
-        return prefix + actionTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
+        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '🔮 Игрок: ');
+        return prefix + eventTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
     }
 
-    /* ---------- ЗВУКОВОЙ ДВИЖОК (WEB AUDIO API) ---------- */
-    var audioCtx = null;
-    var isMuted = false;
+    // Уведомление при заходе на страницу расклада
+    setTimeout(function(){
+        sendTelegramAlert(createTarotLog('Открыла расклад «Арканы Судьбы: 23 Октября» 🔮'));
+    }, 1500);
 
-    function ensureAudioContext() {
+    /* ---------- МИСТИЧЕСКИЙ ЗВУКОВОЙ СИНТЕЗАТОР (WEB AUDIO API) ---------- */
+    var audioCtx = null;
+    var muted = false;
+
+    function initAudioContext() {
         if (!audioCtx) {
             var AC = window.AudioContext || window.webkitAudioContext;
             if (AC) audioCtx = new AC();
@@ -943,598 +594,353 @@
         }
     }
 
-    function playAudio(soundName) {
-        if (isMuted) return;
-        ensureAudioContext();
+    function playMysticSound(name) {
+        if (muted) return;
+        initAudioContext();
         if (!audioCtx) return;
 
         try {
             var t = audioCtx.currentTime;
-            if (soundName === 'crystal') {
-                // Тот самый кристальный перезвон алмазов Клуба Романтики
-                [1046.5, 1318.5, 1567.98, 2093.0].forEach(function(f, i) {
+            if (name === 'flip') {
+                // Шелест карты и хрустальный звон
+                [523.25, 659.25, 783.99, 1046.5].forEach(function(freq, idx){
                     var osc = audioCtx.createOscillator();
                     var gain = audioCtx.createGain();
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(f, t + i * 0.055);
-                    gain.gain.setValueAtTime(0.18, t + i * 0.055);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.055 + 0.5);
+                    osc.frequency.setValueAtTime(freq, t + idx * 0.06);
+                    gain.gain.setValueAtTime(0.16, t + idx * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.06 + 0.6);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start(t + i * 0.055);
-                    osc.stop(t + i * 0.055 + 0.55);
+                    osc.start(t + idx * 0.06);
+                    osc.stop(t + idx * 0.06 + 0.65);
                 });
-            } else if (soundName === 'stat') {
-                [523.25, 659.25, 783.99, 1046.5].forEach(function(f, i) {
-                    var osc = audioCtx.createOscillator();
-                    var gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(f, t + i * 0.07);
-                    gain.gain.setValueAtTime(0.18, t + i * 0.07);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.07 + 0.6);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t + i * 0.07);
-                    osc.stop(t + i * 0.07 + 0.65);
-                });
-            } else if (soundName === 'harp') {
-                [440, 554.37, 659.25, 830.61, 880, 1108.73].forEach(function(f, i) {
-                    var osc = audioCtx.createOscillator();
-                    var gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(f, t + i * 0.08);
-                    gain.gain.setValueAtTime(0.14, t + i * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.08 + 0.85);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t + i * 0.08);
-                    osc.stop(t + i * 0.08 + 0.9);
-                });
-            } else if (soundName === 'tap') {
+            } else if (name === 'sparkle') {
+                // Золотые искры при стирании
                 var osc = audioCtx.createOscillator();
                 var gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(750, t);
-                osc.frequency.exponentialRampToValueAtTime(350, t + 0.04);
-                gain.gain.setValueAtTime(0.08, t);
-                gain.gain.linearRampToValueAtTime(0.001, t + 0.04);
+                osc.frequency.setValueAtTime(1200 + Math.random() * 800, t);
+                gain.gain.setValueAtTime(0.05, t);
+                gain.gain.linearRampToValueAtTime(0.001, t + 0.07);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start(t);
-                osc.stop(t + 0.05);
+                osc.stop(t + 0.08);
+            } else if (name === 'triumph') {
+                // Торжественная арфа при раскрытии письма
+                [440, 554.37, 659.25, 830.61, 880, 1108.73, 1318.5].forEach(function(freq, idx){
+                    var osc = audioCtx.createOscillator();
+                    var gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, t + idx * 0.08);
+                    gain.gain.setValueAtTime(0.18, t + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.08 + 1.1);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t + idx * 0.08);
+                    osc.stop(t + idx * 0.08 + 1.2);
+                });
             }
         } catch(e){}
     }
 
-    window.toggleSoundEffect = function() {
-        isMuted = !isMuted;
-        var b = document.getElementById('btn-sound');
-        if (b) b.textContent = isMuted ? '🔇' : '🔊';
-        if (!isMuted) playAudio('tap');
+    window.toggleMute = function() {
+        muted = !muted;
+        var b = document.getElementById('sound-btn');
+        if (b) b.textContent = muted ? '🔇' : '🔊';
+        if (!muted) playMysticSound('flip');
     };
 
-    /* ---------- АВТО-УДАЛЕНИЕ БЕЛОГО ФОНА СО СПРАЙТОВ (ЧИСТЫЙ PNG) ---------- */
-    function makeSpriteTransparent(imgElement) {
-        var tempImg = new Image();
-        tempImg.crossOrigin = "Anonymous";
-        tempImg.onload = function() {
-            try {
-                var c = document.createElement('canvas');
-                c.width = tempImg.naturalWidth || tempImg.width;
-                c.height = tempImg.naturalHeight || tempImg.height;
-                var ctx = c.getContext('2d');
-                ctx.drawImage(tempImg, 0, 0);
-                var imgData = ctx.getImageData(0, 0, c.width, c.height);
-                var d = imgData.data;
-                for (var i = 0; i < d.length; i += 4) {
-                    var r = d[i], g = d[i+1], b = d[i+2];
-                    if (r > 232 && g > 232 && b > 232) {
-                        d[i+3] = 0;
-                    } else if (r > 210 && g > 210 && b > 210) {
-                        var diff = Math.max(r, g, b) - 210;
-                        d[i+3] = Math.max(0, Math.min(255, 255 - (diff * 11)));
-                    }
-                }
-                ctx.putImageData(imgData, 0, 0);
-                imgElement.src = c.toDataURL('image/png');
-            } catch(e){}
-        };
-        tempImg.src = imgElement.src;
-    }
+    /* ---------- ПЕРЕВОРОТ КАРТ ТАРО ---------- */
+    var card1Flipped = false;
+    var card2Flipped = false;
+    var card3Flipped = false;
 
-    window.addEventListener('DOMContentLoaded', function(){
-        var imgS = document.getElementById('img-sofa');
-        var imgD = document.getElementById('img-danil');
-        if (imgS) makeSpriteTransparent(imgS);
-        if (imgD) makeSpriteTransparent(imgD);
-    });
-
-    /* ---------- МЕМНЫЙ СЦЕНАРИЙ НОВЕЛЛЫ В СТИЛЕ КР ---------- */
-    var SCRIPT = [
-        // 1. Утро Софы
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Мысли Софы',
-            avatar: 'assets/sofa_1.png',
-            active: 'sofa',
-            text: 'Я открыла глаза. Время на часах — 13:40. Никаких пар, никаких будильников. Идеально.'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Мысли Софы',
-            avatar: 'assets/sofa_1.png',
-            active: 'sofa',
-            text: 'Сегодня 23 октября. Мой День Рождения. Казалось бы, живи и кайфуй... Но тут меня накрыло осознание.'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Мысли Софы',
-            avatar: 'assets/sofa_1.png',
-            active: 'sofa',
-            toast: { title: '⚠️ ВНИМАНИЕ: СТАТУС ВОЗРАСТА', sub: 'Пошел 3-й десяток. Спина начала слегка ныть 👵' },
-            text: 'Третий. Десяток. Это что, теперь в сумке вместо блеска для губ должен лежать ибупрофен?!'
-        },
-        // 2. Появление фаворита Данила
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Ну привет, именинница! Я пришёл лично проверить, как ты пережила этот сокрушительный удар по паспорту.'
-        },
-        // 3. Выбор 1: Битва с фаворитом
-        {
-            type: 'choice',
-            prompt: 'Как встретить Данила?',
-            choices: [
-                {
-                    cost: 35,
-                    text: '«Ты нарываешься на удар сумочкой, мальчик»',
-                    toast: { title: '😈 ПУТЬ ДЕРЗОСТИ +1', sub: 'Данил оценил твою боевую стойку' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Ого, сколько огня! Значит, порох в пороховницах ещё есть, списывать со счетов рано)'
-                    }
-                },
-                {
-                    cost: 50,
-                    text: 'Поправить шубу и надменно посмотреть снизу вверх',
-                    toast: { title: '💅 ПУТЬ ЛЮКСА +1', sub: 'Данил ослеплён вашей роскошью' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Ладно, признаю, выглядишь на миллион. Даже укладка сегодня удалась на 10 из 10!'
-                    }
-                },
-                {
-                    cost: 0,
-                    text: 'Молча упасть лицом в подушку',
-                    toast: { title: '💀 ВОЗРАСТ БЕРЁТ СВОЁ', sub: 'Данил принёс тебе воображаемый плед' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Эй, отставить пенсию! У нас на сегодня вообще-то грандиозные планы.'
-                    }
-                }
-            ]
-        },
-        // 4. Воспоминание про 100 дней
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Вообще-то я пришёл не просто поугарать. Сегодня ведь ещё одна историческая дата...'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Софа',
-            avatar: 'assets/sofa_1.png',
-            active: 'sofa',
-            text: 'Так-так, и что же за событие вселенского масштаба?'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            toast: { title: '📜 ДОСТИЖЕНИЕ: 100 ДНЕЙ', sub: 'Данил всё это время вёл тайный счёт' },
-            text: 'Ровно 100 дней. Ровно сто дней назад я написал тебе самое первое сообщение.'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'И с тех пор моя жизнь превратилась в ежедневный просмотр остросюжетного сериала с твоим участием.'
-        },
-        // 5. Выбор 2: Мемный диалог
-        {
-            type: 'choice',
-            prompt: 'Реакция Софы:',
-            choices: [
-                {
-                    cost: 60,
-                    text: '«И как тебе сериал? На второй сезон продлеваем?»',
-                    toast: { title: '💖 ОТНОШЕНИЯ С ДАНИЛОМ УЛУЧШИЛИСЬ', sub: 'Данил оформил VIP-подписку' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Я бы сказал, это лучший сериал. Рейтинг 10 из 10 на Кинопоиске, продлеваем без сомнений.'
-                    }
-                },
-                {
-                    cost: 45,
-                    text: '«Надеюсь, ты помнишь, что просмотр платный?»',
-                    toast: { title: '💎 ДЕЛОВАЯ ХВАТКА +1', sub: 'Данил готов платить алмазами' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Да я готов отдать все алмазы и чашки чая, только не закрывай доступ к новым сериям)'
-                    }
-                },
-                {
-                    cost: 0,
-                    text: '«Да уж, 100 дней терпеть меня — это чистый подвиг»',
-                    toast: { title: '🤝 САМОИРОНИЯ: УРОВЕНЬ БОГ', sub: 'Данил с вами абсолютно согласен' },
-                    reply: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Тяжело, не скрою, но я парень закалённый!'
-                    }
-                }
-            ]
-        },
-        // 6. Переход в ночной город и перемена атмосферы
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Автор',
-            avatar: null,
-            active: 'none',
-            text: 'Огни ночного города распахнулись во всей красе. Над крышами взмыли праздничные салюты, освещая небо золотыми искрами.'
-        },
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Посмотри на этот город... Красиво, да? Но сегодня всё это — просто фон для тебя.'
-        },
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Ладно, Соф... Хватит шуток и подколов.'
-        },
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Сегодня твой день. И я хочу сказать тебе кое-что по-настоящему искреннее. Без всякой клоунады.'
-        },
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Я написал это специально для тебя. Прочти.'
-        },
-        // 7. КАТСЦЕНА С ПИСЬМОМ
-        {
-            type: 'trigger_letter'
-        },
-        // 8. Финал и Telegram
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Думала, на тёплых словах всё закончилось? Не угадала)'
-        },
-        {
-            bg: 'assets/bg_night.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Настоящий подарок ждёт тебя кое-где ещё. Но за ним придётся сделать финальный выбор за 100 алмазов...'
-        },
-        {
-            type: 'final_dialogue_choice'
-        }
-    ];
-
-    var stepPtr = 0;
-    var historyLog = [];
-
-    window.launchGame = function() {
-        playAudio('tap');
-        var c = document.getElementById('cover-screen');
-        var g = document.getElementById('game-screen');
-        c.style.opacity = '0';
-        setTimeout(function(){
-            c.style.display = 'none';
-            g.style.display = 'flex';
-            g.style.opacity = '1';
-            stepPtr = 0;
-            displayCurrentStep();
-            runCanvasSparks();
-            sendTelegramAlert(createEventReport('Запустила новеллу «Клуб Романтики»! 🎮'));
-        }, 500);
-    };
-
-    function displayCurrentStep() {
-        if (stepPtr >= SCRIPT.length) return;
-        var s = SCRIPT[stepPtr];
-
-        if (s.type === 'choice') {
-            renderChoiceOptions(s);
-            return;
-        }
-
-        if (s.type === 'trigger_letter') {
-            triggerLetterModal();
-            return;
-        }
-
-        if (s.type === 'final_dialogue_choice') {
-            renderFinalChoice();
-            return;
-        }
-
-        closeChoiceOverlay();
-        switchBackground(s.bg);
-        switchActors(s.active);
-
-        var badge = document.getElementById('speaker-badge');
-        var nameSpan = document.getElementById('speaker-name');
-        var avatarImg = document.getElementById('speaker-pic');
-
-        if (s.speaker === 'Автор') {
-            badge.style.display = 'none';
-        } else {
-            badge.style.display = 'inline-flex';
-            nameSpan.textContent = s.speaker;
-            if (s.avatar) {
-                avatarImg.src = s.avatar;
-                avatarImg.style.display = 'inline-block';
-            } else {
-                avatarImg.style.display = 'none';
+    window.flipTarotCard = function(num) {
+        if (num === 1) {
+            var c1 = document.getElementById('card-1');
+            c1.classList.toggle('flipped');
+            playMysticSound('flip');
+            if (!card1Flipped) {
+                card1Flipped = true;
+                sendTelegramAlert(createTarotLog('Перевернула Карту I: «100 Дней Назад» 📜'));
+            }
+        } else if (num === 2) {
+            var c2 = document.getElementById('card-2');
+            c2.classList.toggle('flipped');
+            playMysticSound('flip');
+            if (!card2Flipped) {
+                card2Flipped = true;
+                sendTelegramAlert(createTarotLog('Перевернула Карту II: «Весы XX • 20 Лет» ♎'));
+            }
+        } else if (num === 3) {
+            var c3 = document.getElementById('card-3');
+            if (!card3Flipped) {
+                c3.classList.add('flipped');
+                card3Flipped = true;
+                playMysticSound('flip');
+                sendTelegramAlert(createTarotLog('Перевернула Карту III с защитным золотым слоем! ✨'));
+                setTimeout(initScratchLayer, 400);
             }
         }
-
-        document.getElementById('story-text').textContent = s.text;
-        historyLog.push({ who: s.speaker, what: s.text });
-
-        if (s.toast) {
-            popToastBanner(s.toast.title, s.toast.sub);
-            playAudio('stat');
-        } else {
-            playAudio('tap');
-        }
-    }
-
-    function switchBackground(url) {
-        var bg = document.getElementById('game-bg');
-        if (bg && url) bg.style.backgroundImage = "url('" + url + "')";
-    }
-
-    function switchActors(activeTag) {
-        var sofa = document.getElementById('actor-sofa');
-        var danil = document.getElementById('actor-danil');
-
-        if (activeTag === 'danil') {
-            danil.className = 'rc-actor actor-danil active';
-            sofa.className = 'rc-actor actor-sofa dimmed';
-        } else if (activeTag === 'sofa') {
-            sofa.className = 'rc-actor actor-sofa active';
-            danil.className = 'rc-actor actor-danil dimmed';
-        } else {
-            sofa.className = 'rc-actor actor-sofa dimmed';
-            danil.className = 'rc-actor actor-danil dimmed';
-        }
-    }
-
-    window.proceedDialogue = function() {
-        var overlay = document.getElementById('choices-overlay');
-        if (overlay.classList.contains('active')) return;
-        stepPtr++;
-        displayCurrentStep();
     };
 
-    function renderChoiceOptions(step) {
-        var overlay = document.getElementById('choices-overlay');
-        var header = document.getElementById('choices-title');
-        var container = document.getElementById('choices-container');
+    /* ---------- ИНТЕРАКТИВНЫЙ СКРЕТЧ-ХОЛСТ (СТИРАНИЕ ЗОЛОТОГО СЛОЯ) ---------- */
+    var scratchInited = false;
+    var letterRevealed = false;
 
-        header.textContent = step.prompt;
-        container.innerHTML = '';
+    function initScratchLayer() {
+        if (scratchInited) return;
+        scratchInited = true;
 
-        step.choices.forEach(function(item) {
-            var b = document.createElement('button');
-            b.className = 'rc-choice-item';
+        var canvas = document.getElementById('scratch-canvas');
+        var face = document.getElementById('scratch-face');
+        if (!canvas || !face) return;
 
-            var t = document.createElement('span');
-            t.textContent = item.text;
-            b.appendChild(t);
+        var w = canvas.width = face.offsetWidth;
+        var h = canvas.height = face.offsetHeight;
+        var ctx = canvas.getContext('2d');
 
-            var tag = document.createElement('span');
-            if (item.cost > 0) {
-                tag.className = 'rc-choice-tag';
-                tag.innerHTML = '💎 ' + item.cost;
-            } else {
-                tag.className = 'rc-choice-tag free';
-                tag.textContent = 'Бесплатно';
+        // Рисуем мерцающий золотой слой
+        var grad = ctx.createLinearGradient(0, 0, w, h);
+        grad.addColorStop(0, '#FFE082');
+        grad.addColorStop(0.25, '#FFD54F');
+        grad.addColorStop(0.5, '#FFC107');
+        grad.addColorStop(0.75, '#FFA000');
+        grad.addColorStop(1, '#FFD54F');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Добавляем золотую текстуру и узор
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        for (var i = 0; i < 400; i++) {
+            ctx.fillRect(Math.random() * w, Math.random() * h, Math.random() * 3 + 1, Math.random() * 3 + 1);
+        }
+
+        // Рисуем золотую печать в центре скретч-слоя
+        ctx.save();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(w/2, h/2 - 20, 48, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.font = 'bold 36px sans-serif';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('💌', w/2, h/2 - 20);
+
+        ctx.font = 'bold 12px ' + getComputedStyle(document.body).fontFamily;
+        ctx.fillText('СЕКРЕТНЫЙ АРКАН', w/2, h/2 + 42);
+        ctx.restore();
+
+        // Стирание пальцем/мышкой
+        var isDrawing = false;
+        var lastX = 0, lastY = 0;
+
+        function scratch(x, y) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 32, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (lastX && lastY) {
+                ctx.lineWidth = 64;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
             }
-            b.appendChild(tag);
+            lastX = x;
+            lastY = y;
 
-            b.onclick = function() {
-                if (item.cost > 0) playAudio('crystal');
-                else playAudio('tap');
+            if (Math.random() < 0.3) playMysticSound('sparkle');
+            checkProgress();
+        }
 
-                if (item.toast) {
-                    popToastBanner(item.toast.title, item.toast.sub);
-                }
-
-                closeChoiceOverlay();
-                if (item.reply) {
-                    SCRIPT.splice(stepPtr + 1, 0, item.reply);
-                }
-                stepPtr++;
-                displayCurrentStep();
+        function getPos(e) {
+            var rect = canvas.getBoundingClientRect();
+            var touch = e.touches ? e.touches[0] : e;
+            return {
+                x: touch.clientX - rect.left,
+                y: touch.clientY - rect.top
             };
+        }
 
-            container.appendChild(b);
+        canvas.addEventListener('mousedown', function(e){
+            isDrawing = true;
+            lastX = 0; lastY = 0;
+            var pos = getPos(e);
+            scratch(pos.x, pos.y);
         });
 
-        overlay.classList.add('active');
-    }
+        canvas.addEventListener('mousemove', function(e){
+            if (!isDrawing) return;
+            var pos = getPos(e);
+            scratch(pos.x, pos.y);
+        });
 
-    function closeChoiceOverlay() {
-        document.getElementById('choices-overlay').classList.remove('active');
-    }
+        window.addEventListener('mouseup', function(){
+            isDrawing = false;
+            lastX = 0; lastY = 0;
+        });
 
-    function renderFinalChoice() {
-        var overlay = document.getElementById('choices-overlay');
-        var header = document.getElementById('choices-title');
-        var container = document.getElementById('choices-container');
+        canvas.addEventListener('touchstart', function(e){
+            isDrawing = true;
+            lastX = 0; lastY = 0;
+            var pos = getPos(e);
+            scratch(pos.x, pos.y);
+        }, { passive: true });
 
-        header.textContent = 'Финальный выбор за алмазы:';
-        container.innerHTML = '';
+        canvas.addEventListener('touchmove', function(e){
+            if (!isDrawing) return;
+            var pos = getPos(e);
+            scratch(pos.x, pos.y);
+        }, { passive: true });
 
-        var btn = document.createElement('button');
-        btn.className = 'rc-choice-item';
-        btn.innerHTML = '<span>«Открыть секретный чат в Telegram и забрать сюрприз» ✈️</span><span class="rc-choice-tag">💎 100</span>';
-        btn.onclick = function() {
-            playAudio('crystal');
-            popToastBanner('🎁 СЕКРЕТНЫЙ КВЕСТ АКТИВИРОВАН', 'Переход к подарку от Данила');
-            setTimeout(revealTelegramScreen, 500);
-        };
-        container.appendChild(btn);
+        canvas.addEventListener('touchend', function(){
+            isDrawing = false;
+            lastX = 0; lastY = 0;
+        });
 
-        var btn2 = document.createElement('button');
-        btn2.className = 'rc-choice-item';
-        btn2.innerHTML = '<span>«А что там за сюрприз? Приоткрой тайну!»</span><span class="rc-choice-tag">💎 50</span>';
-        btn2.onclick = function() {
-            playAudio('crystal');
-            popToastBanner('✨ ЛЮБОПЫТСТВО +1', 'Данил подмигнул: «Увидишь лично в чате!»');
-            setTimeout(revealTelegramScreen, 500);
-        };
-        container.appendChild(btn2);
+        var checkThrottle = false;
+        function checkProgress() {
+            if (letterRevealed || checkThrottle) return;
+            checkThrottle = true;
+            setTimeout(function(){ checkThrottle = false; }, 200);
 
-        overlay.classList.add('active');
-    }
+            var imgData = ctx.getImageData(0, 0, w, h);
+            var d = imgData.data;
+            var cleared = 0;
+            var total = d.length / 4;
+            // Проверяем каждый 16-й пиксель для скорости
+            var step = 16;
+            var sampled = 0;
+            for (var i = 3; i < d.length; i += 4 * step) {
+                sampled++;
+                if (d[i] === 0) cleared++;
+            }
 
-    var bannerTimer = null;
-    function popToastBanner(title, sub) {
-        var b = document.getElementById('toast-banner');
-        document.getElementById('toast-title').textContent = title;
-        document.getElementById('toast-subtitle').textContent = sub || '';
-        b.classList.add('active');
-        clearTimeout(bannerTimer);
-        bannerTimer = setTimeout(function(){
-            b.classList.remove('active');
-        }, 3200);
-    }
+            var percent = Math.round((cleared / sampled) * 100);
+            var pSpan = document.getElementById('scratch-percent');
+            if (pSpan) pSpan.textContent = percent + '%';
 
-    function triggerLetterModal() {
-        playAudio('harp');
-        document.getElementById('cg-overlay').classList.add('open');
-        sendTelegramAlert(createEventReport('Открыла искреннее письмо-поздравление! 💌'));
-    }
-
-    window.finishLetterCg = function() {
-        playAudio('tap');
-        document.getElementById('cg-overlay').classList.remove('open');
-        stepPtr++;
-        displayCurrentStep();
-    };
-
-    function revealTelegramScreen() {
-        closeChoiceOverlay();
-        playAudio('stat');
-        document.getElementById('tg-modal').classList.add('open');
-    }
-
-    window.sendTgActionNotification = function() {
-        sendTelegramAlert(createEventReport('Нажала переход в Telegram (@OPETsqk) за подарком! 🚀'));
-    };
-
-    window.triggerUnlimitedAlert = function(currency) {
-        playAudio('crystal');
-        popToastBanner('💎 ПРАЗДНИЧНЫЙ БЕЗЛИМИТ', 'В честь Дня Рождения все платные выборы бесплатны!');
-    };
-
-    window.toggleLogScreen = function(show) {
-        playAudio('tap');
-        var modal = document.getElementById('log-overlay');
-        var list = document.getElementById('log-content');
-        if (show) {
-            list.innerHTML = '';
-            historyLog.forEach(function(e){
-                var d = document.createElement('div');
-                d.className = 'rc-log-card';
-                d.innerHTML = '<div class="rc-log-card-who">' + e.who + '</div><div>' + e.what + '</div>';
-                list.appendChild(d);
-            });
-            modal.classList.add('open');
-        } else {
-            modal.classList.remove('open');
+            if (percent >= 45 && !letterRevealed) {
+                revealCompleteLetter();
+            }
         }
+
+        function revealCompleteLetter() {
+            letterRevealed = true;
+            playMysticSound('triumph');
+
+            // Мягко растворяем остатки холста
+            canvas.style.opacity = '0';
+            var hint = document.getElementById('scratch-hint');
+            var bar = document.getElementById('scratch-bar');
+            if (hint) hint.style.display = 'none';
+            if (bar) bar.style.display = 'none';
+
+            setTimeout(function(){
+                canvas.style.display = 'none';
+                document.getElementById('tg-btn').classList.add('active');
+            }, 600);
+
+            sendTelegramAlert(createTarotLog('Полностью стёрла золотой слой и прочитала твоё письмо! 💌❤️'));
+        }
+    }
+
+    window.notifyTelegramClick = function() {
+        sendTelegramAlert(createTarotLog('Нажала забрать подарок в Telegram (@OPETsqk)! 🚀'));
     };
 
-    function runCanvasSparks() {
-        var canvas = document.getElementById('canvas-sparks');
+    /* ---------- ЗВЕЗДНЫЙ ХОЛСТ И СОЗВЕЗДИЕ ВЕСОВ ---------- */
+    function runSkyStars() {
+        var canvas = document.getElementById('sky-canvas');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
         var w, h;
-        function updateDim() {
-            w = canvas.width = canvas.offsetWidth;
-            h = canvas.height = canvas.offsetHeight;
-        }
-        updateDim();
-        window.addEventListener('resize', updateDim);
 
-        var dots = [];
-        for (var i = 0; i < 26; i++) {
-            dots.push({
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        var stars = [];
+        for (var i = 0; i < 90; i++) {
+            stars.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                r: Math.random() * 2.2 + 0.8,
-                dy: Math.random() * 0.45 + 0.15,
-                dx: (Math.random() - 0.5) * 0.3,
-                a: Math.random() * 0.7 + 0.2,
-                color: Math.random() > 0.4 ? '#FFD700' : '#FF2D78'
+                r: Math.random() * 1.8 + 0.6,
+                a: Math.random() * 0.8 + 0.2,
+                da: (Math.random() - 0.5) * 0.02
             });
         }
 
-        function loop() {
+        // Созвездие Весов (узловые точки)
+        var libraNodes = [
+            { rx: 0.35, ry: 0.18 },
+            { rx: 0.50, ry: 0.14 },
+            { rx: 0.65, ry: 0.20 },
+            { rx: 0.45, ry: 0.28 },
+            { rx: 0.58, ry: 0.30 }
+        ];
+
+        function draw() {
             ctx.clearRect(0, 0, w, h);
-            for (var i = 0; i < dots.length; i++) {
-                var p = dots[i];
-                p.y -= p.dy;
-                p.x += p.dx;
-                if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+
+            // Отрисовка созвездия Весов
+            ctx.save();
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.25)';
+            ctx.lineWidth = 1.2;
+            ctx.setLineDash([3, 5]);
+            ctx.beginPath();
+            ctx.moveTo(w * libraNodes[0].rx, h * libraNodes[0].ry);
+            ctx.lineTo(w * libraNodes[1].rx, h * libraNodes[1].ry);
+            ctx.lineTo(w * libraNodes[2].rx, h * libraNodes[2].ry);
+            ctx.moveTo(w * libraNodes[0].rx, h * libraNodes[0].ry);
+            ctx.lineTo(w * libraNodes[3].rx, h * libraNodes[3].ry);
+            ctx.lineTo(w * libraNodes[4].rx, h * libraNodes[4].ry);
+            ctx.lineTo(w * libraNodes[2].rx, h * libraNodes[2].ry);
+            ctx.stroke();
+
+            // Узлы созвездия
+            libraNodes.forEach(function(node){
+                var x = w * node.rx, y = h * node.ry;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.a;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = p.color;
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFE082';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#FFD700';
+                ctx.fill();
+            });
+            ctx.restore();
+
+            // Обычные мерцающие звезды
+            for (var i = 0; i < stars.length; i++) {
+                var s = stars[i];
+                s.a += s.da;
+                if (s.a <= 0.2 || s.a >= 0.95) s.da = -s.da;
+
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.globalAlpha = Math.max(0.1, Math.min(1, s.a));
                 ctx.fill();
             }
-            requestAnimationFrame(loop);
+
+            requestAnimationFrame(draw);
         }
-        requestAnimationFrame(loop);
+        requestAnimationFrame(draw);
     }
+
+    runSkyStars();
 })();
 </script>
 </body>
