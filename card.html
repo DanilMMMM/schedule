@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>С Днём Рождения, Софа! 🎂✨</title>
+    <title>Пикми, с днём рождения! 🎂</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         :root {
             --pink: #FF2D78;
             --pink-glow: rgba(255, 45, 120, 0.45);
+            --pink-soft: #FFA5D8;
             --gold: #FFD700;
             --gold-light: #FFF275;
             --gold-glow: rgba(255, 215, 0, 0.4);
             --f-body: 'Montserrat', sans-serif;
-            --f-head: 'Playfair Display', serif;
+            --f-cute: 'Comfortaa', cursive, sans-serif;
             --f-hand: 'Pacifico', cursive;
         }
 
@@ -35,7 +36,159 @@
             color: #ffffff;
         }
 
-        /* Фоновый контейнер праздничного декора */
+        /* ---------------- ИНТЕРАКТИВНЫЙ ИНТРО-ЭКРАН «ЗАГАДАЙ ЖЕЛАНИЕ» ---------------- */
+        .intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: radial-gradient(ellipse at 50% 30%, #3e0758 0%, #1a0033 50%, #070014 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            text-align: center;
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            transform: scale(1.08);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .intro-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.25) 0%, rgba(142, 36, 170, 0.35) 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 999px;
+            padding: 6px 18px;
+            font-family: var(--f-cute);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+            margin-bottom: 24px;
+            animation: introBadgePulse 2.8s infinite alternate;
+        }
+
+        @keyframes introBadgePulse {
+            0% { transform: scale(1); box-shadow: 0 0 14px rgba(255, 215, 0, 0.3); }
+            100% { transform: scale(1.04); box-shadow: 0 0 26px rgba(255, 45, 120, 0.5); }
+        }
+
+        /* Интерактивный торт */
+        .intro-cake-wrap {
+            position: relative;
+            width: 210px;
+            height: 190px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            filter: drop-shadow(0 12px 30px rgba(255, 45, 120, 0.45));
+            animation: cakeFloat 3s infinite ease-in-out;
+            transition: transform 0.2s ease;
+        }
+        .intro-cake-wrap:active {
+            transform: scale(0.96);
+        }
+
+        @keyframes cakeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .cake-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Анимация пламени свечей */
+        .candle-flame {
+            transform-origin: 50% 90%;
+            animation: flameFlicker 1.4s infinite alternate ease-in-out;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.95)) drop-shadow(0 0 16px rgba(255, 45, 120, 0.7));
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .flame-1 { animation-delay: 0s; }
+        .flame-2 { animation-delay: 0.35s; }
+        .flame-3 { animation-delay: 0.7s; }
+
+        @keyframes flameFlicker {
+            0%   { transform: scale(1) rotate(-2deg); }
+            50%  { transform: scale(1.08, 0.94) rotate(2deg); }
+            100% { transform: scale(0.95, 1.05) rotate(-1deg); }
+        }
+
+        /* Потушенные свечи */
+        .intro-cake-wrap.blown .candle-flame {
+            opacity: 0;
+            transform: scale(0) translateY(-10px);
+        }
+
+        /* Дымок от задувания свечей */
+        .smoke-puff {
+            position: absolute;
+            font-size: 22px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(0) scale(0.5);
+            transition: all 1s ease-out;
+        }
+        .intro-cake-wrap.blown .smoke-puff {
+            opacity: 0.85;
+            transform: translateY(-40px) scale(1.2);
+        }
+        .smoke-1 { left: 45px; top: 10px; transition-delay: 0.05s; }
+        .smoke-2 { left: 95px; top: 0px;  transition-delay: 0.15s; }
+        .smoke-3 { left: 145px; top: 10px; transition-delay: 0.25s; }
+
+        .intro-title {
+            font-family: var(--f-hand);
+            font-size: 2.1rem;
+            line-height: 1.2;
+            color: #ffffff;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(255, 45, 120, 0.8), 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .intro-sub {
+            font-family: var(--f-cute);
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 320px;
+            margin-bottom: 28px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        }
+
+        .intro-blow-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 34px;
+            background: linear-gradient(135deg, #FF2D78 0%, #B0006E 100%);
+            border: 2px solid var(--gold);
+            border-radius: 999px;
+            color: #ffffff;
+            font-family: var(--f-cute);
+            font-size: 15.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 25px rgba(255, 45, 120, 0.6), 0 0 18px var(--gold-glow);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .intro-blow-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ---------------- ФОНОВЫЙ ДЕКОР (КОНФЕТТИ, ШАРИКИ, САЛЮТЫ) ---------------- */
         .decor-layer {
             position: fixed;
             inset: 0;
@@ -46,7 +199,7 @@
             transform: translateZ(0);
         }
 
-        /* Падающие конфетти */
+        /* Падающее конфетти */
         .confetti-piece {
             position: absolute;
             top: -10%;
@@ -88,13 +241,14 @@
             100% { transform: translate3d(calc(var(--mhdx, 25px) * -0.5), -115vh, 0) scale(0.9); opacity: 0; }
         }
 
-        /* Праздничные салюты */
+        /* Взрывы салютов */
         .firework {
             position: absolute;
             pointer-events: none;
             animation: fireworkBurst var(--fw-dur, 1.5s) cubic-bezier(.22,.68,0,1) both;
             will-change: transform, opacity;
             transform: translateZ(0);
+            z-index: 99;
         }
         @keyframes fireworkBurst {
             0%   { opacity: 1; }
@@ -122,45 +276,43 @@
             border-radius: 50%;
             background: var(--fw-color, #FFD700);
             left: 50%; top: 50%;
-            box-shadow: 0 0 5px var(--fw-color, #FFD700);
-            transform-origin: 0 0;
-            animation: fwSparkFly var(--fw-dur, 1.5s) ease-out forwards;
+            box-shadow: 0 0 6px var(--fw-color, #FFD700);
+            animation: fwSparkFly var(--fw-dur, 1.5s) cubic-bezier(.16,1,.3,1) forwards;
             will-change: transform, opacity;
         }
         @keyframes fwSparkFly {
-            0%   { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(0px) scale(1); opacity: 1; }
-            50%  { opacity: .85; }
-            100% { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(var(--dist,70px)) scale(.3); opacity: 0; }
+            0%   { transform: translate(-50%,-50%) rotate(var(--ang)) translate(0px) scale(1.3); opacity: 1; }
+            70%  { opacity: .9; }
+            100% { transform: translate(-50%,-50%) rotate(var(--ang)) translate(var(--dist)) scale(0.3); opacity: 0; }
         }
 
-        /* Основной контейнер открытки */
+        /* ---------------- ОСНОВНОЙ КОНТЕЙНЕР ОТКРЫТКИ ---------------- */
         .main-container {
             position: relative;
-            z-index: 10;
+            z-index: 2;
             width: 100%;
-            min-height: 100%;
-            max-width: 480px;
+            max-width: 440px;
             margin: 0 auto;
-            padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
+            padding: calc(18px + env(safe-area-inset-top, 0px)) 14px calc(28px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Верхняя корона и дата */
+        /* Верхняя милая корона */
         .crown-badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             background: linear-gradient(135deg, rgba(255, 45, 120, 0.28) 0%, rgba(142, 36, 170, 0.38) 100%);
             border: 1.5px solid var(--gold);
-            border-radius: 30px;
-            padding: 5px 16px;
-            font-size: 12.5px;
-            font-weight: 800;
+            border-radius: 999px;
+            padding: 6px 18px;
+            font-family: var(--f-cute);
+            font-size: 13.5px;
+            font-weight: 700;
             color: var(--gold-light);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 0.3px;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
             margin-bottom: 12px;
             animation: crownPulse 3s infinite alternate;
@@ -171,49 +323,39 @@
             100% { transform: scale(1.03); box-shadow: 0 0 26px rgba(255, 45, 120, 0.5); }
         }
 
-        /* Переливающаяся дата 23 ОКТЯБРЯ */
+        /* Нежное медленное розовое переливание 23 ОКТЯБРЯ */
         .date-shimmer {
-            font-size: 2.1rem;
-            font-weight: 900;
-            letter-spacing: 1px;
+            font-family: var(--f-cute);
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
             text-align: center;
-            line-height: 1.1;
-            background: linear-gradient(90deg, #FF2D78, #FFD700, #FF2D78, #AA00FF, #FFD700);
-            background-size: 300% 100%;
+            line-height: 1.15;
+            background: linear-gradient(90deg, #FF2D78 0%, #FFA8D5 25%, #FF5090 50%, #FFE4F1 75%, #FF2D78 100%);
+            background-size: 250% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: rainbowText 3.8s linear infinite;
-            margin-bottom: 6px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            animation: pinkShimmer 7.5s ease-in-out infinite;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 24px rgba(255, 45, 120, 0.35);
         }
 
-        @keyframes rainbowText {
+        @keyframes pinkShimmer {
             0%   { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
-
-        .milestone-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.45);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--gold-light);
-            margin-bottom: 20px;
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* ---------- РОСКОШНАЯ КАРТОЧКА-ОТКРЫТКА ---------- */
         .card-wrapper {
             position: relative;
             width: 100%;
-            background: linear-gradient(135deg, rgba(255, 45, 120, 0.22) 0%, rgba(120, 0, 160, 0.32) 50%, rgba(20, 0, 50, 0.55) 100%);
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.2) 0%, rgba(120, 0, 160, 0.3) 50%, rgba(20, 0, 50, 0.6) 100%);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1.5px solid rgba(255, 215, 0, 0.65);
             border-radius: 28px;
-            padding: 26px 20px 22px;
+            padding: 24px 16px 20px;
             box-shadow: 0 16px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 45, 120, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.25);
             overflow: hidden;
             display: flex;
@@ -240,21 +382,21 @@
         }
 
         .cake-emoji-art {
-            font-size: 52px;
+            font-size: 48px;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             filter: drop-shadow(0 4px 16px rgba(255, 45, 120, 0.5));
             animation: cakeBounce 2.5s infinite ease-in-out;
         }
 
         @keyframes cakeBounce {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-6px) scale(1.06); }
+            50% { transform: translateY(-5px) scale(1.05); }
         }
 
         .card-title {
-            font-family: var(--f-head);
-            font-size: 1.65rem;
+            font-family: var(--f-cute);
+            font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
             text-align: center;
@@ -262,22 +404,29 @@
             text-shadow: 0 2px 14px rgba(0,0,0,0.6), 0 0 18px var(--pink-glow);
         }
 
-        /* Текст письма Данила */
+        /* Текст письма Данила: красивый, удобный, идеально читаемый */
         .letter-box {
             width: 100%;
-            background: rgba(10, 2, 22, 0.45);
-            border: 1px solid rgba(255, 215, 0, 0.35);
-            border-radius: 20px;
-            padding: 18px 16px;
+            background: rgba(14, 3, 30, 0.55);
+            border: 1.2px solid rgba(255, 215, 0, 0.35);
+            border-radius: 22px;
+            padding: 20px 18px;
+            font-family: var(--f-body);
             font-size: 14.5px;
-            line-height: 1.65;
+            line-height: 1.72;
             color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 20px;
+            font-weight: 500;
+            margin-bottom: 18px;
             text-align: left;
+            word-break: normal;
+            hyphens: none;
+            -webkit-hyphens: none;
+            box-shadow: inset 0 2px 12px rgba(0,0,0,0.45);
         }
 
         .letter-box p {
-            margin-bottom: 12px;
+            margin-bottom: 13px;
+            line-height: 1.72;
         }
         .letter-box p:last-child {
             margin-bottom: 0;
@@ -293,13 +442,13 @@
             text-shadow: 0 0 14px rgba(255, 45, 120, 0.7);
         }
 
-        /* ---------- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА И TELEGRAM ---------- */
+        /* ---------- КОМПАКТНАЯ МИЛАЯ СЕКЦИЯ TELEGRAM ---------- */
         .surprise-box {
             width: 100%;
-            background: linear-gradient(135deg, rgba(30, 8, 55, 0.75) 0%, rgba(12, 2, 28, 0.85) 100%);
-            border: 1.5px solid rgba(255, 215, 0, 0.55);
-            border-radius: 22px;
-            padding: 16px 14px;
+            background: linear-gradient(135deg, rgba(35, 10, 60, 0.72) 0%, rgba(16, 3, 34, 0.82) 100%);
+            border: 1.2px solid rgba(255, 105, 180, 0.45);
+            border-radius: 20px;
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -308,8 +457,8 @@
         }
 
         .surprise-icon {
-            font-size: 32px;
-            margin-bottom: 6px;
+            font-size: 28px;
+            margin-bottom: 4px;
             display: inline-block;
             animation: envelopeFloat 2.2s infinite ease-in-out;
         }
@@ -320,60 +469,147 @@
         }
 
         .surprise-text {
-            font-size: 14px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 12px;
-            line-height: 1.45;
+            font-family: var(--f-cute);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.94);
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
         .tg-action-btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 9px;
-            width: 100%;
-            padding: 15px 18px;
-            background: linear-gradient(135deg, #FF2D78 0%, #8C005C 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 20px;
+            padding: 9px 36px;
+            background: linear-gradient(135deg, #FF2D78 0%, #B0006E 100%);
+            border: 1.5px solid rgba(255, 215, 0, 0.85);
+            border-radius: 999px;
             color: #ffffff;
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 800;
-            box-shadow: 0 8px 25px rgba(255, 45, 120, 0.5), 0 0 15px var(--gold-glow);
+            font-family: var(--f-cute);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 18px rgba(255, 45, 120, 0.5), 0 0 10px rgba(255, 215, 0, 0.3);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
             cursor: pointer;
         }
         .tg-action-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
 
-        /* Инструкция снизу */
-        .tap-hint {
-            margin-top: 18px;
+        /* Кнопка вернуть экран желаний */
+        .re-wish-btn {
+            margin-top: 16px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: var(--f-cute);
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            cursor: pointer;
+            padding: 4px 10px;
+            transition: color 0.2s;
+        }
+        .re-wish-btn:active {
+            color: var(--gold-light);
         }
     </style>
 </head>
 <body>
 
+<!-- ИНТЕРАКТИВНЫЙ ИНТРО-ЭКРАН С ТОРТОМ И СВЕЧАМИ -->
+<div class="intro-screen" id="intro-screen">
+    <div class="intro-badge">✨ 23 ОКТЯБРЯ • 20 ЛЕТ ✨</div>
+    
+    <div class="intro-cake-wrap" id="intro-cake" title="Коснись торта, чтобы задуть свечи">
+        <svg class="cake-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="cakeGrad" cx="50%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FF6AA5"/>
+                    <stop offset="60%" stop-color="#C2185B"/>
+                    <stop offset="100%" stop-color="#880E4F"/>
+                </radialGradient>
+                <linearGradient id="creamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#FFFFFF"/>
+                    <stop offset="100%" stop-color="#FFE0EC"/>
+                </linearGradient>
+                <radialGradient id="flameGrad" cx="50%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="#FFF9C4"/>
+                    <stop offset="40%" stop-color="#FFD54F"/>
+                    <stop offset="80%" stop-color="#FF7043"/>
+                    <stop offset="100%" stop-color="#FF1744"/>
+                </radialGradient>
+            </defs>
+
+            <!-- Тарелка / Подставка -->
+            <ellipse cx="100" cy="165" rx="88" ry="12" fill="rgba(0,0,0,0.35)"/>
+            <ellipse cx="100" cy="160" rx="84" ry="10" fill="url(#creamGrad)" opacity="0.9"/>
+            <ellipse cx="100" cy="158" rx="80" ry="8" fill="#FFD700" opacity="0.8"/>
+
+            <!-- Нижний ярус торта -->
+            <path d="M 28 115 Q 100 130 172 115 L 172 150 Q 100 166 28 150 Z" fill="url(#cakeGrad)"/>
+            <ellipse cx="100" cy="115" rx="72" ry="15" fill="url(#creamGrad)"/>
+
+            <!-- Крем-подтеки нижнего яруса -->
+            <path d="M 28 115 Q 40 128 52 116 Q 66 132 80 117 Q 100 135 120 117 Q 138 132 152 116 Q 164 126 172 115 Q 100 128 28 115 Z" fill="#FFE0EC"/>
+
+            <!-- Верхний ярус торта -->
+            <path d="M 48 75 Q 100 88 152 75 L 152 108 Q 100 122 48 108 Z" fill="url(#cakeGrad)"/>
+            <ellipse cx="100" cy="75" rx="52" ry="13" fill="url(#creamGrad)"/>
+
+            <!-- Крем-подтеки верхнего яруса -->
+            <path d="M 48 75 Q 60 86 72 76 Q 86 89 100 77 Q 116 88 130 76 Q 142 85 152 75 Q 100 86 48 75 Z" fill="#FFE0EC"/>
+
+            <!-- Золотая эмблема "20" на торте -->
+            <circle cx="100" cy="98" r="14" fill="#FFD700" stroke="#FFF9C4" stroke-width="1.5"/>
+            <text x="100" y="103" font-family="'Comfortaa', sans-serif" font-size="12" font-weight="800" fill="#880E4F" text-anchor="middle">20</text>
+
+            <!-- СВЕЧА 1 (Слева) -->
+            <rect x="67" y="44" width="7" height="24" rx="3.5" fill="#FFF" stroke="#FF4081" stroke-width="1.2"/>
+            <line x1="70.5" y1="44" x2="70.5" y2="39" stroke="#333" stroke-width="1.5"/>
+            <!-- Пламя 1 -->
+            <path class="candle-flame flame-1" d="M 70.5 24 Q 76 33 70.5 39 Q 65 33 70.5 24 Z" fill="url(#flameGrad)"/>
+
+            <!-- СВЕЧА 2 (Центр, повыше) -->
+            <rect x="96.5" y="36" width="7" height="28" rx="3.5" fill="#FFD700" stroke="#FFA000" stroke-width="1.2"/>
+            <line x1="100" y1="36" x2="100" y2="30" stroke="#333" stroke-width="1.5"/>
+            <!-- Пламя 2 -->
+            <path class="candle-flame flame-2" d="M 100 14 Q 106 24 100 30 Q 94 24 100 14 Z" fill="url(#flameGrad)"/>
+
+            <!-- СВЕЧА 3 (Справа) -->
+            <rect x="126" y="44" width="7" height="24" rx="3.5" fill="#FFF" stroke="#FF4081" stroke-width="1.2"/>
+            <line x1="129.5" y1="44" x2="129.5" y2="39" stroke="#333" stroke-width="1.5"/>
+            <!-- Пламя 3 -->
+            <path class="candle-flame flame-3" d="M 129.5 24 Q 135 33 129.5 39 Q 124 33 129.5 24 Z" fill="url(#flameGrad)"/>
+        </svg>
+
+        <!-- Дымок при задувании -->
+        <span class="smoke-puff smoke-1">💨</span>
+        <span class="smoke-puff smoke-2">✨</span>
+        <span class="smoke-puff smoke-3">💨</span>
+    </div>
+
+    <h1 class="intro-title" id="intro-title">Загадай желание...</h1>
+    <p class="intro-sub" id="intro-sub">Закрой глаза, загадай самое заветное желание на свой 20-й год и коснись свечей ✨</p>
+    
+    <button class="intro-blow-btn" id="blow-btn">
+        <span>🎂 Задуть свечи</span>
+    </button>
+</div>
+
 <!-- Фоновый слой: конфетти, летающие эмодзи и салюты -->
 <div class="decor-layer" id="decor-layer"></div>
 
 <div class="main-container">
-    <!-- ВЕРХНИЙ БЕЙДЖ -->
+    <!-- ВЕРХНИЙ МИЛЫЙ БЕЙДЖ -->
     <div class="crown-badge">
         <span>👑</span>
-        <span>СОФА • С ДНЁМ РОЖДЕНИЯ</span>
+        <span>Пикми с днём рождения</span>
         <span>👑</span>
     </div>
 
-    <!-- ДАТА 23 ОКТЯБРЯ -->
+    <!-- МЕДЛЕННОЕ РОЗОВОЕ ПЕРЕЛИВАНИЕ ДАТЫ -->
     <h1 class="date-shimmer">23 ОКТЯБРЯ</h1>
     
     <!-- КАРТОЧКА-ОТКРЫТКА -->
@@ -383,27 +619,28 @@
 
         <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ -->
         <div class="letter-box">
-            <p>Ровно 100 дней назад я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
-            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
-            <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
-            <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
-            <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
+            <p>Ровно 100&nbsp;дней назад я&nbsp;написал тебе первое сообщение, и&nbsp;за&nbsp;это время ты&nbsp;стала мне очень близким человеком.</p>
+            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те&nbsp;люди и&nbsp;события, от&nbsp;которых ты&nbsp;по-настоящему кайфуешь.</p>
+            <p>Чтобы ты&nbsp;никогда не&nbsp;мёрзла, больше не&nbsp;болела и&nbsp;всегда смотрела на&nbsp;себя в&nbsp;зеркало с&nbsp;улыбкой - даже в&nbsp;те дни, когда тебе кажется, что укладка не&nbsp;удалась.</p>
+            <p>Иди к&nbsp;своим целям и&nbsp;мечтам, кстати, пока это писал, понял, что даже не&nbsp;знаю о&nbsp;чем ты&nbsp;мечтаешь&nbsp;).</p>
+            <p>Ну&nbsp;и&nbsp;меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
             <span class="bday-sign">С днем рождения, Соф ❤️</span>
         </div>
 
-        <!-- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА В TELEGRAM -->
+        <!-- СЕКЦИЯ TELEGRAM -->
         <div class="surprise-box">
             <div class="surprise-icon">💌</div>
             <div class="surprise-text">
                 Напиши в чат любое сообщение:
             </div>
             <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="tg-action-btn" onclick="sendTgActionReport()">
-                <span>✈️ Открыть диалог @OPETsqk</span>
+                Открыть
             </a>
         </div>
     </div>
 
-    </div>
+    <button class="re-wish-btn" onclick="relightCandles()">✨ Загадать желание ещё раз 🎂</button>
+</div>
 
 <script>
 (function(){
@@ -415,60 +652,113 @@
         chatId: '869126840'
     };
 
+    var isDanilTest = window.location.search.indexOf('danil') !== -1;
+
     function sendTelegramAlert(text) {
-        if (!TG_DATA.botToken || !TG_DATA.chatId) return;
-        var url = 'https://api.telegram.org/bot' + TG_DATA.botToken +
-                  '/sendMessage?chat_id=' + TG_DATA.chatId +
-                  '&text=' + encodeURIComponent(text);
         try {
-            if (typeof fetch === 'function') {
-                fetch(url, { method: 'GET', keepalive: true }).catch(function(){});
-                return;
-            }
-        } catch(e){}
-        try {
-            if (navigator.sendBeacon) {
-                navigator.sendBeacon(url);
-                return;
-            }
-        } catch(e2){}
-        try {
-            var img = new Image();
-            img.src = url;
-        } catch(e3){}
+            var prefix = isDanilTest ? '🧪 [ТЕСТ ДАНИЛА]\n' : '👑 [ДЕНЬ РОЖДЕНИЯ СОФЫ]\n';
+            var fullMessage = prefix + text + '\n⏰ ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            var url = 'https://api.telegram.org/bot' + TG_DATA.botToken + '/sendMessage';
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TG_DATA.chatId,
+                    text: fullMessage
+                }),
+                keepalive: true
+            }).catch(function(){});
+        } catch(e) {}
     }
 
-    if (/[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash)) {
-        try { localStorage.setItem('sched_device_owner', 'danil'); } catch(e){}
-    }
-    if (/[?&#]reset\b/i.test(location.search + location.hash)) {
-        try { localStorage.setItem('sched_device_owner', ''); } catch(e){}
-    }
+    // Уведомление об открытии страницы
+    sendTelegramAlert('🎉 Софа зашла на праздничную страницу открытки!');
 
-    function buildAlertText(eventTitle) {
-        var isOwner = (localStorage.getItem('sched_device_owner') === 'danil');
-        var ua = navigator.userAgent || '';
-        var isIPhone = /iPhone/i.test(ua);
-        var dev = isIPhone ? 'iPhone' : (/Android/i.test(ua) ? 'Android' : 'ПК');
-        var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Гость: ');
-        return prefix + eventTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
-    }
-
-    // Уведомление при открытии открытки
-    setTimeout(function(){
-        sendTelegramAlert(buildAlertText('Открыла поздравительную открытку! 🎂✨'));
-    }, 1200);
-
+    // Клик по кнопке «Открыть»
     window.sendTgActionReport = function() {
-        sendTelegramAlert(buildAlertText('Нажала перейти в Telegram (@OPETsqk) за подарком! 🚀'));
+        sendTelegramAlert('💌 Софа нажала кнопку «Открыть» и переходит в диалог Telegram к Данилу!');
     };
 
-    /* ---------- ПРАЗДНИЧНЫЙ ДЕКОР: КОНФЕТТИ, ШАРИКИ, ТОРТИКИ, САЛЮТЫ ---------- */
+    /* ---------- ВОЛШЕБНЫЙ ЗВУК ЗАДУВАНИЯ СВЕЧЕЙ (WEB AUDIO API) ---------- */
+    function playMagicChime() {
+        try {
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            var ctx = new AudioContext();
+            if (ctx.state === 'suspended') { ctx.resume(); }
+            var notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51]; // C5, E5, G5, B5, C6, E6
+            var now = ctx.currentTime;
+            notes.forEach(function(freq, idx){
+                var osc = ctx.createOscillator();
+                var gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                gain.gain.setValueAtTime(0, now + idx * 0.07);
+                gain.gain.linearRampToValueAtTime(0.18, now + idx * 0.07 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.07 + 0.85);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now + idx * 0.07);
+                osc.stop(now + idx * 0.07 + 0.9);
+            });
+        } catch(e) {}
+    }
+
+    /* ---------- ЛОГИКА ЗАДУВАНИЯ СВЕЧЕЙ НА ИНТРО-ЭКРАНЕ ---------- */
+    var introScreen = document.getElementById('intro-screen');
+    var introCake = document.getElementById('intro-cake');
+    var blowBtn = document.getElementById('blow-btn');
+    var introTitle = document.getElementById('intro-title');
+    var introSub = document.getElementById('intro-sub');
     var decorContainer = document.getElementById('decor-layer');
 
-    // 1. Падающие конфетти
+    var isBlown = false;
+
+    function handleBlowCandles() {
+        if (isBlown) return;
+        isBlown = true;
+
+        playMagicChime();
+        introCake.classList.add('blown');
+
+        // Салюты вокруг торта
+        var rect = introCake.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        spawnFirework(document.body, (cx - 40) + 'px', (cy - 30) + 'px', true);
+        spawnFirework(document.body, (cx + 40) + 'px', (cy - 40) + 'px', true);
+
+        introTitle.textContent = '✨ Желание загадано! ✨';
+        introSub.textContent = 'Оно обязательно сбудется в твои 20 лет ❤️';
+        blowBtn.innerHTML = '<span>✨ Открываем...</span>';
+
+        // Отправка в бот Данила
+        sendTelegramAlert('🎂 Софа загадала желание и задула свечи на торте!');
+
+        // Плавный переход к открытке
+        setTimeout(function(){
+            introScreen.classList.add('hidden');
+            // Праздничный залп при открытии
+            setTimeout(function(){
+                spawnFirework(document.body, '25%', '25%', true);
+                spawnFirework(document.body, '75%', '30%', true);
+            }, 300);
+        }, 1100);
+    }
+
+    if (blowBtn) blowBtn.addEventListener('click', handleBlowCandles);
+    if (introCake) introCake.addEventListener('click', handleBlowCandles);
+
+    window.relightCandles = function() {
+        isBlown = false;
+        introCake.classList.remove('blown');
+        introTitle.textContent = 'Загадай желание...';
+        introSub.textContent = 'Закрой глаза, загадай самое заветное желание на свой 20-й год и коснись свечей ✨';
+        blowBtn.innerHTML = '<span>🎂 Задуть свечи</span>';
+        introScreen.classList.remove('hidden');
+    };
+
+    /* ---------- АНИМАЦИИ: КОНФЕТТИ, ШАРИКИ, САЛЮТЫ ---------- */
     var CONFETTI_COLORS = [
         '#FF2D78','#FFD700','#AA00FF','#00CFFF','#FF7043',
         '#FFEB3B','#E040FB','#FF4081','#40C4FF','#69F0AE',
@@ -495,8 +785,7 @@
         }
     }
 
-    // 2. Летающие шарики, тортики и сердечки
-    var FLOAT_ICONS = ['🎈', '🎂', '💖', '✨', '🎈', '🎂', '💖'];
+    var FLOAT_ICONS = ['🎈', '🎂', '💖', '✨', '👑', '🎉', '🍰'];
     function initFloatingItems() {
         if (!decorContainer) return;
 
@@ -524,8 +813,7 @@
         setInterval(spawnItem, 3600);
     }
 
-    // 3. Салюты
-    var FW_COLORS = ['#FFD700','#FF2D78','#AA00FF','#00CFFF','#FF7043','#FF4081','#E040FB','#FFEB3B'];
+    var FW_COLORS = ['#FFD700','#FF2D78','#FFA0C5','#00CFFF','#FF7043','#FF4081','#E040FB','#FFEB3B'];
 
     function spawnFirework(targetContainer, posX, posY, isFixed) {
         if (!targetContainer) return;
@@ -576,13 +864,13 @@
         setTimeout(launch, 800);
     }
 
-    // Салют при тапе в любом месте экрана
+    // Салют при тапе в любом месте, КРОМЕ окна с текстом пожеланий
     document.addEventListener('click', function(e){
-        if (e.target.closest && e.target.closest('a, button, input, .letter-box, .surprise-box')) return;
+        // Исключаем ТОЛЬКО окошко с длинным текстом пожеланий (чтобы не перекрывать чтение искрами)
+        if (e.target.closest && e.target.closest('.letter-box')) return;
         spawnFirework(document.body, e.clientX + 'px', e.clientY + 'px', true);
     });
 
-    // Инициализация
     initConfetti();
     initFloatingItems();
     scheduleFireworks();
