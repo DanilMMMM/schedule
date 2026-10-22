@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Арканы Судьбы: София • 23.10.2006</title>
+    <title>С Днём Рождения, Софа! 🎂✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
+            --pink: #FF2D78;
+            --pink-glow: rgba(255, 45, 120, 0.45);
             --gold: #FFD700;
             --gold-light: #FFF275;
-            --gold-dark: #C59B27;
-            --gold-glow: rgba(255, 215, 0, 0.45);
-            --indigo-deep: #080318;
-            --indigo-card: #110729;
-            --f-cinzel: 'Cinzel', serif;
-            --f-dec: 'Cinzel Decorative', serif;
+            --gold-glow: rgba(255, 215, 0, 0.4);
             --f-body: 'Montserrat', sans-serif;
-            --f-serif: 'Playfair Display', serif;
+            --f-head: 'Playfair Display', serif;
             --f-hand: 'Pacifico', cursive;
         }
 
@@ -33,494 +30,383 @@
         html, body {
             width: 100%; height: 100%;
             overflow-x: hidden;
-            background-color: var(--indigo-deep);
+            background: radial-gradient(ellipse at 50% 15%, #380752 0%, #17002e 45%, #080014 100%);
             font-family: var(--f-body);
             color: #ffffff;
         }
 
-        /* Фоновое звездное небо и созвездие Весов */
-        .sky-canvas {
+        /* Фоновый контейнер праздничного декора */
+        .decor-layer {
             position: fixed;
             inset: 0;
-            width: 100%; height: 100%;
             z-index: 1;
             pointer-events: none;
+            overflow: hidden;
+            contain: strict;
+            transform: translateZ(0);
         }
 
-        .ambient-glow {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            background: radial-gradient(circle at 50% 30%, rgba(138, 43, 226, 0.22) 0%, rgba(255, 45, 120, 0.12) 40%, transparent 75%),
-                        radial-gradient(circle at 50% 85%, rgba(255, 215, 0, 0.14) 0%, transparent 60%);
+        /* Падающие конфетти */
+        .confetti-piece {
+            position: absolute;
+            top: -10%;
+            width: 7px; height: 12px;
+            border-radius: 2px;
+            opacity: 0;
+            animation-name: confettiFall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes confettiFall {
+            0%   { transform: translate3d(0, 0, 0) rotate(0deg) scaleX(1); opacity: 0; }
+            6%   { opacity: 1; }
+            30%  { transform: translate3d(var(--cx), 30vh, 0) rotate(120deg) scaleX(.7); }
+            60%  { transform: translate3d(calc(var(--cx)*-0.6), 65vh, 0) rotate(250deg) scaleX(1); }
+            90%  { opacity: .85; }
+            100% { transform: translate3d(var(--cx), 115vh, 0) rotate(400deg) scaleX(.5); opacity: 0; }
+        }
+
+        /* Летающие шарики, тортики и сердечки */
+        .floating-item {
+            position: absolute;
+            bottom: -50px;
+            user-select: none; pointer-events: none;
+            font-size: var(--mhz, 22px);
+            opacity: 0.75;
+            text-shadow: 0 2px 8px rgba(255, 45, 120, 0.4);
+            animation: itemFloatRise var(--mhd, 12s) linear infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes itemFloatRise {
+            0%   { transform: translate3d(0, 0, 0) scale(0.85); opacity: 0; }
+            10%  { opacity: 0.85; }
+            50%  { transform: translate3d(var(--mhdx, 25px), -55vh, 0) scale(1); }
+            90%  { opacity: 0.7; }
+            100% { transform: translate3d(calc(var(--mhdx, 25px) * -0.5), -115vh, 0) scale(0.9); opacity: 0; }
+        }
+
+        /* Праздничные салюты */
+        .firework {
+            position: absolute;
             pointer-events: none;
+            animation: fireworkBurst var(--fw-dur, 1.5s) cubic-bezier(.22,.68,0,1) both;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes fireworkBurst {
+            0%   { opacity: 1; }
+            80%  { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .fw-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--fw-color, #FFD700);
+            width: 0; height: 0;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-50%);
+            animation: fwRingExpand var(--fw-dur, 1.5s) ease-out forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes fwRingExpand {
+            0%   { width: 0; height: 0; opacity: 1; border-width: 3px; }
+            60%  { opacity: .7; border-width: 2px; }
+            100% { width: var(--fw-size, 140px); height: var(--fw-size, 140px); opacity: 0; border-width: 1px; }
+        }
+        .fw-spark {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--fw-color, #FFD700);
+            left: 50%; top: 50%;
+            box-shadow: 0 0 5px var(--fw-color, #FFD700);
+            transform-origin: 0 0;
+            animation: fwSparkFly var(--fw-dur, 1.5s) ease-out forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes fwSparkFly {
+            0%   { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(0px) scale(1); opacity: 1; }
+            50%  { opacity: .85; }
+            100% { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(var(--dist,70px)) scale(.3); opacity: 0; }
         }
 
-        .app-wrapper {
+        /* Основной контейнер открытки */
+        .main-container {
             position: relative;
             z-index: 10;
             width: 100%;
             min-height: 100%;
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(30px + env(safe-area-inset-bottom, 0px));
+            padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Верхняя плашка зодиака */
-        .zodiac-badge {
+        /* Верхняя корона и дата */
+        .crown-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(138, 43, 226, 0.3) 100%);
+            gap: 7px;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.28) 0%, rgba(142, 36, 170, 0.38) 100%);
             border: 1.5px solid var(--gold);
             border-radius: 30px;
             padding: 5px 16px;
-            font-family: var(--f-cinzel);
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 800;
-            letter-spacing: 2px;
             color: var(--gold-light);
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-            margin-bottom: 12px;
-            animation: pulseGlow 3s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 14px rgba(255, 215, 0, 0.25); transform: scale(1); }
-            100% { box-shadow: 0 0 26px rgba(255, 215, 0, 0.55); transform: scale(1.02); }
-        }
-
-        .main-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .main-title {
-            font-family: var(--f-dec);
-            font-size: 1.95rem;
-            font-weight: 900;
             letter-spacing: 1.5px;
-            line-height: 1.15;
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFF59D 45%, var(--gold) 100%);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+            margin-bottom: 12px;
+            animation: crownPulse 3s infinite alternate;
+        }
+
+        @keyframes crownPulse {
+            0% { transform: scale(1); box-shadow: 0 0 14px rgba(255, 215, 0, 0.3); }
+            100% { transform: scale(1.03); box-shadow: 0 0 26px rgba(255, 45, 120, 0.5); }
+        }
+
+        /* Переливающаяся дата 23 ОКТЯБРЯ */
+        .date-shimmer {
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.1;
+            background: linear-gradient(90deg, #FF2D78, #FFD700, #FF2D78, #AA00FF, #FFD700);
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            animation: rainbowText 3.8s linear infinite;
             margin-bottom: 6px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
 
-        .main-subtitle {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.82);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        @keyframes rainbowText {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
 
-        .milestone-pill {
+        .milestone-badge {
             display: inline-block;
-            margin-top: 8px;
-            background: rgba(255, 45, 120, 0.2);
-            border: 1px solid rgba(255, 45, 120, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.45);
             border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: #FF80AB;
-        }
-
-        /* ---------- СТОЛ ТАРО (3 КАРТЫ С 3D ПЕРЕВОРОТОМ) ---------- */
-        .tarot-spread {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            margin-bottom: 24px;
-        }
-
-        .tarot-slot {
-            width: 100%;
-            perspective: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .tarot-card {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            height: 480px;
-            transform-style: preserve-3d;
-            transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-            border-radius: 22px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(255, 215, 0, 0.15);
-        }
-
-        .tarot-card.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-face {
-            position: absolute;
-            inset: 0;
-            width: 100%; height: 100%;
-            border-radius: 22px;
-            overflow: hidden;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border: 2px solid var(--gold);
-        }
-
-        /* Рубашка карты */
-        .card-back {
-            background: #090318 url('assets/tarot_back.jpg') center center / cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 20px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
-        }
-
-        .card-back-hint {
-            background: linear-gradient(135deg, rgba(8, 3, 20, 0.92) 0%, rgba(20, 8, 40, 0.95) 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 18px;
-            padding: 10px 14px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.8), 0 0 15px var(--gold-glow);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .card-back-number {
-            font-family: var(--f-cinzel);
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--gold-light);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .card-back-action {
-            font-size: 11.5px;
-            font-weight: 700;
-            color: #fff;
-            margin-top: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        /* Лицевая сторона карты */
-        .card-front {
-            transform: rotateY(180deg);
-            background-color: var(--indigo-card);
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .card-front-details {
-            background: linear-gradient(180deg, transparent 0%, rgba(6, 2, 14, 0.85) 25%, rgba(6, 2, 14, 0.98) 100%);
-            padding: 20px 18px 18px;
-        }
-
-        .card-roman-tag {
-            font-family: var(--f-cinzel);
+            padding: 4px 14px;
             font-size: 12px;
-            font-weight: 800;
-            color: var(--gold-light);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .card-front-title {
-            font-family: var(--f-serif);
-            font-size: 1.45rem;
             font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 15px var(--gold-glow);
-            margin-bottom: 8px;
-            line-height: 1.2;
+            color: var(--gold-light);
+            margin-bottom: 20px;
         }
 
-        .card-front-desc {
-            font-size: 13px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-        }
-
-        /* ---------- КАРТА 3: ИНТЕРАКТИВНЫЙ СКРЕТЧ-СЛОЙ ---------- */
-        .scratch-card-front {
+        /* ---------- РОСКОШНАЯ КАРТОЧКА-ОТКРЫТКА ---------- */
+        .card-wrapper {
             position: relative;
-            background: #100624;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.22) 0%, rgba(120, 0, 160, 0.32) 50%, rgba(20, 0, 50, 0.55) 100%);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid rgba(255, 215, 0, 0.65);
+            border-radius: 28px;
+            padding: 26px 20px 22px;
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 45, 120, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            transform: translateZ(0);
         }
 
-        /* Подложка под скретч-слоем (Письмо Данила) */
-        .secret-letter-underlay {
+        .card-wrapper::before {
+            content: '';
             position: absolute;
-            inset: 0;
-            padding: 20px 18px;
-            overflow-y: auto;
-            background: linear-gradient(135deg, rgba(32, 12, 60, 0.98) 0%, rgba(14, 4, 30, 0.99) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: left;
-            z-index: 1;
+            inset: -2px;
+            border-radius: 29px;
+            border: 1.5px solid rgba(255, 215, 0, 0.8);
+            box-shadow: inset 0 0 18px rgba(255, 215, 0, 0.35), 0 0 24px rgba(255, 45, 120, 0.45);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: cardGlow 3.5s ease-in-out infinite alternate;
         }
 
-        .letter-content-text {
-            font-size: 13px;
-            line-height: 1.6;
+        @keyframes cardGlow {
+            0%   { opacity: 0.25; }
+            100% { opacity: 0.85; }
+        }
+
+        .cake-emoji-art {
+            font-size: 52px;
+            display: inline-block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 16px rgba(255, 45, 120, 0.5));
+            animation: cakeBounce 2.5s infinite ease-in-out;
+        }
+
+        @keyframes cakeBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.06); }
+        }
+
+        .card-title {
+            font-family: var(--f-head);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.6), 0 0 18px var(--pink-glow);
+        }
+
+        /* Текст письма Данила */
+        .letter-box {
+            width: 100%;
+            background: rgba(10, 2, 22, 0.45);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 20px;
+            padding: 18px 16px;
+            font-size: 14.5px;
+            line-height: 1.65;
             color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            text-align: left;
         }
 
-        .letter-content-text p {
-            margin-bottom: 10px;
+        .letter-box p {
+            margin-bottom: 12px;
+        }
+        .letter-box p:last-child {
+            margin-bottom: 0;
         }
 
-        .letter-sign-hand {
+        .bday-sign {
+            display: block;
+            text-align: right;
             font-family: var(--f-hand);
             font-size: 1.25rem;
             color: var(--gold-light);
-            display: block;
-            text-align: right;
-            margin-top: 10px;
-            text-shadow: 0 0 12px var(--gold-glow);
+            margin-top: 14px;
+            text-shadow: 0 0 14px rgba(255, 45, 120, 0.7);
         }
 
-        /* Кнопка в Telegram внизу письма */
-        .tg-reveal-btn {
-            margin-top: 12px;
+        /* ---------- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА И TELEGRAM ---------- */
+        .surprise-box {
             width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #0088cc 0%, #005588 100%);
-            border: 1.5px solid var(--gold);
-            border-radius: 20px;
-            color: #fff;
-            text-decoration: none;
-            font-family: var(--f-cinzel);
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.5), 0 0 15px var(--gold-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.2s ease;
-        }
-        .tg-reveal-btn.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .tg-reveal-btn:active { transform: scale(0.96); }
-
-        /* Сам скретч-холст, который стирается пальцем */
-        .scratch-canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%; height: 100%;
-            z-index: 10;
-            cursor: grab;
+            background: linear-gradient(135deg, rgba(30, 8, 55, 0.75) 0%, rgba(12, 2, 28, 0.85) 100%);
+            border: 1.5px solid rgba(255, 215, 0, 0.55);
             border-radius: 22px;
-            transition: opacity 0.6s ease;
-        }
-
-        .scratch-instruction {
-            position: absolute;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 15;
-            background: rgba(8, 2, 20, 0.85);
-            border: 1px solid var(--gold);
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 11.5px;
-            font-weight: 800;
-            color: var(--gold-light);
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            animation: pulseHint 2s infinite ease-in-out;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
-        @keyframes pulseHint {
-            0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.04); }
+        .surprise-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+            display: inline-block;
+            animation: envelopeFloat 2.2s infinite ease-in-out;
         }
 
-        /* Индикатор прогресса стирания */
-        .scratch-progress-bar {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 15;
-            background: rgba(8, 2, 20, 0.9);
-            border: 1px solid var(--gold);
-            border-radius: 12px;
-            padding: 4px 12px;
-            font-size: 11px;
+        @keyframes envelopeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .surprise-text {
+            font-size: 14px;
             font-weight: 700;
-            color: #fff;
-            pointer-events: none;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 12px;
+            line-height: 1.45;
         }
 
-        /* Кнопка включения/выключения звука */
-        .sound-toggle-btn {
-            position: fixed;
-            top: calc(14px + env(safe-area-inset-top, 0px));
-            right: 16px;
-            z-index: 100;
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            background: rgba(17, 7, 41, 0.85);
-            border: 1.5px solid var(--gold);
-            color: #fff;
-            font-size: 16px;
+        .tg-action-btn {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 15px 18px;
+            background: linear-gradient(135deg, #FF2D78 0%, #8C005C 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(255, 45, 120, 0.5), 0 0 15px var(--gold-glow);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        .tg-action-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Инструкция снизу */
+        .tap-hint {
+            margin-top: 18px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
 <body>
 
-<canvas class="sky-canvas" id="sky-canvas"></canvas>
-<div class="ambient-glow"></div>
+<!-- Фоновый слой: конфетти, летающие эмодзи и салюты -->
+<div class="decor-layer" id="decor-layer"></div>
 
-<button class="sound-toggle-btn" id="sound-btn" onclick="toggleMute()" title="Звук" aria-label="Звук">🔊</button>
-
-<div class="app-wrapper">
-    <!-- ЗОДИАКАЛЬНЫЙ БЕЙДЖ -->
-    <div class="zodiac-badge">
-        <span>♎</span>
-        <span>СОЗВЕЗДИЕ ВЕСОВ</span>
-        <span>•</span>
-        <span>2006</span>
+<div class="main-container">
+    <!-- ВЕРХНИЙ БЕЙДЖ -->
+    <div class="crown-badge">
+        <span>👑</span>
+        <span>СОФА • С ДНЁМ РОЖДЕНИЯ</span>
+        <span>✨</span>
     </div>
 
-    <!-- ЗАГОЛОВОК РАСКЛАДА -->
-    <header class="main-header">
-        <h1 class="main-title">АРКАНЫ СУДЬБЫ</h1>
-        <p class="main-subtitle">Персональный расклад для Софии • 23 Октября</p>
-        <div class="milestone-pill">✨ 20 ЛЕТ • ПЕРЕХОД НА 3-Й ДЕСЯТОК ✨</div>
-    </header>
+    <!-- ДАТА 23 ОКТЯБРЯ -->
+    <h1 class="date-shimmer">23 ОКТЯБРЯ</h1>
+    <div class="milestone-badge">🎉 ТЕБЕ 20 ЛЕТ • 3-Й ДЕСЯТОК 🎉</div>
 
-    <!-- РАСКЛАД ИЗ 3 КАРТ -->
-    <div class="tarot-spread">
+    <!-- КАРТОЧКА-ОТКРЫТКА -->
+    <div class="card-wrapper">
+        <div class="cake-emoji-art">🎂</div>
+        <h2 class="card-title">С Днём Рождения!</h2>
 
-        <!-- КАРТА I: 100 ДНЕЙ (ПЕРВОЕ ПОСЛАНИЕ) -->
-        <div class="tarot-slot">
-            <div class="tarot-card" id="card-1" onclick="flipTarotCard(1)">
-                <!-- Рубашка -->
-                <div class="card-face card-back">
-                    <div class="card-back-hint">
-                        <div class="card-back-number">АРКАН I • ПРОШЛОЕ</div>
-                        <div class="card-back-action"><span>✨</span> Коснись, чтобы открыть</div>
-                    </div>
-                </div>
-                <!-- Лицо -->
-                <div class="card-face card-front" style="background-image: url('assets/card_100.jpg');">
-                    <div class="card-front-details">
-                        <div class="card-roman-tag">АРКАН C • THE FIRST MESSAGE</div>
-                        <h2 class="card-front-title">100 Дней Назад</h2>
-                        <p class="card-front-desc">
-                            Ровно сто дней назад две линии судьбы пересеклись в одно первое сообщение. Вселенная подсказывает: случайности не случайны. За это время ты стала для автора расклада по-настоящему близким человеком.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ -->
+        <div class="letter-box">
+            <p>Ровно 100 дней назад я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
+            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
+            <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
+            <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
+            <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;color:var(--gold);font-weight:700;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
+            <span class="bday-sign">С днем рождения, Соф ❤️</span>
         </div>
 
-        <!-- КАРТА II: ВЕСЫ И ВЕНЕРА (20 ЛЕТ) -->
-        <div class="tarot-slot">
-            <div class="tarot-card" id="card-2" onclick="flipTarotCard(2)">
-                <!-- Рубашка -->
-                <div class="card-face card-back">
-                    <div class="card-back-hint">
-                        <div class="card-back-number">АРКАН II • НАСТОЯЩЕЕ</div>
-                        <div class="card-back-action"><span>✨</span> Коснись, чтобы открыть</div>
-                    </div>
-                </div>
-                <!-- Лицо -->
-                <div class="card-face card-front" style="background-image: url('assets/card_libra.jpg');">
-                    <div class="card-front-details">
-                        <div class="card-roman-tag">АРКАН XX • LIBRA & VENUS</div>
-                        <h2 class="card-front-title">Знак Венеры • 20 Лет</h2>
-                        <p class="card-front-desc">
-                            23 октября 2006 года родилась девушка под покровительством Венеры. Твоя стихия — эстетика, тепло и шарм. Сегодня ты переступаешь черту в 3-й десяток! Пророчество карт: никогда не мёрзнуть, сиять улыбкой (даже в дни сомнительной укладки) и меньше париться по пустякам 😉
-                        </p>
-                    </div>
-                </div>
+        <!-- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА В TELEGRAM -->
+        <div class="surprise-box">
+            <div class="surprise-icon">💌</div>
+            <div class="surprise-text">
+                Напиши в чат любое сообщение, чтобы получить твой подарок:
             </div>
+            <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="tg-action-btn" onclick="sendTgActionReport()">
+                <span>✈️ Открыть диалог @OPETsqk</span>
+            </a>
         </div>
+    </div>
 
-        <!-- КАРТА III: ТАЙНЫЙ АРКАН С СОТРИ-СЛОЕМ (СКРЕТЧ) -->
-        <div class="tarot-slot">
-            <div class="tarot-card" id="card-3" onclick="flipTarotCard(3)">
-                <!-- Рубашка -->
-                <div class="card-face card-back">
-                    <div class="card-back-hint">
-                        <div class="card-back-number">АРКАН III • ГЛАВНАЯ ТАЙНА</div>
-                        <div class="card-back-action"><span>🔮</span> Послание & Подарок</div>
-                    </div>
-                </div>
-                <!-- Лицо со стираемым золотым скретч-слоем -->
-                <div class="card-face card-front scratch-card-front" id="scratch-face">
-                    <!-- Подложка: Письмо Данила -->
-                    <div class="secret-letter-underlay">
-                        <div class="letter-content-text">
-                            <p><b>Ровно 100 дней назад</b> я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
-                            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
-                            <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
-                            <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
-                            <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;color:var(--gold);font-weight:700;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
-                            <span class="letter-sign-hand">С днем рождения, Соф ❤️</span>
-                        </div>
-                        <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="tg-reveal-btn" id="tg-btn" onclick="notifyTelegramClick()">
-                            <span>✈️ Забрать подарок в Telegram (@OPETsqk)</span>
-                        </a>
-                    </div>
-
-                    <!-- Инструкция -->
-                    <div class="scratch-instruction" id="scratch-hint">
-                        ✨ Сотри золотой слой пальцем ✨
-                    </div>
-
-                    <!-- Индикатор -->
-                    <div class="scratch-progress-bar" id="scratch-bar">
-                        Стерто: <span id="scratch-percent">0%</span>
-                    </div>
-
-                    <!-- Холст скретч-слоя -->
-                    <canvas class="scratch-canvas" id="scratch-canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
+    <div class="tap-hint">
+        <span>🎆</span>
+        <span>Коснись экрана в любом месте для салюта</span>
     </div>
 </div>
 
@@ -528,16 +414,16 @@
 (function(){
     "use strict";
 
-    /* ---------- TELEGRAM-УВЕДОМЛЕНИЯ В БОТ ДАНИЛА ---------- */
-    var TG_CFG = {
+    /* ---------- TELEGRAM УВЕДОМЛЕНИЯ В БОТ ДАНИЛА ---------- */
+    var TG_DATA = {
         botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
         chatId: '869126840'
     };
 
     function sendTelegramAlert(text) {
-        if (!TG_CFG.botToken || !TG_CFG.chatId) return;
-        var url = 'https://api.telegram.org/bot' + TG_CFG.botToken +
-                  '/sendMessage?chat_id=' + TG_CFG.chatId +
+        if (!TG_DATA.botToken || !TG_DATA.chatId) return;
+        var url = 'https://api.telegram.org/bot' + TG_DATA.botToken +
+                  '/sendMessage?chat_id=' + TG_DATA.chatId +
                   '&text=' + encodeURIComponent(text);
         try {
             if (typeof fetch === 'function') {
@@ -564,383 +450,147 @@
         try { localStorage.setItem('sched_device_owner', ''); } catch(e){}
     }
 
-    function createTarotLog(eventTitle) {
+    function buildAlertText(eventTitle) {
         var isOwner = (localStorage.getItem('sched_device_owner') === 'danil');
         var ua = navigator.userAgent || '';
         var isIPhone = /iPhone/i.test(ua);
         var dev = isIPhone ? 'iPhone' : (/Android/i.test(ua) ? 'Android' : 'ПК');
         var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '🔮 Игрок: ');
+        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Гость: ');
         return prefix + eventTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
     }
 
-    // Уведомление при заходе на страницу расклада
+    // Уведомление при открытии открытки
     setTimeout(function(){
-        sendTelegramAlert(createTarotLog('Открыла расклад «Арканы Судьбы: 23 Октября» 🔮'));
-    }, 1500);
+        sendTelegramAlert(buildAlertText('Открыла поздравительную открытку! 🎂✨'));
+    }, 1200);
 
-    /* ---------- МИСТИЧЕСКИЙ ЗВУКОВОЙ СИНТЕЗАТОР (WEB AUDIO API) ---------- */
-    var audioCtx = null;
-    var muted = false;
-
-    function initAudioContext() {
-        if (!audioCtx) {
-            var AC = window.AudioContext || window.webkitAudioContext;
-            if (AC) audioCtx = new AC();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }
-
-    function playMysticSound(name) {
-        if (muted) return;
-        initAudioContext();
-        if (!audioCtx) return;
-
-        try {
-            var t = audioCtx.currentTime;
-            if (name === 'flip') {
-                // Шелест карты и хрустальный звон
-                [523.25, 659.25, 783.99, 1046.5].forEach(function(freq, idx){
-                    var osc = audioCtx.createOscillator();
-                    var gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, t + idx * 0.06);
-                    gain.gain.setValueAtTime(0.16, t + idx * 0.06);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.06 + 0.6);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t + idx * 0.06);
-                    osc.stop(t + idx * 0.06 + 0.65);
-                });
-            } else if (name === 'sparkle') {
-                // Золотые искры при стирании
-                var osc = audioCtx.createOscillator();
-                var gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200 + Math.random() * 800, t);
-                gain.gain.setValueAtTime(0.05, t);
-                gain.gain.linearRampToValueAtTime(0.001, t + 0.07);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(t);
-                osc.stop(t + 0.08);
-            } else if (name === 'triumph') {
-                // Торжественная арфа при раскрытии письма
-                [440, 554.37, 659.25, 830.61, 880, 1108.73, 1318.5].forEach(function(freq, idx){
-                    var osc = audioCtx.createOscillator();
-                    var gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, t + idx * 0.08);
-                    gain.gain.setValueAtTime(0.18, t + idx * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.08 + 1.1);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t + idx * 0.08);
-                    osc.stop(t + idx * 0.08 + 1.2);
-                });
-            }
-        } catch(e){}
-    }
-
-    window.toggleMute = function() {
-        muted = !muted;
-        var b = document.getElementById('sound-btn');
-        if (b) b.textContent = muted ? '🔇' : '🔊';
-        if (!muted) playMysticSound('flip');
+    window.sendTgActionReport = function() {
+        sendTelegramAlert(buildAlertText('Нажала перейти в Telegram (@OPETsqk) за подарком! 🚀'));
     };
 
-    /* ---------- ПЕРЕВОРОТ КАРТ ТАРО ---------- */
-    var card1Flipped = false;
-    var card2Flipped = false;
-    var card3Flipped = false;
+    /* ---------- ПРАЗДНИЧНЫЙ ДЕКОР: КОНФЕТТИ, ШАРИКИ, ТОРТИКИ, САЛЮТЫ ---------- */
+    var decorContainer = document.getElementById('decor-layer');
 
-    window.flipTarotCard = function(num) {
-        if (num === 1) {
-            var c1 = document.getElementById('card-1');
-            c1.classList.toggle('flipped');
-            playMysticSound('flip');
-            if (!card1Flipped) {
-                card1Flipped = true;
-                sendTelegramAlert(createTarotLog('Перевернула Карту I: «100 Дней Назад» 📜'));
-            }
-        } else if (num === 2) {
-            var c2 = document.getElementById('card-2');
-            c2.classList.toggle('flipped');
-            playMysticSound('flip');
-            if (!card2Flipped) {
-                card2Flipped = true;
-                sendTelegramAlert(createTarotLog('Перевернула Карту II: «Весы XX • 20 Лет» ♎'));
-            }
-        } else if (num === 3) {
-            var c3 = document.getElementById('card-3');
-            if (!card3Flipped) {
-                c3.classList.add('flipped');
-                card3Flipped = true;
-                playMysticSound('flip');
-                sendTelegramAlert(createTarotLog('Перевернула Карту III с защитным золотым слоем! ✨'));
-                setTimeout(initScratchLayer, 400);
-            }
-        }
-    };
+    // 1. Падающие конфетти
+    var CONFETTI_COLORS = [
+        '#FF2D78','#FFD700','#AA00FF','#00CFFF','#FF7043',
+        '#FFEB3B','#E040FB','#FF4081','#40C4FF','#69F0AE',
+        '#FF6DB0','#FFF176','#CE93D8','#80D8FF','#FF8A65'
+    ];
 
-    /* ---------- ИНТЕРАКТИВНЫЙ СКРЕТЧ-ХОЛСТ (СТИРАНИЕ ЗОЛОТОГО СЛОЯ) ---------- */
-    var scratchInited = false;
-    var letterRevealed = false;
-
-    function initScratchLayer() {
-        if (scratchInited) return;
-        scratchInited = true;
-
-        var canvas = document.getElementById('scratch-canvas');
-        var face = document.getElementById('scratch-face');
-        if (!canvas || !face) return;
-
-        var w = canvas.width = face.offsetWidth;
-        var h = canvas.height = face.offsetHeight;
-        var ctx = canvas.getContext('2d');
-
-        // Рисуем мерцающий золотой слой
-        var grad = ctx.createLinearGradient(0, 0, w, h);
-        grad.addColorStop(0, '#FFE082');
-        grad.addColorStop(0.25, '#FFD54F');
-        grad.addColorStop(0.5, '#FFC107');
-        grad.addColorStop(0.75, '#FFA000');
-        grad.addColorStop(1, '#FFD54F');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, w, h);
-
-        // Добавляем золотую текстуру и узор
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-        for (var i = 0; i < 400; i++) {
-            ctx.fillRect(Math.random() * w, Math.random() * h, Math.random() * 3 + 1, Math.random() * 3 + 1);
-        }
-
-        // Рисуем золотую печать в центре скретч-слоя
-        ctx.save();
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(w/2, h/2 - 20, 48, 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.font = 'bold 36px sans-serif';
-        ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('💌', w/2, h/2 - 20);
-
-        ctx.font = 'bold 12px ' + getComputedStyle(document.body).fontFamily;
-        ctx.fillText('СЕКРЕТНЫЙ АРКАН', w/2, h/2 + 42);
-        ctx.restore();
-
-        // Стирание пальцем/мышкой
-        var isDrawing = false;
-        var lastX = 0, lastY = 0;
-
-        function scratch(x, y) {
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(x, y, 32, 0, Math.PI * 2);
-            ctx.fill();
-
-            if (lastX && lastY) {
-                ctx.lineWidth = 64;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(x, y);
-                ctx.stroke();
-            }
-            lastX = x;
-            lastY = y;
-
-            if (Math.random() < 0.3) playMysticSound('sparkle');
-            checkProgress();
-        }
-
-        function getPos(e) {
-            var rect = canvas.getBoundingClientRect();
-            var touch = e.touches ? e.touches[0] : e;
-            return {
-                x: touch.clientX - rect.left,
-                y: touch.clientY - rect.top
-            };
-        }
-
-        canvas.addEventListener('mousedown', function(e){
-            isDrawing = true;
-            lastX = 0; lastY = 0;
-            var pos = getPos(e);
-            scratch(pos.x, pos.y);
-        });
-
-        canvas.addEventListener('mousemove', function(e){
-            if (!isDrawing) return;
-            var pos = getPos(e);
-            scratch(pos.x, pos.y);
-        });
-
-        window.addEventListener('mouseup', function(){
-            isDrawing = false;
-            lastX = 0; lastY = 0;
-        });
-
-        canvas.addEventListener('touchstart', function(e){
-            isDrawing = true;
-            lastX = 0; lastY = 0;
-            var pos = getPos(e);
-            scratch(pos.x, pos.y);
-        }, { passive: true });
-
-        canvas.addEventListener('touchmove', function(e){
-            if (!isDrawing) return;
-            var pos = getPos(e);
-            scratch(pos.x, pos.y);
-        }, { passive: true });
-
-        canvas.addEventListener('touchend', function(){
-            isDrawing = false;
-            lastX = 0; lastY = 0;
-        });
-
-        var checkThrottle = false;
-        function checkProgress() {
-            if (letterRevealed || checkThrottle) return;
-            checkThrottle = true;
-            setTimeout(function(){ checkThrottle = false; }, 200);
-
-            var imgData = ctx.getImageData(0, 0, w, h);
-            var d = imgData.data;
-            var cleared = 0;
-            var total = d.length / 4;
-            // Проверяем каждый 16-й пиксель для скорости
-            var step = 16;
-            var sampled = 0;
-            for (var i = 3; i < d.length; i += 4 * step) {
-                sampled++;
-                if (d[i] === 0) cleared++;
-            }
-
-            var percent = Math.round((cleared / sampled) * 100);
-            var pSpan = document.getElementById('scratch-percent');
-            if (pSpan) pSpan.textContent = percent + '%';
-
-            if (percent >= 45 && !letterRevealed) {
-                revealCompleteLetter();
-            }
-        }
-
-        function revealCompleteLetter() {
-            letterRevealed = true;
-            playMysticSound('triumph');
-
-            // Мягко растворяем остатки холста
-            canvas.style.opacity = '0';
-            var hint = document.getElementById('scratch-hint');
-            var bar = document.getElementById('scratch-bar');
-            if (hint) hint.style.display = 'none';
-            if (bar) bar.style.display = 'none';
-
-            setTimeout(function(){
-                canvas.style.display = 'none';
-                document.getElementById('tg-btn').classList.add('active');
-            }, 600);
-
-            sendTelegramAlert(createTarotLog('Полностью стёрла золотой слой и прочитала твоё письмо! 💌❤️'));
+    function initConfetti() {
+        if (!decorContainer) return;
+        var count = 24;
+        for (var i = 0; i < count; i++) {
+            var piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            piece.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+            piece.style.left = Math.random() * 100 + '%';
+            var dur = (Math.random() * 6 + 7).toFixed(1);
+            var delay = (Math.random() * 8).toFixed(1);
+            var dx = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 60) + 20);
+            piece.style.animationDuration = dur + 's';
+            piece.style.animationDelay = delay + 's';
+            piece.style.setProperty('--cx', dx + 'px');
+            if (i % 3 === 0) piece.style.borderRadius = '50%';
+            else if (i % 3 === 2) { piece.style.width = '6px'; piece.style.height = '6px'; }
+            decorContainer.appendChild(piece);
         }
     }
 
-    window.notifyTelegramClick = function() {
-        sendTelegramAlert(createTarotLog('Нажала забрать подарок в Telegram (@OPETsqk)! 🚀'));
-    };
+    // 2. Летающие шарики, тортики и сердечки
+    var FLOAT_ICONS = ['🎈', '🎂', '💖', '✨', '🎈', '🎂', '💖'];
+    function initFloatingItems() {
+        if (!decorContainer) return;
 
-    /* ---------- ЗВЕЗДНЫЙ ХОЛСТ И СОЗВЕЗДИЕ ВЕСОВ ---------- */
-    function runSkyStars() {
-        var canvas = document.getElementById('sky-canvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-        var w, h;
-
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        var stars = [];
-        for (var i = 0; i < 90; i++) {
-            stars.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                r: Math.random() * 1.8 + 0.6,
-                a: Math.random() * 0.8 + 0.2,
-                da: (Math.random() - 0.5) * 0.02
-            });
+        function spawnItem() {
+            var el = document.createElement('div');
+            el.className = 'floating-item';
+            el.textContent = FLOAT_ICONS[Math.floor(Math.random() * FLOAT_ICONS.length)];
+            var left = Math.random() * 92 + 4;
+            var dur = (Math.random() * 4 + 11).toFixed(1);
+            var sz = Math.floor(Math.random() * 6 + 20);
+            var dx = (Math.random() - 0.5) * 50;
+            el.style.left = left + '%';
+            el.style.setProperty('--mhd', dur + 's');
+            el.style.setProperty('--mhz', sz + 'px');
+            el.style.setProperty('--mhdx', dx + 'px');
+            decorContainer.appendChild(el);
+            setTimeout(function() {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            }, dur * 1000);
         }
 
-        // Созвездие Весов (узловые точки)
-        var libraNodes = [
-            { rx: 0.35, ry: 0.18 },
-            { rx: 0.50, ry: 0.14 },
-            { rx: 0.65, ry: 0.20 },
-            { rx: 0.45, ry: 0.28 },
-            { rx: 0.58, ry: 0.30 }
-        ];
-
-        function draw() {
-            ctx.clearRect(0, 0, w, h);
-
-            // Отрисовка созвездия Весов
-            ctx.save();
-            ctx.strokeStyle = 'rgba(255, 215, 0, 0.25)';
-            ctx.lineWidth = 1.2;
-            ctx.setLineDash([3, 5]);
-            ctx.beginPath();
-            ctx.moveTo(w * libraNodes[0].rx, h * libraNodes[0].ry);
-            ctx.lineTo(w * libraNodes[1].rx, h * libraNodes[1].ry);
-            ctx.lineTo(w * libraNodes[2].rx, h * libraNodes[2].ry);
-            ctx.moveTo(w * libraNodes[0].rx, h * libraNodes[0].ry);
-            ctx.lineTo(w * libraNodes[3].rx, h * libraNodes[3].ry);
-            ctx.lineTo(w * libraNodes[4].rx, h * libraNodes[4].ry);
-            ctx.lineTo(w * libraNodes[2].rx, h * libraNodes[2].ry);
-            ctx.stroke();
-
-            // Узлы созвездия
-            libraNodes.forEach(function(node){
-                var x = w * node.rx, y = h * node.ry;
-                ctx.beginPath();
-                ctx.arc(x, y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFE082';
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#FFD700';
-                ctx.fill();
-            });
-            ctx.restore();
-
-            // Обычные мерцающие звезды
-            for (var i = 0; i < stars.length; i++) {
-                var s = stars[i];
-                s.a += s.da;
-                if (s.a <= 0.2 || s.a >= 0.95) s.da = -s.da;
-
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFFFFF';
-                ctx.globalAlpha = Math.max(0.1, Math.min(1, s.a));
-                ctx.fill();
-            }
-
-            requestAnimationFrame(draw);
+        for (var i = 0; i < 3; i++) {
+            setTimeout(spawnItem, i * 1000);
         }
-        requestAnimationFrame(draw);
+        setInterval(spawnItem, 3600);
     }
 
-    runSkyStars();
+    // 3. Салюты
+    var FW_COLORS = ['#FFD700','#FF2D78','#AA00FF','#00CFFF','#FF7043','#FF4081','#E040FB','#FFEB3B'];
+
+    function spawnFirework(targetContainer, posX, posY, isFixed) {
+        if (!targetContainer) return;
+        var fw = document.createElement('div');
+        fw.className = 'firework';
+        fw.style.left = posX;
+        fw.style.top = posY;
+        if (isFixed) fw.style.position = 'fixed';
+
+        var color = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+        var size = isFixed ? 90 : Math.floor(Math.random() * 50 + 90);
+        var dur = (Math.random() * 0.4 + 1.2).toFixed(1);
+        fw.style.setProperty('--fw-color', color);
+        fw.style.setProperty('--fw-size', size + 'px');
+        fw.style.setProperty('--fw-dur', dur + 's');
+
+        var ring = document.createElement('div');
+        ring.className = 'fw-ring';
+        fw.appendChild(ring);
+
+        var sparks = Math.floor(Math.random() * 3) + 8;
+        for (var sp = 0; sp < sparks; sp++) {
+            var spark = document.createElement('div');
+            spark.className = 'fw-spark';
+            spark.style.setProperty('--ang', (sp * (360 / sparks)) + 'deg');
+            spark.style.setProperty('--dist', (size * 0.42) + 'px');
+            fw.appendChild(spark);
+        }
+        targetContainer.appendChild(fw);
+        var removeDur = parseFloat(dur) * 1000 + 80;
+        setTimeout(function(){ if(fw.parentNode) fw.parentNode.removeChild(fw); }, removeDur);
+    }
+
+    function scheduleFireworks() {
+        function launch() {
+            var count = Math.random() < 0.75 ? 1 : 2;
+            for (var i = 0; i < count; i++) {
+                (function(delay){
+                    setTimeout(function(){
+                        var x = (Math.random() * 84 + 8) + '%';
+                        var y = (Math.random() * 50 + 8) + '%';
+                        spawnFirework(decorContainer, x, y, false);
+                    }, delay);
+                })(i * 350);
+            }
+            setTimeout(launch, Math.random() * 1600 + 4200);
+        }
+        setTimeout(launch, 800);
+    }
+
+    // Салют при тапе в любом месте экрана
+    document.addEventListener('click', function(e){
+        if (e.target.closest && e.target.closest('a, button, input, .letter-box, .surprise-box')) return;
+        spawnFirework(document.body, e.clientX + 'px', e.clientY + 'px', true);
+    });
+
+    // Инициализация
+    initConfetti();
+    initFloatingItems();
+    scheduleFireworks();
 })();
 </script>
 </body>

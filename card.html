@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>С Днём Рождения, Софа! 🎂✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #FF2D78;
+            --pink-glow: rgba(255, 45, 120, 0.45);
+            --gold: #FFD700;
+            --gold-light: #FFF275;
+            --gold-glow: rgba(255, 215, 0, 0.4);
+            --f-body: 'Montserrat', sans-serif;
+            --f-head: 'Playfair Display', serif;
+            --f-hand: 'Pacifico', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow-x: hidden;
+            background: radial-gradient(ellipse at 50% 15%, #380752 0%, #17002e 45%, #080014 100%);
+            font-family: var(--f-body);
+            color: #ffffff;
+        }
+
+        /* Фоновый контейнер праздничного декора */
+        .decor-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            contain: strict;
+            transform: translateZ(0);
+        }
+
+        /* Падающие конфетти */
+        .confetti-piece {
+            position: absolute;
+            top: -10%;
+            width: 7px; height: 12px;
+            border-radius: 2px;
+            opacity: 0;
+            animation-name: confettiFall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes confettiFall {
+            0%   { transform: translate3d(0, 0, 0) rotate(0deg) scaleX(1); opacity: 0; }
+            6%   { opacity: 1; }
+            30%  { transform: translate3d(var(--cx), 30vh, 0) rotate(120deg) scaleX(.7); }
+            60%  { transform: translate3d(calc(var(--cx)*-0.6), 65vh, 0) rotate(250deg) scaleX(1); }
+            90%  { opacity: .85; }
+            100% { transform: translate3d(var(--cx), 115vh, 0) rotate(400deg) scaleX(.5); opacity: 0; }
+        }
+
+        /* Летающие шарики, тортики и сердечки */
+        .floating-item {
+            position: absolute;
+            bottom: -50px;
+            user-select: none; pointer-events: none;
+            font-size: var(--mhz, 22px);
+            opacity: 0.75;
+            text-shadow: 0 2px 8px rgba(255, 45, 120, 0.4);
+            animation: itemFloatRise var(--mhd, 12s) linear infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes itemFloatRise {
+            0%   { transform: translate3d(0, 0, 0) scale(0.85); opacity: 0; }
+            10%  { opacity: 0.85; }
+            50%  { transform: translate3d(var(--mhdx, 25px), -55vh, 0) scale(1); }
+            90%  { opacity: 0.7; }
+            100% { transform: translate3d(calc(var(--mhdx, 25px) * -0.5), -115vh, 0) scale(0.9); opacity: 0; }
+        }
+
+        /* Праздничные салюты */
+        .firework {
+            position: absolute;
+            pointer-events: none;
+            animation: fireworkBurst var(--fw-dur, 1.5s) cubic-bezier(.22,.68,0,1) both;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        @keyframes fireworkBurst {
+            0%   { opacity: 1; }
+            80%  { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .fw-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--fw-color, #FFD700);
+            width: 0; height: 0;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-50%);
+            animation: fwRingExpand var(--fw-dur, 1.5s) ease-out forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes fwRingExpand {
+            0%   { width: 0; height: 0; opacity: 1; border-width: 3px; }
+            60%  { opacity: .7; border-width: 2px; }
+            100% { width: var(--fw-size, 140px); height: var(--fw-size, 140px); opacity: 0; border-width: 1px; }
+        }
+        .fw-spark {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--fw-color, #FFD700);
+            left: 50%; top: 50%;
+            box-shadow: 0 0 5px var(--fw-color, #FFD700);
+            transform-origin: 0 0;
+            animation: fwSparkFly var(--fw-dur, 1.5s) ease-out forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes fwSparkFly {
+            0%   { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(0px) scale(1); opacity: 1; }
+            50%  { opacity: .85; }
+            100% { transform: translate(-50%,-50%) rotate(var(--ang)) translateX(var(--dist,70px)) scale(.3); opacity: 0; }
+        }
+
+        /* Основной контейнер открытки */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Верхняя корона и дата */
+        .crown-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.28) 0%, rgba(142, 36, 170, 0.38) 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 30px;
+            padding: 5px 16px;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+            margin-bottom: 12px;
+            animation: crownPulse 3s infinite alternate;
+        }
+
+        @keyframes crownPulse {
+            0% { transform: scale(1); box-shadow: 0 0 14px rgba(255, 215, 0, 0.3); }
+            100% { transform: scale(1.03); box-shadow: 0 0 26px rgba(255, 45, 120, 0.5); }
+        }
+
+        /* Переливающаяся дата 23 ОКТЯБРЯ */
+        .date-shimmer {
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.1;
+            background: linear-gradient(90deg, #FF2D78, #FFD700, #FF2D78, #AA00FF, #FFD700);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowText 3.8s linear infinite;
+            margin-bottom: 6px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        @keyframes rainbowText {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .milestone-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.45);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+        }
+
+        /* ---------- РОСКОШНАЯ КАРТОЧКА-ОТКРЫТКА ---------- */
+        .card-wrapper {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.22) 0%, rgba(120, 0, 160, 0.32) 50%, rgba(20, 0, 50, 0.55) 100%);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid rgba(255, 215, 0, 0.65);
+            border-radius: 28px;
+            padding: 26px 20px 22px;
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 45, 120, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateZ(0);
+        }
+
+        .card-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 29px;
+            border: 1.5px solid rgba(255, 215, 0, 0.8);
+            box-shadow: inset 0 0 18px rgba(255, 215, 0, 0.35), 0 0 24px rgba(255, 45, 120, 0.45);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: cardGlow 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes cardGlow {
+            0%   { opacity: 0.25; }
+            100% { opacity: 0.85; }
+        }
+
+        .cake-emoji-art {
+            font-size: 52px;
+            display: inline-block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 16px rgba(255, 45, 120, 0.5));
+            animation: cakeBounce 2.5s infinite ease-in-out;
+        }
+
+        @keyframes cakeBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.06); }
+        }
+
+        .card-title {
+            font-family: var(--f-head);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.6), 0 0 18px var(--pink-glow);
+        }
+
+        /* Текст письма Данила */
+        .letter-box {
+            width: 100%;
+            background: rgba(10, 2, 22, 0.45);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 20px;
+            padding: 18px 16px;
+            font-size: 14.5px;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .letter-box p {
+            margin-bottom: 12px;
+        }
+        .letter-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bday-sign {
+            display: block;
+            text-align: right;
+            font-family: var(--f-hand);
+            font-size: 1.25rem;
+            color: var(--gold-light);
+            margin-top: 14px;
+            text-shadow: 0 0 14px rgba(255, 45, 120, 0.7);
+        }
+
+        /* ---------- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА И TELEGRAM ---------- */
+        .surprise-box {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(30, 8, 55, 0.75) 0%, rgba(12, 2, 28, 0.85) 100%);
+            border: 1.5px solid rgba(255, 215, 0, 0.55);
+            border-radius: 22px;
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .surprise-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+            display: inline-block;
+            animation: envelopeFloat 2.2s infinite ease-in-out;
+        }
+
+        @keyframes envelopeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .surprise-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
+
+        .tg-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 15px 18px;
+            background: linear-gradient(135deg, #FF2D78 0%, #8C005C 100%);
+            border: 1.5px solid var(--gold);
+            border-radius: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(255, 45, 120, 0.5), 0 0 15px var(--gold-glow);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer;
+        }
+        .tg-action-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Инструкция снизу */
+        .tap-hint {
+            margin-top: 18px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Фоновый слой: конфетти, летающие эмодзи и салюты -->
+<div class="decor-layer" id="decor-layer"></div>
+
+<div class="main-container">
+    <!-- ВЕРХНИЙ БЕЙДЖ -->
+    <div class="crown-badge">
+        <span>👑</span>
+        <span>СОФА • С ДНЁМ РОЖДЕНИЯ</span>
+        <span>✨</span>
+    </div>
+
+    <!-- ДАТА 23 ОКТЯБРЯ -->
+    <h1 class="date-shimmer">23 ОКТЯБРЯ</h1>
+    <div class="milestone-badge">🎉 ТЕБЕ 20 ЛЕТ • 3-Й ДЕСЯТОК 🎉</div>
+
+    <!-- КАРТОЧКА-ОТКРЫТКА -->
+    <div class="card-wrapper">
+        <div class="cake-emoji-art">🎂</div>
+        <h2 class="card-title">С Днём Рождения!</h2>
+
+        <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ -->
+        <div class="letter-box">
+            <p>Ровно 100 дней назад я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
+            <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
+            <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
+            <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
+            <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;color:var(--gold);font-weight:700;">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
+            <span class="bday-sign">С днем рождения, Соф ❤️</span>
+        </div>
+
+        <!-- СЕКЦИЯ СЕКРЕТНОГО ПОДАРКА В TELEGRAM -->
+        <div class="surprise-box">
+            <div class="surprise-icon">💌</div>
+            <div class="surprise-text">
+                Напиши в чат любое сообщение, чтобы получить твой подарок:
+            </div>
+            <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="tg-action-btn" onclick="sendTgActionReport()">
+                <span>✈️ Открыть диалог @OPETsqk</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="tap-hint">
+        <span>🎆</span>
+        <span>Коснись экрана в любом месте для салюта</span>
+    </div>
+</div>
+
+<script>
+(function(){
+    "use strict";
+
+    /* ---------- TELEGRAM УВЕДОМЛЕНИЯ В БОТ ДАНИЛА ---------- */
+    var TG_DATA = {
+        botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
+        chatId: '869126840'
+    };
+
+    function sendTelegramAlert(text) {
+        if (!TG_DATA.botToken || !TG_DATA.chatId) return;
+        var url = 'https://api.telegram.org/bot' + TG_DATA.botToken +
+                  '/sendMessage?chat_id=' + TG_DATA.chatId +
+                  '&text=' + encodeURIComponent(text);
+        try {
+            if (typeof fetch === 'function') {
+                fetch(url, { method: 'GET', keepalive: true }).catch(function(){});
+                return;
+            }
+        } catch(e){}
+        try {
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon(url);
+                return;
+            }
+        } catch(e2){}
+        try {
+            var img = new Image();
+            img.src = url;
+        } catch(e3){}
+    }
+
+    if (/[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash)) {
+        try { localStorage.setItem('sched_device_owner', 'danil'); } catch(e){}
+    }
+    if (/[?&#]reset\b/i.test(location.search + location.hash)) {
+        try { localStorage.setItem('sched_device_owner', ''); } catch(e){}
+    }
+
+    function buildAlertText(eventTitle) {
+        var isOwner = (localStorage.getItem('sched_device_owner') === 'danil');
+        var ua = navigator.userAgent || '';
+        var isIPhone = /iPhone/i.test(ua);
+        var dev = isIPhone ? 'iPhone' : (/Android/i.test(ua) ? 'Android' : 'ПК');
+        var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Гость: ');
+        return prefix + eventTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
+    }
+
+    // Уведомление при открытии открытки
+    setTimeout(function(){
+        sendTelegramAlert(buildAlertText('Открыла поздравительную открытку! 🎂✨'));
+    }, 1200);
+
+    window.sendTgActionReport = function() {
+        sendTelegramAlert(buildAlertText('Нажала перейти в Telegram (@OPETsqk) за подарком! 🚀'));
+    };
+
+    /* ---------- ПРАЗДНИЧНЫЙ ДЕКОР: КОНФЕТТИ, ШАРИКИ, ТОРТИКИ, САЛЮТЫ ---------- */
+    var decorContainer = document.getElementById('decor-layer');
+
+    // 1. Падающие конфетти
+    var CONFETTI_COLORS = [
+        '#FF2D78','#FFD700','#AA00FF','#00CFFF','#FF7043',
+        '#FFEB3B','#E040FB','#FF4081','#40C4FF','#69F0AE',
+        '#FF6DB0','#FFF176','#CE93D8','#80D8FF','#FF8A65'
+    ];
+
+    function initConfetti() {
+        if (!decorContainer) return;
+        var count = 24;
+        for (var i = 0; i < count; i++) {
+            var piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            piece.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+            piece.style.left = Math.random() * 100 + '%';
+            var dur = (Math.random() * 6 + 7).toFixed(1);
+            var delay = (Math.random() * 8).toFixed(1);
+            var dx = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 60) + 20);
+            piece.style.animationDuration = dur + 's';
+            piece.style.animationDelay = delay + 's';
+            piece.style.setProperty('--cx', dx + 'px');
+            if (i % 3 === 0) piece.style.borderRadius = '50%';
+            else if (i % 3 === 2) { piece.style.width = '6px'; piece.style.height = '6px'; }
+            decorContainer.appendChild(piece);
+        }
+    }
+
+    // 2. Летающие шарики, тортики и сердечки
+    var FLOAT_ICONS = ['🎈', '🎂', '💖', '✨', '🎈', '🎂', '💖'];
+    function initFloatingItems() {
+        if (!decorContainer) return;
+
+        function spawnItem() {
+            var el = document.createElement('div');
+            el.className = 'floating-item';
+            el.textContent = FLOAT_ICONS[Math.floor(Math.random() * FLOAT_ICONS.length)];
+            var left = Math.random() * 92 + 4;
+            var dur = (Math.random() * 4 + 11).toFixed(1);
+            var sz = Math.floor(Math.random() * 6 + 20);
+            var dx = (Math.random() - 0.5) * 50;
+            el.style.left = left + '%';
+            el.style.setProperty('--mhd', dur + 's');
+            el.style.setProperty('--mhz', sz + 'px');
+            el.style.setProperty('--mhdx', dx + 'px');
+            decorContainer.appendChild(el);
+            setTimeout(function() {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            }, dur * 1000);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            setTimeout(spawnItem, i * 1000);
+        }
+        setInterval(spawnItem, 3600);
+    }
+
+    // 3. Салюты
+    var FW_COLORS = ['#FFD700','#FF2D78','#AA00FF','#00CFFF','#FF7043','#FF4081','#E040FB','#FFEB3B'];
+
+    function spawnFirework(targetContainer, posX, posY, isFixed) {
+        if (!targetContainer) return;
+        var fw = document.createElement('div');
+        fw.className = 'firework';
+        fw.style.left = posX;
+        fw.style.top = posY;
+        if (isFixed) fw.style.position = 'fixed';
+
+        var color = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+        var size = isFixed ? 90 : Math.floor(Math.random() * 50 + 90);
+        var dur = (Math.random() * 0.4 + 1.2).toFixed(1);
+        fw.style.setProperty('--fw-color', color);
+        fw.style.setProperty('--fw-size', size + 'px');
+        fw.style.setProperty('--fw-dur', dur + 's');
+
+        var ring = document.createElement('div');
+        ring.className = 'fw-ring';
+        fw.appendChild(ring);
+
+        var sparks = Math.floor(Math.random() * 3) + 8;
+        for (var sp = 0; sp < sparks; sp++) {
+            var spark = document.createElement('div');
+            spark.className = 'fw-spark';
+            spark.style.setProperty('--ang', (sp * (360 / sparks)) + 'deg');
+            spark.style.setProperty('--dist', (size * 0.42) + 'px');
+            fw.appendChild(spark);
+        }
+        targetContainer.appendChild(fw);
+        var removeDur = parseFloat(dur) * 1000 + 80;
+        setTimeout(function(){ if(fw.parentNode) fw.parentNode.removeChild(fw); }, removeDur);
+    }
+
+    function scheduleFireworks() {
+        function launch() {
+            var count = Math.random() < 0.75 ? 1 : 2;
+            for (var i = 0; i < count; i++) {
+                (function(delay){
+                    setTimeout(function(){
+                        var x = (Math.random() * 84 + 8) + '%';
+                        var y = (Math.random() * 50 + 8) + '%';
+                        spawnFirework(decorContainer, x, y, false);
+                    }, delay);
+                })(i * 350);
+            }
+            setTimeout(launch, Math.random() * 1600 + 4200);
+        }
+        setTimeout(launch, 800);
+    }
+
+    // Салют при тапе в любом месте экрана
+    document.addEventListener('click', function(e){
+        if (e.target.closest && e.target.closest('a, button, input, .letter-box, .surprise-box')) return;
+        spawnFirework(document.body, e.clientX + 'px', e.clientY + 'px', true);
+    });
+
+    // Инициализация
+    initConfetti();
+    initFloatingItems();
+    scheduleFireworks();
+})();
+</script>
+</body>
+</html>
