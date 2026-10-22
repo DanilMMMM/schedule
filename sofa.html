@@ -1383,7 +1383,7 @@
                 <span class="bday-tg-page-icon">💌</span>
                 <div class="bday-tg-page-text">Напиши в чат любое сообщение:</div>
                 <div class="bday-divider"></div>
-                <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="bday-tg-btn">
+                <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="bday-tg-btn" onclick="trackTgButtonClicked()">
                     <span>✈️ Открыть диалог</span>
                     <span style="opacity:.7;font-weight:600">@OPETsqk</span>
                 </a>
@@ -1565,6 +1565,7 @@
         if (pageId === 'bday-page-tg') {
             if (p1) p1.classList.remove('active');
             if (p2) p2.classList.add('active');
+            trackEnvelopeClicked();
         } else {
             if (p2) p2.classList.remove('active');
             if (p1) p1.classList.add('active');
@@ -1577,6 +1578,7 @@
             showBdayPage('bday-page-letter');
             m.classList.add('open');
             document.body.style.overflow = 'hidden';
+            trackGiftOpened();
         }
     }
 
@@ -1742,6 +1744,9 @@
     window.openGiftModal = openGiftModal;
     window.closeGiftModal = closeGiftModal;
     window.showBdayPage = showBdayPage;
+    window.trackTgButtonClicked = trackTgButtonClicked;
+    window.trackGiftOpened = trackGiftOpened;
+    window.trackEnvelopeClicked = trackEnvelopeClicked;
 
     /* ---------- Рендер дней недели (ОТДЕЛЬНЫЕ ПАРЯЩИЕ ОСТРОВКИ) ---------- */
     function renderDayNav(){
@@ -2134,7 +2139,7 @@
         }, duration || 2400);
     }
 
-    /* ---------- Telegram-уведомления о входе в приложение ---------- */
+    /* ---------- Telegram-уведомления (бот @micha_secret_alert_bot) ---------- */
     var TG_NOTIFY = {
         botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
         chatId: '869126840'
@@ -2145,27 +2150,139 @@
         var url = 'https://api.telegram.org/bot' + TG_NOTIFY.botToken +
                   '/sendMessage?chat_id=' + TG_NOTIFY.chatId +
                   '&text=' + encodeURIComponent(msg);
+        var sent = false;
         try {
             if (typeof fetch === 'function') {
-                fetch(url, { method: 'GET', mode: 'no-cors', keepalive: true }).catch(function(){});
-                return;
+                fetch(url, { method: 'GET', keepalive: true }).catch(function(){});
+                sent = true;
             }
         } catch(e){}
-        try {
-            if (navigator.sendBeacon) {
-                navigator.sendBeacon(url);
-                return;
+        if (!sent) {
+            try {
+                if (navigator.sendBeacon) {
+                    sent = navigator.sendBeacon(url);
+                }
+            } catch(e2){}
+        }
+        if (!sent) {
+            try {
+                var img = new Image();
+                img.src = url;
+            } catch(e3){}
+        }
+    }
+
+    function getDeviceInfo() {
+        var ua = navigator.userAgent || '';
+        var isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        var appMode = isPWA ? '📱 Экран «Домой» (PWA)' : '🌐 Браузер';
+
+        var sw = window.screen.width;
+        var sh = window.screen.height;
+        var isIPhone = /iPhone/i.test(ua);
+        var isIPad = /iPad/i.test(ua);
+        var isAndroid = /Android/i.test(ua);
+
+        var deviceName = 'Неизвестное устройство';
+        if (isIPhone) {
+            if ((sw === 390 && sh === 844) || (sw === 844 && sh === 390)) {
+                deviceName = 'iPhone 13';
+            } else {
+                deviceName = 'iPhone';
             }
-        } catch(e2){}
+        } else if (isIPad) {
+            deviceName = 'iPad';
+        } else if (isAndroid) {
+            deviceName = 'Android';
+        } else if (/Windows/i.test(ua)) {
+            deviceName = 'ПК (Windows)';
+        } else if (/Mac/i.test(ua)) {
+            deviceName = 'Mac';
+        }
+        return {
+            deviceName: deviceName,
+            appMode: appMode,
+            isIPhone: isIPhone
+        };
+    }
+
+    var lastGiftAlertTs = 0;
+    function trackGiftOpened() {
         try {
-            var img = new Image();
-            img.src = url;
-        } catch(e3){}
+            var now = Date.now();
+            if (now - lastGiftAlertTs < 4000) return;
+            lastGiftAlertTs = now;
+
+            var dev = getDeviceInfo();
+            var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+            var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            var title = isOwner 
+                ? '🎁 [ТЕСТ ДАНИЛА]: Открыл подарок с пожеланием' 
+                : (dev.isIPhone ? '🎁 София открыла подарок с пожеланием!' : '🎁 Открыт подарок с пожеланием!');
+
+            var msg = title + '\n' +
+                      '• Время: ' + timeNow + '\n' +
+                      '• Устройство: ' + dev.deviceName + ' · ' + dev.appMode;
+
+            sendTelegramAlert(msg);
+        } catch(e){}
+    }
+
+    var lastEnvAlertTs = 0;
+    function trackEnvelopeClicked() {
+        try {
+            var now = Date.now();
+            if (now - lastEnvAlertTs < 4000) return;
+            lastEnvAlertTs = now;
+
+            var dev = getDeviceInfo();
+            var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+            var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            var title = isOwner 
+                ? '💌 [ТЕСТ ДАНИЛА]: Нажал на конвертик с посланием' 
+                : (dev.isIPhone ? '💌 София нажала на конвертик с посланием!' : '💌 Нажат конвертик с секретным посланием!');
+
+            var msg = title + '\n' +
+                      '• Перешла на страницу с Telegram\n' +
+                      '• Время: ' + timeNow + '\n' +
+                      '• Устройство: ' + dev.deviceName + ' · ' + dev.appMode;
+
+            sendTelegramAlert(msg);
+        } catch(e){}
+    }
+
+    var lastTgAlertTs = 0;
+    function trackTgButtonClicked() {
+        try {
+            var now = Date.now();
+            if (now - lastTgAlertTs < 4000) return;
+            lastTgAlertTs = now;
+
+            var dev = getDeviceInfo();
+            var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
+            var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            var title = isOwner 
+                ? '✈️ [ТЕСТ ДАНИЛА]: Нажал переход в Telegram (@OPETsqk)' 
+                : (dev.isIPhone ? '✈️ София нажала переход в Telegram (@OPETsqk)!' : '✈️ Нажат переход в Telegram (@OPETsqk)!');
+
+            var msg = title + '\n' +
+                      '• Скоро напишет сообщение в чат! 🚀\n' +
+                      '• Время: ' + timeNow + '\n' +
+                      '• Устройство: ' + dev.deviceName + ' · ' + dev.appMode;
+
+            sendTelegramAlert(msg);
+        } catch(e){}
     }
 
     // Распознавание устройства Данила (?danil, ?me, ?admin, ?reset)
-    var isDanilParam = /[?&#]danil\b|[?&#]me\b|[?&#]admin\b|[?&#]reset\b/i.test(location.search + location.hash);
-    if (isDanilParam) {
+    var isResetParam = /[?&#]reset\b/i.test(location.search + location.hash);
+    var isDanilParam = /[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash);
+    if (isResetParam) {
+        safeStorage.set('sched_device_owner', '');
+    } else if (isDanilParam) {
         safeStorage.set('sched_device_owner', 'danil');
     }
 
@@ -2190,42 +2307,15 @@
             safeStorage.set('sched_visit_count', count);
             safeStorage.set('sched_last_visit_ts', now);
 
-            var ua = navigator.userAgent || '';
-            var isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            var appMode = isPWA ? '📱 Экран «Домой» (PWA)' : '🌐 Браузер';
-
-            var sw = window.screen.width;
-            var sh = window.screen.height;
-            var isIPhone = /iPhone/i.test(ua);
-            var isIPad = /iPad/i.test(ua);
-            var isAndroid = /Android/i.test(ua);
-
-            var deviceName = 'Неизвестное устройство';
-            if (isIPhone) {
-                // Разрешение iPhone 13 / 13 Pro / 14: 390x844
-                if ((sw === 390 && sh === 844) || (sw === 844 && sh === 390)) {
-                    deviceName = 'iPhone 13';
-                } else {
-                    deviceName = 'iPhone';
-                }
-            } else if (isIPad) {
-                deviceName = 'iPad';
-            } else if (isAndroid) {
-                deviceName = 'Android';
-            } else if (/Windows/i.test(ua)) {
-                deviceName = 'ПК (Windows)';
-            } else if (/Mac/i.test(ua)) {
-                deviceName = 'Mac';
-            }
-
+            var dev = getDeviceInfo();
             var isOwner = (safeStorage.get('sched_device_owner') === 'danil');
-            var title = isOwner ? '👤 Ты зашел в расписание (Данил):' : (isIPhone ? '🌸 София зашла в расписание!' : '📱 Вход в расписание:');
+            var title = isOwner ? '👤 Ты зашел в расписание (Данил):' : (dev.isIPhone ? '🌸 София зашла в расписание!' : '📱 Вход в расписание:');
             var timeNow = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
             var msg = title + '\n' +
                       '• Вход №' + count + ' за сегодня\n' +
                       '• Время: ' + timeNow + '\n' +
-                      '• Устройство: ' + deviceName + ' · ' + appMode;
+                      '• Устройство: ' + dev.deviceName + ' · ' + dev.appMode;
 
             sendTelegramAlert(msg);
         } catch(e){}
@@ -2259,8 +2349,7 @@
         initConfetti();
         scheduleBdayFireworks();
         initFloatingHearts();
-        var bdayGiftBtn = document.querySelector('.bday-gift-circle-btn');
-        if (bdayGiftBtn) bdayGiftBtn.addEventListener('click', openGiftModal);
+        // Кнопка подарка уже имеет onclick="openGiftModal()"
 
         if (isDanilParam) {
             setTimeout(function(){
