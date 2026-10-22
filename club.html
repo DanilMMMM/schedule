@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Клуб Романтики: 100 дней спустя...</title>
+    <title>Клуб Романтики: Спастись от 3-го десятка</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -11,12 +11,10 @@
         :root {
             --gold: #FFD700;
             --gold-light: #FFF176;
-            --gold-dark: #C5A000;
+            --gold-glow: rgba(255, 215, 0, 0.45);
             --pink: #FF2D78;
-            --pink-deep: #D81B60;
-            --purple-dark: #120924;
-            --purple-glass: rgba(26, 14, 46, 0.88);
-            --border-gold: rgba(255, 215, 0, 0.45);
+            --pink-glow: rgba(255, 45, 120, 0.5);
+            --purple-bg: #090314;
             --f-title: 'Cinzel', serif;
             --f-body: 'Montserrat', sans-serif;
             --f-story: 'Playfair Display', serif;
@@ -34,37 +32,36 @@
         html, body {
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #080312;
+            background-color: #06020c;
             font-family: var(--f-body);
             color: #ffffff;
         }
 
-        /* Основной контейнер игры под пропорции мобильного телефона */
-        .rc-container {
+        .rc-app {
             position: relative;
             width: 100%;
             height: 100%;
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
             overflow: hidden;
-            background-color: #0b0517;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            background-color: var(--purple-bg);
+            box-shadow: 0 0 60px rgba(0,0,0,0.95);
         }
 
-        /* ---------- ВЕРХНЯЯ ПАНЕЛЬ (ВАЛЮТА КЛУБА РОМАНТИКИ) ---------- */
+        /* ---------- ВЕРХНИЙ БАР ВАЛЮТЫ КЛУБА РОМАНТИКИ ---------- */
         .rc-topbar {
             position: absolute;
             top: 0; left: 0; right: 0;
             z-index: 50;
-            padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
+            padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(180deg, rgba(8, 3, 18, 0.92) 0%, rgba(8, 3, 18, 0.4) 75%, transparent 100%);
+            background: linear-gradient(180deg, rgba(6, 2, 12, 0.94) 0%, rgba(6, 2, 12, 0.4) 75%, transparent 100%);
             pointer-events: auto;
         }
 
-        .rc-currency-group {
+        .rc-currencies {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -74,104 +71,92 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(20, 10, 38, 0.82);
-            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 10, 42, 0.85);
+            border: 1.5px solid var(--gold-glow);
             border-radius: 20px;
             padding: 4px 10px 4px 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
             font-size: 13.5px;
-            font-weight: 700;
+            font-weight: 800;
             color: #fff;
-            letter-spacing: 0.3px;
             cursor: pointer;
             transition: transform 0.15s ease;
         }
         .rc-pill:active { transform: scale(0.95); }
 
-        .rc-pill-icon {
-            font-size: 16px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-
         .rc-pill-plus {
-            width: 17px; height: 17px;
+            width: 18px; height: 18px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--gold), #FF8F00);
             color: #000;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 900;
             margin-left: 2px;
         }
 
-        .rc-top-actions {
+        .rc-top-tools {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .rc-circle-btn {
+        .rc-tool-btn {
             width: 36px; height: 36px;
             border-radius: 50%;
-            background: rgba(20, 10, 38, 0.82);
-            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 10, 42, 0.85);
+            border: 1.5px solid var(--gold-glow);
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             transition: transform 0.15s ease;
         }
-        .rc-circle-btn:active { transform: scale(0.92); }
+        .rc-tool-btn:active { transform: scale(0.92); }
 
-        /* ---------- ЭКРАН ОБЛОЖКИ (ГЛАВНОЕ МЕНЮ СЕРИИ) ---------- */
+        /* ---------- ЭКРАН 1: ОБЛОЖКА ИСТОРИИ ---------- */
         .rc-screen {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            width: 100%; height: 100%;
+            transition: opacity 0.5s ease;
         }
 
         .screen-cover {
             z-index: 40;
-            background: #0b0517;
+            background: #090314 url('assets/cover.jpg') center center / cover no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            background-size: cover;
-            background-position: center;
+            justify-content: flex-end;
         }
 
         .screen-cover::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(10,4,22,0.5) 0%, rgba(10,4,22,0.2) 40%, rgba(10,4,22,0.92) 80%, #080312 100%);
+            background: linear-gradient(180deg, rgba(6,2,12,0.4) 0%, rgba(6,2,12,0.2) 40%, rgba(6,2,12,0.92) 80%, #06020c 100%);
             z-index: 1;
         }
 
         .cover-content {
             position: relative;
             z-index: 2;
-            padding: calc(75px + env(safe-area-inset-top, 0px)) 24px calc(36px + env(safe-area-inset-bottom, 0px));
-            height: 100%;
+            padding: 24px 24px calc(36px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
             gap: 14px;
         }
 
-        .rc-badge-special {
+        .cover-badge {
             align-self: flex-start;
             background: linear-gradient(90deg, #FF2D78, #9C27B0);
             border: 1px solid rgba(255,255,255,0.4);
             border-radius: 20px;
-            padding: 4px 12px;
+            padding: 4px 14px;
             font-size: 11px;
             font-weight: 800;
             letter-spacing: 1.5px;
@@ -180,39 +165,38 @@
             animation: pulseGlow 2.5s infinite;
         }
 
-        .rc-story-title {
+        .cover-title {
             font-family: var(--f-title);
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 900;
             line-height: 1.1;
             text-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 30px rgba(255, 45, 120, 0.4);
-            letter-spacing: 1px;
         }
 
-        .rc-story-title span {
+        .cover-title span {
             background: linear-gradient(90deg, #FFF, var(--gold-light), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .rc-story-desc {
+        .cover-desc {
             font-size: 14px;
             line-height: 1.5;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.88);
             text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
-        .rc-story-meta {
+        .cover-meta {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-size: 12.5px;
             font-weight: 700;
             color: var(--gold-light);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .rc-play-btn {
+        .rc-start-btn {
             position: relative;
             width: 100%;
             padding: 17px 24px;
@@ -221,7 +205,7 @@
             border-radius: 28px;
             color: #fff;
             font-family: var(--f-title);
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -232,12 +216,11 @@
             justify-content: center;
             gap: 10px;
             overflow: hidden;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .rc-play-btn:active {
-            transform: scale(0.96);
-        }
-        .rc-play-btn::before {
+        .rc-start-btn:active { transform: scale(0.96); }
+
+        .rc-start-btn::before {
             content: '';
             position: absolute;
             top: -50%; left: -60%;
@@ -257,43 +240,41 @@
             50% { opacity: 1; transform: scale(1.03); }
         }
 
-        /* ---------- ЭКРАН ГЕЙМПЛЕЯ НОВЕЛЛЫ ---------- */
-        .screen-gameplay {
+        /* ---------- ЭКРАН 2: ГЕЙМПЛЕЙ НОВЕЛЛЫ ---------- */
+        .screen-game {
             z-index: 30;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
         }
 
-        /* Фоны новеллы с плавным кроссфейдом */
-        .rc-bg-layer {
+        .game-bg {
             position: absolute;
             inset: 0;
             background-size: cover;
             background-position: center;
-            transition: opacity 1.2s ease, transform 6s ease;
-            transform: scale(1.03);
+            transition: opacity 0.8s ease, transform 8s ease;
+            transform: scale(1.02);
             z-index: 1;
         }
 
-        .rc-bg-vignette {
+        .game-vignette {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, transparent 35%, rgba(6, 2, 14, 0.65) 85%, rgba(6, 2, 14, 0.95) 100%),
-                        linear-gradient(180deg, rgba(8,3,18,0.4) 0%, transparent 20%, transparent 60%, rgba(8,3,18,0.92) 100%);
+            background: radial-gradient(circle at center, transparent 35%, rgba(6, 2, 14, 0.55) 85%, rgba(6, 2, 14, 0.9) 100%),
+                        linear-gradient(180deg, rgba(6,2,14,0.4) 0%, transparent 25%, transparent 60%, rgba(6,2,14,0.95) 100%);
             z-index: 2;
             pointer-events: none;
         }
 
-        /* Праздничные частицы / пыльца Клуба Романтики */
-        .rc-particles-canvas {
+        .particles-canvas {
             position: absolute;
             inset: 0;
             z-index: 3;
             pointer-events: none;
         }
 
-        /* Персонажи на сцене */
+        /* ---------- СПРАЙТЫ ПЕРСОНАЖЕЙ В ПОЛНЫЙ РОСТ ---------- */
         .rc-stage {
             position: absolute;
             inset: 0;
@@ -305,82 +286,72 @@
             padding-bottom: 150px;
         }
 
-        .rc-character-wrap {
+        .rc-actor {
             position: absolute;
             bottom: 120px;
-            width: 78%;
+            width: 82%;
             max-width: 360px;
-            height: 60vh;
-            max-height: 480px;
+            height: 70vh;
+            max-height: 520px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease, filter 0.45s ease;
         }
 
-        .rc-character-sprite {
+        .rc-actor-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            border-radius: 40px 40px 0 0;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
-            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));
+            object-fit: contain;
+            object-position: bottom center;
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.8));
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
 
-        .char-sofa {
-            left: 50%;
-            transform: translateX(-50%);
-        }
+        .actor-sofa { left: 50%; transform: translateX(-50%); }
+        .actor-danil { left: 50%; transform: translateX(-50%); }
 
-        .char-danil {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .rc-character-wrap.active {
+        .rc-actor.active {
             opacity: 1;
-            filter: brightness(1.05) drop-shadow(0 0 25px rgba(255, 215, 0, 0.35));
+            filter: brightness(1.04) drop-shadow(0 0 25px rgba(255, 215, 0, 0.35));
             transform: translateX(-50%) translateY(0) scale(1);
-            animation: breathIdle 4s ease-in-out infinite alternate;
+            animation: spriteBreathing 3.6s ease-in-out infinite alternate;
         }
 
-        .rc-character-wrap.inactive {
+        .rc-actor.dimmed {
             opacity: 0;
             pointer-events: none;
-            transform: translateX(-50%) translateY(30px) scale(0.95);
+            transform: translateX(-50%) translateY(35px) scale(0.94);
         }
 
-        @keyframes breathIdle {
+        @keyframes spriteBreathing {
             0% { transform: translateX(-50%) translateY(0) scale(1); }
-            100% { transform: translateX(-50%) translateY(-6px) scale(1.01); }
+            100% { transform: translateX(-50%) translateY(-5px) scale(1.01); }
         }
 
-        /* ---------- ДИАЛОГОВОЕ ОКНО В СТИЛЕ КЛУБА РОМАНТИКИ ---------- */
-        .rc-dialogue-layer {
+        /* ---------- ДИАЛОГОВОЕ ОКНО ---------- */
+        .rc-dialogue-wrap {
             position: absolute;
             bottom: 0; left: 0; right: 0;
             z-index: 25;
             padding: 0 14px calc(18px + env(safe-area-inset-bottom, 0px));
-            pointer-events: auto;
             cursor: pointer;
         }
 
         .rc-dialogue-box {
             position: relative;
-            background: linear-gradient(135deg, rgba(28, 14, 52, 0.94) 0%, rgba(18, 8, 36, 0.96) 60%, rgba(10, 4, 22, 0.98) 100%);
+            background: linear-gradient(135deg, rgba(28, 12, 54, 0.95) 0%, rgba(16, 7, 34, 0.97) 60%, rgba(8, 3, 18, 0.98) 100%);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid var(--border-gold);
+            border: 1.5px solid var(--gold-glow);
             border-radius: 26px;
-            padding: 34px 22px 20px 22px;
-            min-height: 145px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            padding: 32px 20px 18px 20px;
+            min-height: 140px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.2);
         }
 
-        /* Золотая табличка с именем говорящего персонажа */
-        .rc-name-tag {
+        .rc-speaker-banner {
             position: absolute;
             top: -18px;
             left: 20px;
@@ -400,7 +371,7 @@
             text-transform: uppercase;
         }
 
-        .rc-name-avatar {
+        .rc-speaker-avatar {
             width: 28px; height: 28px;
             border-radius: 50%;
             object-fit: cover;
@@ -408,7 +379,6 @@
         }
 
         .rc-dialogue-text {
-            font-family: var(--f-body);
             font-size: 15.5px;
             line-height: 1.55;
             color: rgba(255, 255, 255, 0.95);
@@ -416,26 +386,26 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        .rc-next-indicator {
+        .rc-tap-next {
             position: absolute;
             bottom: 12px;
             right: 18px;
             font-size: 14px;
             color: var(--gold);
-            animation: bounceDown 1.4s infinite ease-in-out;
+            animation: bounceNext 1.3s infinite ease-in-out;
         }
 
-        @keyframes bounceDown {
+        @keyframes bounceNext {
             0%, 100% { transform: translateY(0); opacity: 0.6; }
             50% { transform: translateY(4px); opacity: 1; }
         }
 
-        /* ---------- ВЫБОРЫ ДЕЙСТВИЙ (CHOICES В КЛУБЕ РОМАНТИКИ) ---------- */
-        .rc-choices-layer {
+        /* ---------- ВЫБОРЫ ДЕЙСТВИЙ (CHOICES) ---------- */
+        .rc-choices-overlay {
             position: absolute;
             inset: 0;
             z-index: 35;
-            background: rgba(8, 3, 18, 0.75);
+            background: rgba(6, 2, 14, 0.78);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             display: flex;
@@ -448,24 +418,24 @@
             transition: opacity 0.35s ease;
         }
 
-        .rc-choices-layer.visible {
+        .rc-choices-overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .rc-choice-prompt {
+        .rc-choice-header {
             font-family: var(--f-title);
             font-size: 17px;
             font-weight: 800;
             color: var(--gold-light);
             text-align: center;
             margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 12px rgba(0,0,0,0.9);
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        .rc-choice-list {
+        .rc-choice-options {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -473,12 +443,11 @@
             max-width: 380px;
         }
 
-        .rc-choice-btn {
-            position: relative;
+        .rc-choice-item {
             width: 100%;
             padding: 14px 18px;
-            background: linear-gradient(135deg, rgba(38, 20, 68, 0.95) 0%, rgba(20, 10, 42, 0.98) 100%);
-            border: 1.5px solid var(--border-gold);
+            background: linear-gradient(135deg, rgba(42, 18, 76, 0.95) 0%, rgba(20, 8, 42, 0.98) 100%);
+            border: 1.5px solid var(--gold-glow);
             border-radius: 20px;
             color: #ffffff;
             font-family: var(--f-body);
@@ -494,14 +463,13 @@
             gap: 12px;
             transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
         }
-
-        .rc-choice-btn:active {
+        .rc-choice-item:active {
             transform: scale(0.97);
             border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(68, 20, 98, 0.95) 0%, rgba(40, 10, 62, 0.98) 100%);
+            background: linear-gradient(135deg, rgba(74, 20, 108, 0.95) 0%, rgba(44, 8, 70, 0.98) 100%);
         }
 
-        .rc-choice-cost {
+        .rc-choice-tag {
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -515,24 +483,24 @@
             white-space: nowrap;
         }
 
-        .rc-choice-cost.free {
+        .rc-choice-tag.free {
             background: rgba(100, 255, 100, 0.15);
             border-color: rgba(100, 255, 100, 0.4);
             color: #B9F6CA;
         }
 
-        /* ---------- ВСПЛЫВАЮЩАЯ ПЛАШКА СТАТУСА (КЛУБ РОМАНТИКИ) ---------- */
-        .rc-status-banner {
+        /* ---------- МЕМНЫЕ ПЛАШКИ СТАТУСОВ КР ---------- */
+        .rc-toast-banner {
             position: absolute;
             top: 75px;
             left: 50%;
-            transform: translateX(-50%) translateY(-30px);
+            transform: translateX(-50%) translateY(-35px);
             z-index: 60;
-            background: linear-gradient(135deg, rgba(255, 45, 120, 0.95) 0%, rgba(142, 36, 170, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.96) 0%, rgba(142, 36, 170, 0.96) 100%);
             border: 1.5px solid var(--gold);
             border-radius: 25px;
             padding: 10px 22px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.65), 0 0 20px rgba(255, 215, 0, 0.4);
             text-align: center;
             opacity: 0;
             pointer-events: none;
@@ -540,12 +508,12 @@
             white-space: nowrap;
         }
 
-        .rc-status-banner.show {
+        .rc-toast-banner.active {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
 
-        .rc-status-title {
+        .rc-toast-title {
             font-family: var(--f-title);
             font-size: 13px;
             font-weight: 900;
@@ -554,21 +522,21 @@
             text-transform: uppercase;
         }
 
-        .rc-status-sub {
+        .rc-toast-subtitle {
             font-size: 12px;
             font-weight: 700;
             color: #fff;
             margin-top: 2px;
         }
 
-        /* ---------- КАТСЦЕНА: ПИСЬМО ДАНИЛА (CG ART КАРТОЧКА) ---------- */
-        .rc-cg-modal {
+        /* ---------- КАТСЦЕНА: ИСКРЕННЕЕ ПИСЬМО ДАНИЛА ---------- */
+        .rc-cg-overlay {
             position: absolute;
             inset: 0;
             z-index: 70;
-            background: rgba(6, 2, 14, 0.94);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(4, 1, 10, 0.95);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -578,32 +546,32 @@
             transition: opacity 0.6s ease;
         }
 
-        .rc-cg-modal.open {
+        .rc-cg-overlay.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .rc-letter-card {
+        .rc-letter-wrapper {
             position: relative;
             width: 100%;
             max-width: 420px;
             max-height: 85vh;
             overflow-y: auto;
-            background: linear-gradient(135deg, rgba(36, 16, 68, 0.96) 0%, rgba(18, 8, 38, 0.98) 100%);
+            background: linear-gradient(135deg, rgba(38, 16, 72, 0.97) 0%, rgba(18, 6, 40, 0.98) 100%);
             border: 2px solid var(--gold);
             border-radius: 30px;
             padding: 28px 24px 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 35px rgba(255, 45, 120, 0.4), inset 0 0 25px rgba(255, 215, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 35px var(--pink-glow), inset 0 0 25px rgba(255, 215, 0, 0.15);
             text-align: center;
             transform: scale(0.92);
             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .rc-cg-modal.open .rc-letter-card {
+        .rc-cg-overlay.open .rc-letter-wrapper {
             transform: scale(1);
         }
 
-        .rc-cg-badge {
+        .rc-cg-tag {
             display: inline-block;
             background: rgba(255, 215, 0, 0.18);
             border: 1px solid var(--gold);
@@ -617,7 +585,7 @@
             margin-bottom: 12px;
         }
 
-        .rc-cg-title {
+        .rc-cg-heading {
             font-family: var(--f-story);
             font-size: 1.7rem;
             font-weight: 700;
@@ -626,27 +594,22 @@
             text-shadow: 0 0 15px rgba(255, 45, 120, 0.6);
         }
 
-        .rc-letter-text {
+        .rc-letter-body {
             text-align: left;
-            font-family: var(--f-body);
             font-size: 14.5px;
             line-height: 1.65;
             color: rgba(255, 255, 255, 0.95);
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.32);
             border-radius: 20px;
             padding: 18px 20px;
             border: 1px solid rgba(255, 215, 0, 0.25);
             margin-bottom: 20px;
         }
 
-        .rc-letter-text p {
-            margin-bottom: 12px;
-        }
-        .rc-letter-text p:last-child {
-            margin-bottom: 0;
-        }
+        .rc-letter-body p { margin-bottom: 12px; }
+        .rc-letter-body p:last-child { margin-bottom: 0; }
 
-        .rc-letter-sign {
+        .rc-letter-signature {
             display: block;
             text-align: right;
             font-family: var(--f-hand);
@@ -656,7 +619,7 @@
             text-shadow: 0 0 12px rgba(255, 45, 120, 0.7);
         }
 
-        .rc-continue-cg-btn {
+        .rc-cg-btn {
             width: 100%;
             padding: 15px;
             background: linear-gradient(135deg, #FF2D78 0%, #8E24AA 100%);
@@ -672,12 +635,12 @@
             box-shadow: 0 6px 20px rgba(255, 45, 120, 0.5);
         }
 
-        /* ---------- ФИНАЛЬНАЯ КАРТОЧКА С СЮРПРИЗОМ (TELEGRAM) ---------- */
-        .rc-tg-card {
+        /* ---------- ФИНАЛ: TELEGRAM СЮРПРИЗ ---------- */
+        .rc-tg-modal {
             position: absolute;
             inset: 0;
             z-index: 80;
-            background: rgba(6, 2, 14, 0.96);
+            background: rgba(4, 1, 10, 0.96);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             display: flex;
@@ -689,42 +652,42 @@
             transition: opacity 0.5s ease;
         }
 
-        .rc-tg-card.open {
+        .rc-tg-modal.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .rc-tg-inner {
+        .rc-tg-box {
             width: 100%;
             max-width: 380px;
-            background: linear-gradient(135deg, rgba(32, 14, 60, 0.98) 0%, rgba(14, 6, 30, 0.98) 100%);
+            background: linear-gradient(135deg, rgba(36, 16, 68, 0.98) 0%, rgba(14, 6, 32, 0.98) 100%);
             border: 2px solid var(--gold);
             border-radius: 32px;
             padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 35px rgba(255, 45, 120, 0.5);
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 35px var(--pink-glow);
+            animation: zoomBox 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes popIn {
+        @keyframes zoomBox {
             0% { transform: scale(0.85); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .rc-tg-icon {
+        .rc-tg-logo {
             font-size: 64px;
             margin-bottom: 12px;
             display: inline-block;
-            filter: drop-shadow(0 6px 20px rgba(255, 45, 120, 0.6));
-            animation: wiggleIcon 2.4s infinite ease-in-out;
+            filter: drop-shadow(0 6px 20px var(--pink-glow));
+            animation: floatLogo 2.4s infinite ease-in-out;
         }
 
-        @keyframes wiggleIcon {
+        @keyframes floatLogo {
             0%, 100% { transform: rotate(-5deg) scale(1); }
             50% { transform: rotate(5deg) scale(1.08); }
         }
 
-        .rc-tg-title {
+        .rc-tg-head {
             font-family: var(--f-title);
             font-size: 1.4rem;
             font-weight: 800;
@@ -732,14 +695,14 @@
             margin-bottom: 10px;
         }
 
-        .rc-tg-desc {
+        .rc-tg-text {
             font-size: 15px;
             line-height: 1.55;
             color: rgba(255, 255, 255, 0.88);
             margin-bottom: 24px;
         }
 
-        .rc-tg-link-btn {
+        .rc-tg-action {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -758,14 +721,14 @@
             box-shadow: 0 10px 30px rgba(0, 136, 204, 0.5);
             transition: transform 0.15s ease;
         }
-        .rc-tg-link-btn:active { transform: scale(0.96); }
+        .rc-tg-action:active { transform: scale(0.96); }
 
-        /* Диалог истории (Лог) */
-        .rc-log-modal {
+        /* ИСТОРИЯ ДИАЛОГОВ (ЛОГ) */
+        .rc-log-overlay {
             position: absolute;
             inset: 0;
             z-index: 65;
-            background: rgba(8, 3, 18, 0.95);
+            background: rgba(6, 2, 12, 0.96);
             backdrop-filter: blur(15px);
             padding: calc(65px + env(safe-area-inset-top, 0px)) 20px 30px;
             display: flex;
@@ -774,171 +737,144 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
-        .rc-log-modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .rc-log-header {
+        .rc-log-overlay.open { opacity: 1; pointer-events: auto; }
+        .rc-log-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-gold);
+            border-bottom: 1px solid var(--gold-glow);
             margin-bottom: 14px;
         }
-        .rc-log-title {
-            font-family: var(--f-title);
-            font-size: 16px;
-            color: var(--gold);
-            text-transform: uppercase;
-        }
-        .rc-log-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-        .rc-log-entry {
-            background: rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 12px 14px;
-            font-size: 13.5px;
-            line-height: 1.45;
-        }
-        .rc-log-entry-name {
-            font-weight: 800;
-            color: var(--gold-light);
-            margin-bottom: 4px;
-        }
+        .rc-log-header-title { font-family: var(--f-title); font-size: 16px; color: var(--gold); text-transform: uppercase; }
+        .rc-log-scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        .rc-log-card { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 14px; font-size: 13.5px; line-height: 1.45; }
+        .rc-log-card-who { font-weight: 800; color: var(--gold-light); margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
-<div class="rc-container">
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ С ВАЛЮТОЙ -->
+<div class="rc-app">
+    <!-- ВЕРХНИЙ БАР ВАЛЮТЫ -->
     <header class="rc-topbar">
-        <div class="rc-currency-group">
-            <div class="rc-pill" id="pill-tea" onclick="showCurrencyPopup('tea')">
-                <span class="rc-pill-icon">☕</span>
-                <span id="tea-count">999</span>
+        <div class="rc-currencies">
+            <div class="rc-pill" onclick="triggerUnlimitedAlert('tea')">
+                <span>☕</span>
+                <span id="counter-tea">999</span>
                 <span class="rc-pill-plus">+</span>
             </div>
-            <div class="rc-pill" id="pill-diamonds" onclick="showCurrencyPopup('diamonds')">
-                <span class="rc-pill-icon">💎</span>
-                <span id="diamond-count">99999</span>
+            <div class="rc-pill" onclick="triggerUnlimitedAlert('diamonds')">
+                <span>💎</span>
+                <span id="counter-diamonds">99999</span>
                 <span class="rc-pill-plus">+</span>
             </div>
         </div>
-        <div class="rc-top-actions">
-            <button class="rc-circle-btn" id="btn-sound" onclick="toggleSound()" title="Звук" aria-label="Звук">🔊</button>
-            <button class="rc-circle-btn" id="btn-log" onclick="openLog()" title="История" aria-label="История">📜</button>
+        <div class="rc-top-tools">
+            <button class="rc-tool-btn" id="btn-sound" onclick="toggleSoundEffect()" title="Звук" aria-label="Звук">🔊</button>
+            <button class="rc-tool-btn" onclick="toggleLogScreen(true)" title="История" aria-label="История">📜</button>
         </div>
     </header>
 
-    <!-- ВСПЛЫВАЮЩАЯ ПЛАШКА СТАТУСА -->
-    <div class="rc-status-banner" id="status-banner">
-        <div class="rc-status-title" id="status-title">💖 ПУТЬ РОМАНТИКИ +1</div>
-        <div class="rc-status-sub" id="status-sub">Данил запомнил ваш ответ</div>
+    <!-- ВСПЛЫВАЮЩАЯ ПЛАШКА СТАТУСА (ТАБЛИЧКА КЛУБА РОМАНТИКИ) -->
+    <div class="rc-toast-banner" id="toast-banner">
+        <div class="rc-toast-title" id="toast-title">😈 ПУТЬ ДЕРЗОСТИ +1</div>
+        <div class="rc-toast-subtitle" id="toast-subtitle">Данил оценил твою наглость</div>
     </div>
 
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ / ОБЛОЖКА СЕРИИ -->
-    <section class="rc-screen screen-cover" id="screen-cover" style="background-image: url('assets/cover.jpg');">
+    <!-- ЭКРАН 1: ОБЛОЖКА СЕРИИ -->
+    <section class="rc-screen screen-cover" id="cover-screen">
         <div class="cover-content">
-            <div class="rc-badge-special">Специальный выпуск</div>
-            <h1 class="rc-story-title">100 ДНЕЙ<br><span>СПУСТЯ...</span></h1>
-            <p class="rc-story-desc">
-                История, начавшаяся с одного случайного сообщения 100 дней назад. Сегодня 23 октября — день, когда всё внимание принадлежит только тебе.
+            <div class="cover-badge">Праздничный спецвыпуск</div>
+            <h1 class="cover-title">100 ДНЕЙ<br><span>СПУСТЯ...</span></h1>
+            <p class="cover-desc">
+                Квест: как выжить после наступления 3-го десятка, не сойти с ума от поздравлений и забрать секретный подарок от фаворита.
             </p>
-            <div class="rc-story-meta">
-                <span>Сезон 1</span> • <span>Серия 23</span> • <span>Праздничный эпизод</span>
+            <div class="cover-meta">
+                <span>Сезон 1</span> • <span>Серия 23</span> • <span>Безлимит алмазов 💎</span>
             </div>
-            <button class="rc-play-btn" onclick="startStory()">
+            <button class="rc-start-btn" onclick="launchGame()">
                 <span>ИГРАТЬ (1 ☕)</span>
             </button>
         </div>
     </section>
 
     <!-- ЭКРАН 2: ГЕЙМПЛЕЙ НОВЕЛЛЫ -->
-    <section class="rc-screen screen-gameplay" id="screen-gameplay" style="display: none;">
-        <!-- Фоновые слои сцены -->
-        <div class="rc-bg-layer" id="bg-layer" style="background-image: url('assets/bg_cafe.jpg');"></div>
-        <div class="rc-bg-vignette"></div>
-        <canvas class="rc-particles-canvas" id="particles-canvas"></canvas>
+    <section class="rc-screen screen-game" id="game-screen" style="display: none;">
+        <div class="game-bg" id="game-bg" style="background-image: url('assets/bg_cafe.jpg');"></div>
+        <div class="game-vignette"></div>
+        <canvas class="particles-canvas" id="canvas-sparks"></canvas>
 
-        <!-- Сцена с персонажами -->
+        <!-- СЦЕНА СО СПРАЙТАМИ ПЕРСОНАЖЕЙ В ПОЛНЫЙ РОСТ -->
         <div class="rc-stage">
-            <!-- Спрайт Софы -->
-            <div class="rc-character-wrap char-sofa" id="char-sofa">
-                <img src="assets/sofa_1.png" alt="Софа" class="rc-character-sprite" id="sprite-sofa">
+            <div class="rc-actor actor-sofa" id="actor-sofa">
+                <img src="assets/sofa_sprite.jpg" alt="Софа" class="rc-actor-img" id="img-sofa">
             </div>
-            <!-- Спрайт Данила -->
-            <div class="rc-character-wrap char-danil" id="char-danil">
-                <img src="assets/danil_2.jpg" alt="Данил" class="rc-character-sprite" id="sprite-danil">
+            <div class="rc-actor actor-danil" id="actor-danil">
+                <img src="assets/danil_sprite.jpg" alt="Данил" class="rc-actor-img" id="img-danil">
             </div>
         </div>
 
-        <!-- Диалоговое окно Клуба Романтики -->
-        <div class="rc-dialogue-layer" id="dialogue-layer" onclick="handleDialogueClick()">
+        <!-- ДИАЛОГОВОЕ ОКНО -->
+        <div class="rc-dialogue-wrap" id="dialogue-click-zone" onclick="proceedDialogue()">
             <div class="rc-dialogue-box">
-                <div class="rc-name-tag" id="dialogue-name-tag">
-                    <img src="assets/danil_2.jpg" alt="Аватар" class="rc-name-avatar" id="dialogue-avatar">
-                    <span id="dialogue-speaker">Данил</span>
+                <div class="rc-speaker-banner" id="speaker-badge">
+                    <img src="assets/danil_2.jpg" alt="Аватар" class="rc-speaker-avatar" id="speaker-pic">
+                    <span id="speaker-name">Данил</span>
                 </div>
-                <div class="rc-dialogue-text" id="dialogue-text">
-                    Привет, именинница! Не замёрзла тут?
+                <div class="rc-dialogue-text" id="story-text">
+                    Привет!
                 </div>
-                <div class="rc-next-indicator">▼</div>
+                <div class="rc-tap-next">▼</div>
             </div>
         </div>
 
-        <!-- Окно интерактивных выборов -->
-        <div class="rc-choices-layer" id="choices-layer">
-            <div class="rc-choice-prompt" id="choice-prompt">Как ответить Данилу?</div>
-            <div class="rc-choice-list" id="choice-list"></div>
+        <!-- ОКНО ВЫБОРОВ ДЕЙСТВИЙ (CHOICES) -->
+        <div class="rc-choices-overlay" id="choices-overlay">
+            <div class="rc-choice-header" id="choices-title">Реакция Софы:</div>
+            <div class="rc-choice-options" id="choices-container"></div>
         </div>
     </section>
 
-    <!-- МОДАЛЬНОЕ ОКНО: CG ART КАРТОЧКА С ПИСЬМОМ -->
-    <div class="rc-cg-modal" id="cg-modal">
-        <div class="rc-letter-card">
-            <div class="rc-cg-badge">Особое послание • 23 октября</div>
-            <h2 class="rc-cg-title">С Днём Рождения!</h2>
-            <div class="rc-letter-text">
+    <!-- КАТСЦЕНА: ИСКРЕННЕЕ ПИСЬМО-ОТКРЫТКА -->
+    <div class="rc-cg-overlay" id="cg-overlay">
+        <div class="rc-letter-wrapper">
+            <div class="rc-cg-tag">Специальное послание • 23 октября</div>
+            <h2 class="rc-cg-heading">С Днём Рождения!</h2>
+            <div class="rc-letter-body">
                 <p>Ровно 100 дней назад я написал тебе первое сообщение, и за это время ты стала мне очень близким человеком.</p>
                 <p>Хочу искренне пожелать, чтобы вокруг тебя были только те люди и события, от которых ты по-настоящему кайфуешь.</p>
                 <p>Чтобы ты никогда не мёрзла, больше не болела и всегда смотрела на себя в зеркало с улыбкой — даже в те дни, когда тебе кажется, что укладка не удалась.</p>
                 <p>Иди к своим целям и мечтам, кстати, пока это писал, понял, что даже не знаю о чем ты мечтаешь&nbsp;).</p>
                 <p>Ну и меньше парься насчет всего, хотя пошел <span style="white-space:nowrap;font-weight:700;color:var(--gold);">3-й&nbsp;десяток</span>, тут уже можно попариться&nbsp;)</p>
-                <span class="rc-letter-sign">С днем рождения, Соф ❤️</span>
+                <span class="rc-letter-signature">С днем рождения, Соф ❤️</span>
             </div>
-            <button class="rc-continue-cg-btn" onclick="closeCgModal()">
+            <button class="rc-cg-btn" onclick="finishLetterCg()">
                 ✨ Продолжить историю ✨
             </button>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО: ФИНАЛ TELEGRAM -->
-    <div class="rc-tg-card" id="tg-card">
-        <div class="rc-tg-inner">
-            <div class="rc-tg-icon">💌</div>
-            <h2 class="rc-tg-title">Секретный подарок</h2>
-            <p class="rc-tg-desc">
-                Напиши в чат любое сообщение, чтобы активировать твой сюрприз:
+    <!-- ФИНАЛ: TELEGRAM СЮРПРИЗ -->
+    <div class="rc-tg-modal" id="tg-modal">
+        <div class="rc-tg-box">
+            <div class="rc-tg-logo">💌</div>
+            <h2 class="rc-tg-head">Секретный подарок</h2>
+            <p class="rc-tg-text">
+                Напиши в чат любое сообщение, чтобы активировать твой праздничный сюрприз:
             </p>
-            <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="rc-tg-link-btn" onclick="trackTgClick()">
+            <a href="https://t.me/OPETsqk" target="_blank" rel="noopener noreferrer" class="rc-tg-action" onclick="sendTgActionNotification()">
                 <span>✈️ Открыть диалог @OPETsqk</span>
             </a>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО: ЛОГ ИСТОРИИ -->
-    <div class="rc-log-modal" id="log-modal">
-        <div class="rc-log-header">
-            <div class="rc-log-title">История диалогов</div>
-            <button class="rc-circle-btn" onclick="closeLog()">✕</button>
+    <!-- ИСТОРИЯ ДИАЛОГОВ (ЛОГ) -->
+    <div class="rc-log-overlay" id="log-overlay">
+        <div class="rc-log-top">
+            <div class="rc-log-header-title">История диалогов</div>
+            <button class="rc-tool-btn" onclick="toggleLogScreen(false)">✕</button>
         </div>
-        <div class="rc-log-list" id="log-list"></div>
+        <div class="rc-log-scroll" id="log-content"></div>
     </div>
 </div>
 
@@ -947,16 +883,16 @@
     "use strict";
 
     /* ---------- TELEGRAM BOT УВЕДОМЛЕНИЯ ---------- */
-    var TG_NOTIFY = {
+    var TG_CONFIG = {
         botToken: '8827491534:AAGf1GHpzXuAJncTwWOdhj6dVwX3nxugwN4',
         chatId: '869126840'
     };
 
-    function sendTelegramAlert(msg) {
-        if (!TG_NOTIFY.botToken || !TG_NOTIFY.chatId) return;
-        var url = 'https://api.telegram.org/bot' + TG_NOTIFY.botToken +
-                  '/sendMessage?chat_id=' + TG_NOTIFY.chatId +
-                  '&text=' + encodeURIComponent(msg);
+    function sendTelegramAlert(text) {
+        if (!TG_CONFIG.botToken || !TG_CONFIG.chatId) return;
+        var url = 'https://api.telegram.org/bot' + TG_CONFIG.botToken +
+                  '/sendMessage?chat_id=' + TG_CONFIG.chatId +
+                  '&text=' + encodeURIComponent(text);
         try {
             if (typeof fetch === 'function') {
                 fetch(url, { method: 'GET', keepalive: true }).catch(function(){});
@@ -975,193 +911,238 @@
         } catch(e3){}
     }
 
-    var isDanilParam = /[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash);
-    if (isDanilParam) {
+    if (/[?&#]danil\b|[?&#]me\b|[?&#]admin\b/i.test(location.search + location.hash)) {
         try { localStorage.setItem('sched_device_owner', 'danil'); } catch(e){}
     }
     if (/[?&#]reset\b/i.test(location.search + location.hash)) {
         try { localStorage.setItem('sched_device_owner', ''); } catch(e){}
     }
 
-    function getDeviceTitle(action) {
+    function createEventReport(actionTitle) {
         var isOwner = (localStorage.getItem('sched_device_owner') === 'danil');
         var ua = navigator.userAgent || '';
         var isIPhone = /iPhone/i.test(ua);
         var dev = isIPhone ? 'iPhone' : (/Android/i.test(ua) ? 'Android' : 'ПК');
         var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        var header = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Игрок: ');
-        return header + action + '\n• Время: ' + time + '\n• Устройство: ' + dev;
+        var prefix = isOwner ? '👤 [ТЕСТ ДАНИЛА]: ' : (isIPhone ? '🌸 София: ' : '📱 Игрок: ');
+        return prefix + actionTitle + '\n• Время: ' + time + '\n• Устройство: ' + dev;
     }
 
-    /* ---------- ЗВУКОВОЙ СИНТЕЗАТОР (WEB AUDIO API) ---------- */
+    /* ---------- ЗВУКОВОЙ ДВИЖОК (WEB AUDIO API) ---------- */
     var audioCtx = null;
-    var soundEnabled = true;
+    var isMuted = false;
 
-    function initAudio() {
+    function ensureAudioContext() {
         if (!audioCtx) {
-            var AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (AudioContext) audioCtx = new AudioContext();
+            var AC = window.AudioContext || window.webkitAudioContext;
+            if (AC) audioCtx = new AC();
         }
         if (audioCtx && audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
     }
 
-    function playSound(type) {
-        if (!soundEnabled) return;
-        initAudio();
+    function playAudio(soundName) {
+        if (isMuted) return;
+        ensureAudioContext();
         if (!audioCtx) return;
 
         try {
-            var now = audioCtx.currentTime;
-            if (type === 'diamond') {
-                // Кристальный звон алмазов Клуба Романтики
-                [1046.5, 1318.5, 1567.98, 2093.0].forEach(function(freq, idx) {
+            var t = audioCtx.currentTime;
+            if (soundName === 'crystal') {
+                // Тот самый кристальный перезвон алмазов Клуба Романтики
+                [1046.5, 1318.5, 1567.98, 2093.0].forEach(function(f, i) {
                     var osc = audioCtx.createOscillator();
                     var gain = audioCtx.createGain();
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
-                    gain.gain.setValueAtTime(0.18, now + idx * 0.06);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.55);
+                    osc.frequency.setValueAtTime(f, t + i * 0.055);
+                    gain.gain.setValueAtTime(0.18, t + i * 0.055);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.055 + 0.5);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start(now + idx * 0.06);
-                    osc.stop(now + idx * 0.06 + 0.6);
+                    osc.start(t + i * 0.055);
+                    osc.stop(t + i * 0.055 + 0.55);
                 });
-            } else if (type === 'stat') {
-                // Торжественный аккорд повышения стата
-                [523.25, 659.25, 783.99, 1046.5].forEach(function(freq, idx) {
+            } else if (soundName === 'stat') {
+                [523.25, 659.25, 783.99, 1046.5].forEach(function(f, i) {
                     var osc = audioCtx.createOscillator();
                     var gain = audioCtx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-                    gain.gain.setValueAtTime(0.2, now + idx * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.7);
+                    osc.frequency.setValueAtTime(f, t + i * 0.07);
+                    gain.gain.setValueAtTime(0.18, t + i * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.07 + 0.6);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start(now + idx * 0.08);
-                    osc.stop(now + idx * 0.08 + 0.75);
+                    osc.start(t + i * 0.07);
+                    osc.stop(t + i * 0.07 + 0.65);
                 });
-            } else if (type === 'harp') {
-                // Романтическая арфа для письма
-                [440, 554.37, 659.25, 830.61, 880, 1108.73].forEach(function(freq, idx) {
+            } else if (soundName === 'harp') {
+                [440, 554.37, 659.25, 830.61, 880, 1108.73].forEach(function(f, i) {
                     var osc = audioCtx.createOscillator();
                     var gain = audioCtx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + idx * 0.09);
-                    gain.gain.setValueAtTime(0.15, now + idx * 0.09);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.9);
+                    osc.frequency.setValueAtTime(f, t + i * 0.08);
+                    gain.gain.setValueAtTime(0.14, t + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.08 + 0.85);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start(now + idx * 0.09);
-                    osc.stop(now + idx * 0.09 + 0.95);
+                    osc.start(t + i * 0.08);
+                    osc.stop(t + i * 0.08 + 0.9);
                 });
-            } else if (type === 'click') {
+            } else if (soundName === 'tap') {
                 var osc = audioCtx.createOscillator();
                 var gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
-                gain.gain.setValueAtTime(0.08, now);
-                gain.gain.linearRampToValueAtTime(0.001, now + 0.05);
+                osc.frequency.setValueAtTime(750, t);
+                osc.frequency.exponentialRampToValueAtTime(350, t + 0.04);
+                gain.gain.setValueAtTime(0.08, t);
+                gain.gain.linearRampToValueAtTime(0.001, t + 0.04);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.06);
+                osc.start(t);
+                osc.stop(t + 0.05);
             }
         } catch(e){}
     }
 
-    function toggleSound() {
-        soundEnabled = !soundEnabled;
-        var btn = document.getElementById('btn-sound');
-        if (btn) btn.textContent = soundEnabled ? '🔊' : '🔇';
-        if (soundEnabled) playSound('click');
+    window.toggleSoundEffect = function() {
+        isMuted = !isMuted;
+        var b = document.getElementById('btn-sound');
+        if (b) b.textContent = isMuted ? '🔇' : '🔊';
+        if (!isMuted) playAudio('tap');
+    };
+
+    /* ---------- АВТО-УДАЛЕНИЕ БЕЛОГО ФОНА СО СПРАЙТОВ (ЧИСТЫЙ PNG) ---------- */
+    function makeSpriteTransparent(imgElement) {
+        var tempImg = new Image();
+        tempImg.crossOrigin = "Anonymous";
+        tempImg.onload = function() {
+            try {
+                var c = document.createElement('canvas');
+                c.width = tempImg.naturalWidth || tempImg.width;
+                c.height = tempImg.naturalHeight || tempImg.height;
+                var ctx = c.getContext('2d');
+                ctx.drawImage(tempImg, 0, 0);
+                var imgData = ctx.getImageData(0, 0, c.width, c.height);
+                var d = imgData.data;
+                for (var i = 0; i < d.length; i += 4) {
+                    var r = d[i], g = d[i+1], b = d[i+2];
+                    if (r > 232 && g > 232 && b > 232) {
+                        d[i+3] = 0;
+                    } else if (r > 210 && g > 210 && b > 210) {
+                        var diff = Math.max(r, g, b) - 210;
+                        d[i+3] = Math.max(0, Math.min(255, 255 - (diff * 11)));
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+                imgElement.src = c.toDataURL('image/png');
+            } catch(e){}
+        };
+        tempImg.src = imgElement.src;
     }
 
-    /* ---------- СЦЕНАРИЙ НОВЕЛЛЫ «100 ДНЕЙ СПУСТЯ» ---------- */
-    var STORY = [
+    window.addEventListener('DOMContentLoaded', function(){
+        var imgS = document.getElementById('img-sofa');
+        var imgD = document.getElementById('img-danil');
+        if (imgS) makeSpriteTransparent(imgS);
+        if (imgD) makeSpriteTransparent(imgD);
+    });
+
+    /* ---------- МЕМНЫЙ СЦЕНАРИЙ НОВЕЛЛЫ В СТИЛЕ КР ---------- */
+    var SCRIPT = [
+        // 1. Утро Софы
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Мысли Софы',
             avatar: 'assets/sofa_1.png',
             active: 'sofa',
-            text: 'Осенний вечер 23 октября... За окном зажигаются огни города, в воздухе пахнет кофе и приятной прохладой.'
+            text: 'Я открыла глаза. Время на часах — 13:40. Никаких пар, никаких будильников. Идеально.'
         },
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Мысли Софы',
             avatar: 'assets/sofa_1.png',
             active: 'sofa',
-            text: 'Сегодня мой день. И почему-то внутри приятное предвкушение чего-то очень тёплого...'
+            text: 'Сегодня 23 октября. Мой День Рождения. Казалось бы, живи и кайфуй... Но тут меня накрыло осознание.'
         },
+        {
+            bg: 'assets/bg_cafe.jpg',
+            speaker: 'Мысли Софы',
+            avatar: 'assets/sofa_1.png',
+            active: 'sofa',
+            toast: { title: '⚠️ ВНИМАНИЕ: СТАТУС ВОЗРАСТА', sub: 'Пошел 3-й десяток. Спина начала слегка ныть 👵' },
+            text: 'Третий. Десяток. Это что, теперь в сумке вместо блеска для губ должен лежать ибупрофен?!'
+        },
+        // 2. Появление фаворита Данила
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'Привет, именинница! Ну что, не замёрзла тут?'
+            text: 'Ну привет, именинница! Я пришёл лично проверить, как ты пережила этот сокрушительный удар по паспорту.'
         },
+        // 3. Выбор 1: Битва с фаворитом
         {
             type: 'choice',
-            prompt: 'Как ответить Данилу?',
+            prompt: 'Как встретить Данила?',
             choices: [
                 {
-                    cost: 25,
-                    text: '«С тобой вообще сложно замёрзнуть...»',
-                    banner: { title: '💖 ПУТЬ РОМАНТИКИ +1', sub: 'Данил польщен вашим ответом' },
-                    reaction: {
+                    cost: 35,
+                    text: '«Ты нарываешься на удар сумочкой, мальчик»',
+                    toast: { title: '😈 ПУТЬ ДЕРЗОСТИ +1', sub: 'Данил оценил твою боевую стойку' },
+                    reply: {
                         speaker: 'Данил',
                         avatar: 'assets/danil_2.jpg',
                         active: 'danil',
-                        text: 'Хах, приятно слышать. Я вообще-то старался создать правильную атмосферу для тебя.'
+                        text: 'Ого, сколько огня! Значит, порох в пороховницах ещё есть, списывать со счетов рано)'
                     }
                 },
                 {
-                    cost: 30,
-                    text: '«Я в тёплой шубе, так что держу оборону!»',
-                    banner: { title: '✨ ВАЙБ УЮТА +1', sub: 'Данил оценил твою тактику' },
-                    reaction: {
+                    cost: 50,
+                    text: 'Поправить шубу и надменно посмотреть снизу вверх',
+                    toast: { title: '💅 ПУТЬ ЛЮКСА +1', sub: 'Данил ослеплён вашей роскошью' },
+                    reply: {
                         speaker: 'Данил',
                         avatar: 'assets/danil_2.jpg',
                         active: 'danil',
-                        text: 'О да, шуба и укладка сегодня на высоте! Хотя насчет укладки у меня есть отдельная мысль)'
+                        text: 'Ладно, признаю, выглядишь на миллион. Даже укладка сегодня удалась на 10 из 10!'
                     }
                 },
                 {
                     cost: 0,
-                    text: '«Да вот сижу, жду поздравлений!»',
-                    banner: { title: '🎉 НАСТРОЕНИЕ +1', sub: 'Данил улыбнулся вашей нетерпеливости' },
-                    reaction: {
+                    text: 'Молча упасть лицом в подушку',
+                    toast: { title: '💀 ВОЗРАСТ БЕРЁТ СВОЁ', sub: 'Данил принёс тебе воображаемый плед' },
+                    reply: {
                         speaker: 'Данил',
                         avatar: 'assets/danil_2.jpg',
                         active: 'danil',
-                        text: 'Поздравления обязательно будут. И не просто слова, а кое-что покруче.'
+                        text: 'Эй, отставить пенсию! У нас на сегодня вообще-то грандиозные планы.'
                     }
                 }
             ]
         },
+        // 4. Воспоминание про 100 дней
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'А ты знаешь, какая сегодня ещё важная дата, кроме твоего Дня Рождения?'
+            text: 'Вообще-то я пришёл не просто поугарать. Сегодня ведь ещё одна историческая дата...'
         },
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Софа',
             avatar: 'assets/sofa_1.png',
             active: 'sofa',
-            text: 'Хм... И какая же?'
+            text: 'Так-так, и что же за событие вселенского масштаба?'
         },
         {
             bg: 'assets/bg_cafe.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            statBanner: { title: '📜 ВОСПОМИНАНИЕ: ДЕНЬ 1', sub: 'История длиною в 100 дней' },
+            toast: { title: '📜 ДОСТИЖЕНИЕ: 100 ДНЕЙ', sub: 'Данил всё это время вёл тайный счёт' },
             text: 'Ровно 100 дней. Ровно сто дней назад я написал тебе самое первое сообщение.'
         },
         {
@@ -1169,457 +1150,390 @@
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'И за это время ты стала для меня по-настоящему близким человеком.'
+            text: 'И с тех пор моя жизнь превратилась в ежедневный просмотр остросюжетного сериала с твоим участием.'
         },
-        {
-            type: 'choice',
-            prompt: 'Что ты чувствуешь?',
-            choices: [
-                {
-                    cost: 40,
-                    text: '«100 дней пролетели как один миг...»',
-                    banner: { title: '✨ ГЛУБОКАЯ СВЯЗЬ +1', sub: 'Вы оба почувствовали теплоту момента' },
-                    reaction: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Да... Рядом с близким человеком время летит совершенно незаметно.'
-                    }
-                },
-                {
-                    cost: 50,
-                    text: '«Я тоже помню то первое сообщение...»',
-                    banner: { title: '💖 ВЗАИМНОСТЬ: 100%', sub: 'Данил счастлив, что ты помнишь' },
-                    reaction: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'Правда помнишь? Тогда мы оба точно знаем, что это было не случайно.'
-                    }
-                },
-                {
-                    cost: 0,
-                    text: '«Ого, ты прямо дни считал?!»',
-                    banner: { title: '😄 ВНИМАНИЕ +1', sub: 'Данил гордо улыбнулся' },
-                    reaction: {
-                        speaker: 'Данил',
-                        avatar: 'assets/danil_2.jpg',
-                        active: 'danil',
-                        text: 'А ты думала? Я за важными людьми и датами слежу внимательно)'
-                    }
-                }
-            ]
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Но есть один забавный нюанс... Тебе ведь сегодня пошел 3-й десяток!'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Софа',
-            avatar: 'assets/sofa_1.png',
-            active: 'sofa',
-            text: 'Эй! Какой ещё 3-й десяток?! Ты сейчас точно дошутишься!'
-        },
-        {
-            bg: 'assets/bg_cafe.jpg',
-            speaker: 'Данил',
-            avatar: 'assets/danil_2.jpg',
-            active: 'danil',
-            text: 'Математика вещь упрямая) Но меньше парься насчет всего... хотя тут уже можно и чуть-чуть попариться 😉'
-        },
+        // 5. Выбор 2: Мемный диалог
         {
             type: 'choice',
             prompt: 'Реакция Софы:',
             choices: [
                 {
-                    cost: 35,
-                    text: '«Шутить над девушкой в её праздник — смелый ход!»',
-                    banner: { title: '🔥 ДЕРЗОСТЬ +1', sub: 'Данилу безумно нравится твоя улыбка' },
-                    reaction: {
+                    cost: 60,
+                    text: '«И как тебе сериал? На второй сезон продлеваем?»',
+                    toast: { title: '💖 ОТНОШЕНИЯ С ДАНИЛОМ УЛУЧШИЛИСЬ', sub: 'Данил оформил VIP-подписку' },
+                    reply: {
                         speaker: 'Данил',
                         avatar: 'assets/danil_2.jpg',
                         active: 'danil',
-                        text: 'Кто не рискует — тот не видит твою искреннюю улыбку)'
+                        text: 'Я бы сказал, это лучший сериал. Рейтинг 10 из 10 на Кинопоиске, продлеваем без сомнений.'
                     }
                 },
                 {
                     cost: 45,
-                    text: '«Ладно, прощаю, только потому что ты мне дорог»',
-                    banner: { title: '💖 НЕЖНОСТЬ +1', sub: 'Данил замер от твоих слов' },
-                    reaction: {
+                    text: '«Надеюсь, ты помнишь, что просмотр платный?»',
+                    toast: { title: '💎 ДЕЛОВАЯ ХВАТКА +1', sub: 'Данил готов платить алмазами' },
+                    reply: {
                         speaker: 'Данил',
                         avatar: 'assets/danil_2.jpg',
                         active: 'danil',
-                        text: 'Спасибо... Ты даже не представляешь, как мне важно это слышать.'
+                        text: 'Да я готов отдать все алмазы и чашки чая, только не закрывай доступ к новым сериям)'
+                    }
+                },
+                {
+                    cost: 0,
+                    text: '«Да уж, 100 дней терпеть меня — это чистый подвиг»',
+                    toast: { title: '🤝 САМОИРОНИЯ: УРОВЕНЬ БОГ', sub: 'Данил с вами абсолютно согласен' },
+                    reply: {
+                        speaker: 'Данил',
+                        avatar: 'assets/danil_2.jpg',
+                        active: 'danil',
+                        text: 'Тяжело, не скрою, но я парень закалённый!'
                     }
                 }
             ]
         },
+        // 6. Переход в ночной город и перемена атмосферы
         {
             bg: 'assets/bg_night.jpg',
             speaker: 'Автор',
             avatar: null,
             active: 'none',
-            text: 'Огни ночного города распахнулись во всей красе. Над крышами вспыхнули первые праздничные салюты в честь 23 октября.'
+            text: 'Огни ночного города распахнулись во всей красе. Над крышами взмыли праздничные салюты, освещая небо золотыми искрами.'
         },
         {
             bg: 'assets/bg_night.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'Знаешь, пока я думал о сегодняшнем дне, я понял кое-что очень важное...'
+            text: 'Посмотри на этот город... Красиво, да? Но сегодня всё это — просто фон для тебя.'
         },
         {
             bg: 'assets/bg_night.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'Я понял, что даже не знаю, о чём ты мечтаешь в глубине души. Но я точно знаю, чего хочу пожелать тебе от всего сердца.'
+            text: 'Ладно, Соф... Хватит шуток и подколов.'
         },
         {
             bg: 'assets/bg_night.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'Я написал кое-что специально для тебя. Прочти.'
-        },
-        {
-            type: 'open_letter'
+            text: 'Сегодня твой день. И я хочу сказать тебе кое-что по-настоящему искреннее. Без всякой клоунады.'
         },
         {
             bg: 'assets/bg_night.jpg',
             speaker: 'Данил',
             avatar: 'assets/danil_2.jpg',
             active: 'danil',
-            text: 'Но и это ещё не всё. У меня для тебя есть секретный сюрприз... Но за ним нужно перейти в одно тайное место.'
+            text: 'Я написал это специально для тебя. Прочти.'
+        },
+        // 7. КАТСЦЕНА С ПИСЬМОМ
+        {
+            type: 'trigger_letter'
+        },
+        // 8. Финал и Telegram
+        {
+            bg: 'assets/bg_night.jpg',
+            speaker: 'Данил',
+            avatar: 'assets/danil_2.jpg',
+            active: 'danil',
+            text: 'Думала, на тёплых словах всё закончилось? Не угадала)'
         },
         {
-            type: 'final_choice'
+            bg: 'assets/bg_night.jpg',
+            speaker: 'Данил',
+            avatar: 'assets/danil_2.jpg',
+            active: 'danil',
+            text: 'Настоящий подарок ждёт тебя кое-где ещё. Но за ним придётся сделать финальный выбор за 100 алмазов...'
+        },
+        {
+            type: 'final_dialogue_choice'
         }
     ];
 
-    var currentIndex = 0;
-    var dialogueLog = [];
-    var diamonds = 99999;
-    var tea = 999;
+    var stepPtr = 0;
+    var historyLog = [];
 
-    /* ---------- СТАРТ ИСТОРИИ ---------- */
-    window.startStory = function() {
-        playSound('click');
-        tea = Math.max(0, tea - 1);
-        document.getElementById('tea-count').textContent = tea;
-
-        var cover = document.getElementById('screen-cover');
-        var game = document.getElementById('screen-gameplay');
-        cover.style.opacity = '0';
+    window.launchGame = function() {
+        playAudio('tap');
+        var c = document.getElementById('cover-screen');
+        var g = document.getElementById('game-screen');
+        c.style.opacity = '0';
         setTimeout(function(){
-            cover.style.display = 'none';
-            game.style.display = 'flex';
-            game.style.opacity = '1';
-            currentIndex = 0;
-            renderStep();
-            startParticles();
-            sendTelegramAlert(getDeviceTitle('Запустила новеллу «Клуб Романтики»!'));
+            c.style.display = 'none';
+            g.style.display = 'flex';
+            g.style.opacity = '1';
+            stepPtr = 0;
+            displayCurrentStep();
+            runCanvasSparks();
+            sendTelegramAlert(createEventReport('Запустила новеллу «Клуб Романтики»! 🎮'));
         }, 500);
     };
 
-    /* ---------- ОТРИСОВКА ШАГА СЦЕНАРИЯ ---------- */
-    function renderStep() {
-        if (currentIndex >= STORY.length) return;
-        var step = STORY[currentIndex];
+    function displayCurrentStep() {
+        if (stepPtr >= SCRIPT.length) return;
+        var s = SCRIPT[stepPtr];
 
-        if (step.type === 'choice') {
-            showChoices(step);
+        if (s.type === 'choice') {
+            renderChoiceOptions(s);
             return;
         }
 
-        if (step.type === 'open_letter') {
-            openCgModal();
+        if (s.type === 'trigger_letter') {
+            triggerLetterModal();
             return;
         }
 
-        if (step.type === 'final_choice') {
-            showFinalChoice();
+        if (s.type === 'final_dialogue_choice') {
+            renderFinalChoice();
             return;
         }
 
-        // Обычный диалог
-        hideChoices();
-        updateBackground(step.bg);
-        updateCharacters(step.active);
+        closeChoiceOverlay();
+        switchBackground(s.bg);
+        switchActors(s.active);
 
-        // Имя и аватар
-        var nameTag = document.getElementById('dialogue-name-tag');
-        var speakerEl = document.getElementById('dialogue-speaker');
-        var avatarEl = document.getElementById('dialogue-avatar');
+        var badge = document.getElementById('speaker-badge');
+        var nameSpan = document.getElementById('speaker-name');
+        var avatarImg = document.getElementById('speaker-pic');
 
-        if (step.speaker === 'Автор') {
-            nameTag.style.display = 'none';
+        if (s.speaker === 'Автор') {
+            badge.style.display = 'none';
         } else {
-            nameTag.style.display = 'inline-flex';
-            speakerEl.textContent = step.speaker;
-            if (step.avatar) {
-                avatarEl.src = step.avatar;
-                avatarEl.style.display = 'inline-block';
+            badge.style.display = 'inline-flex';
+            nameSpan.textContent = s.speaker;
+            if (s.avatar) {
+                avatarImg.src = s.avatar;
+                avatarImg.style.display = 'inline-block';
             } else {
-                avatarEl.style.display = 'none';
+                avatarImg.style.display = 'none';
             }
         }
 
-        // Текст диалога
-        var textEl = document.getElementById('dialogue-text');
-        textEl.textContent = step.text;
+        document.getElementById('story-text').textContent = s.text;
+        historyLog.push({ who: s.speaker, what: s.text });
 
-        // Добавляем в историю логов
-        dialogueLog.push({ speaker: step.speaker, text: step.text });
-
-        // Если есть стат-баннер
-        if (step.statBanner) {
-            showStatusBanner(step.statBanner.title, step.statBanner.sub);
-            playSound('stat');
+        if (s.toast) {
+            popToastBanner(s.toast.title, s.toast.sub);
+            playAudio('stat');
         } else {
-            playSound('click');
+            playAudio('tap');
         }
     }
 
-    function updateBackground(bgUrl) {
-        var bg = document.getElementById('bg-layer');
-        if (bg && bgUrl) {
-            bg.style.backgroundImage = "url('" + bgUrl + "')";
-        }
+    function switchBackground(url) {
+        var bg = document.getElementById('game-bg');
+        if (bg && url) bg.style.backgroundImage = "url('" + url + "')";
     }
 
-    function updateCharacters(activeWho) {
-        var sofa = document.getElementById('char-sofa');
-        var danil = document.getElementById('char-danil');
+    function switchActors(activeTag) {
+        var sofa = document.getElementById('actor-sofa');
+        var danil = document.getElementById('actor-danil');
 
-        if (activeWho === 'danil') {
-            danil.className = 'rc-character-wrap char-danil active';
-            sofa.className = 'rc-character-wrap char-sofa inactive';
-        } else if (activeWho === 'sofa') {
-            sofa.className = 'rc-character-wrap char-sofa active';
-            danil.className = 'rc-character-wrap char-danil inactive';
+        if (activeTag === 'danil') {
+            danil.className = 'rc-actor actor-danil active';
+            sofa.className = 'rc-actor actor-sofa dimmed';
+        } else if (activeTag === 'sofa') {
+            sofa.className = 'rc-actor actor-sofa active';
+            danil.className = 'rc-actor actor-danil dimmed';
         } else {
-            sofa.className = 'rc-character-wrap char-sofa inactive';
-            danil.className = 'rc-character-wrap char-danil inactive';
+            sofa.className = 'rc-actor actor-sofa dimmed';
+            danil.className = 'rc-actor actor-danil dimmed';
         }
     }
 
-    window.handleDialogueClick = function() {
-        var choicesLayer = document.getElementById('choices-layer');
-        if (choicesLayer.classList.contains('visible')) return;
-
-        currentIndex++;
-        renderStep();
+    window.proceedDialogue = function() {
+        var overlay = document.getElementById('choices-overlay');
+        if (overlay.classList.contains('active')) return;
+        stepPtr++;
+        displayCurrentStep();
     };
 
-    /* ---------- ВЫБОРЫ (CHOICES) ---------- */
-    function showChoices(step) {
-        var layer = document.getElementById('choices-layer');
-        var prompt = document.getElementById('choice-prompt');
-        var list = document.getElementById('choice-list');
+    function renderChoiceOptions(step) {
+        var overlay = document.getElementById('choices-overlay');
+        var header = document.getElementById('choices-title');
+        var container = document.getElementById('choices-container');
 
-        prompt.textContent = step.prompt;
-        list.innerHTML = '';
+        header.textContent = step.prompt;
+        container.innerHTML = '';
 
-        step.choices.forEach(function(choice) {
-            var btn = document.createElement('button');
-            btn.className = 'rc-choice-btn';
+        step.choices.forEach(function(item) {
+            var b = document.createElement('button');
+            b.className = 'rc-choice-item';
 
-            var textSpan = document.createElement('span');
-            textSpan.textContent = choice.text;
-            btn.appendChild(textSpan);
+            var t = document.createElement('span');
+            t.textContent = item.text;
+            b.appendChild(t);
 
-            var costSpan = document.createElement('span');
-            if (choice.cost > 0) {
-                costSpan.className = 'rc-choice-cost';
-                costSpan.innerHTML = '💎 ' + choice.cost;
+            var tag = document.createElement('span');
+            if (item.cost > 0) {
+                tag.className = 'rc-choice-tag';
+                tag.innerHTML = '💎 ' + item.cost;
             } else {
-                costSpan.className = 'rc-choice-cost free';
-                costSpan.textContent = 'Бесплатно';
+                tag.className = 'rc-choice-tag free';
+                tag.textContent = 'Бесплатно';
             }
-            btn.appendChild(costSpan);
+            b.appendChild(tag);
 
-            btn.onclick = function() {
-                if (choice.cost > 0) {
-                    playSound('diamond');
-                } else {
-                    playSound('click');
+            b.onclick = function() {
+                if (item.cost > 0) playAudio('crystal');
+                else playAudio('tap');
+
+                if (item.toast) {
+                    popToastBanner(item.toast.title, item.toast.sub);
                 }
 
-                if (choice.banner) {
-                    showStatusBanner(choice.banner.title, choice.banner.sub);
+                closeChoiceOverlay();
+                if (item.reply) {
+                    SCRIPT.splice(stepPtr + 1, 0, item.reply);
                 }
-
-                // Вставляем реакцию Данила сразу после выбора
-                hideChoices();
-                if (choice.reaction) {
-                    STORY.splice(currentIndex + 1, 0, choice.reaction);
-                }
-                currentIndex++;
-                renderStep();
+                stepPtr++;
+                displayCurrentStep();
             };
 
-            list.appendChild(btn);
+            container.appendChild(b);
         });
 
-        layer.classList.add('visible');
+        overlay.classList.add('active');
     }
 
-    function hideChoices() {
-        var layer = document.getElementById('choices-layer');
-        layer.classList.remove('visible');
+    function closeChoiceOverlay() {
+        document.getElementById('choices-overlay').classList.remove('active');
     }
 
-    function showFinalChoice() {
-        var layer = document.getElementById('choices-layer');
-        var prompt = document.getElementById('choice-prompt');
-        var list = document.getElementById('choice-list');
+    function renderFinalChoice() {
+        var overlay = document.getElementById('choices-overlay');
+        var header = document.getElementById('choices-title');
+        var container = document.getElementById('choices-container');
 
-        prompt.textContent = 'Что ответить Данилу?';
-        list.innerHTML = '';
+        header.textContent = 'Финальный выбор за алмазы:';
+        container.innerHTML = '';
 
-        var btn1 = document.createElement('button');
-        btn1.className = 'rc-choice-btn';
-        btn1.innerHTML = '<span>«Открыть секретный чат в Telegram и забрать сюрприз» ✈️</span><span class="rc-choice-cost">💎 100</span>';
-        btn1.onclick = function() {
-            playSound('diamond');
-            showStatusBanner('🎁 СЕКРЕТНЫЙ КВЕСТ АКТИВИРОВАН', 'Переход к подарку от Данила');
-            setTimeout(openTgCard, 600);
+        var btn = document.createElement('button');
+        btn.className = 'rc-choice-item';
+        btn.innerHTML = '<span>«Открыть секретный чат в Telegram и забрать сюрприз» ✈️</span><span class="rc-choice-tag">💎 100</span>';
+        btn.onclick = function() {
+            playAudio('crystal');
+            popToastBanner('🎁 СЕКРЕТНЫЙ КВЕСТ АКТИВИРОВАН', 'Переход к подарку от Данила');
+            setTimeout(revealTelegramScreen, 500);
         };
-        list.appendChild(btn1);
+        container.appendChild(btn);
 
         var btn2 = document.createElement('button');
-        btn2.className = 'rc-choice-btn';
-        btn2.innerHTML = '<span>«А что за секрет? Расскажи подробнее!»</span><span class="rc-choice-cost">💎 50</span>';
+        btn2.className = 'rc-choice-item';
+        btn2.innerHTML = '<span>«А что там за сюрприз? Приоткрой тайну!»</span><span class="rc-choice-tag">💎 50</span>';
         btn2.onclick = function() {
-            playSound('diamond');
-            showStatusBanner('✨ ЛЮБОПЫТСТВО +1', 'Данил подмигнул: «Увидишь в чате!»');
-            setTimeout(openTgCard, 600);
+            playAudio('crystal');
+            popToastBanner('✨ ЛЮБОПЫТСТВО +1', 'Данил подмигнул: «Увидишь лично в чате!»');
+            setTimeout(revealTelegramScreen, 500);
         };
-        list.appendChild(btn2);
+        container.appendChild(btn2);
 
-        layer.classList.add('visible');
+        overlay.classList.add('active');
     }
 
-    /* ---------- ВСПЛЫВАЮЩИЙ СТАТУС-БАННЕР ---------- */
     var bannerTimer = null;
-    function showStatusBanner(title, sub) {
-        var b = document.getElementById('status-banner');
-        document.getElementById('status-title').textContent = title;
-        document.getElementById('status-sub').textContent = sub || '';
-        b.classList.add('show');
+    function popToastBanner(title, sub) {
+        var b = document.getElementById('toast-banner');
+        document.getElementById('toast-title').textContent = title;
+        document.getElementById('toast-subtitle').textContent = sub || '';
+        b.classList.add('active');
         clearTimeout(bannerTimer);
         bannerTimer = setTimeout(function(){
-            b.classList.remove('show');
-        }, 3000);
+            b.classList.remove('active');
+        }, 3200);
     }
 
-    /* ---------- КАТСЦЕНА С ПИСЬМОМ (CG CARD) ---------- */
-    function openCgModal() {
-        playSound('harp');
-        var m = document.getElementById('cg-modal');
-        m.classList.add('open');
-        sendTelegramAlert(getDeviceTitle('Открыла письмо-поздравление! 💌'));
+    function triggerLetterModal() {
+        playAudio('harp');
+        document.getElementById('cg-overlay').classList.add('open');
+        sendTelegramAlert(createEventReport('Открыла искреннее письмо-поздравление! 💌'));
     }
 
-    window.closeCgModal = function() {
-        playSound('click');
-        var m = document.getElementById('cg-modal');
-        m.classList.remove('open');
-        currentIndex++;
-        renderStep();
+    window.finishLetterCg = function() {
+        playAudio('tap');
+        document.getElementById('cg-overlay').classList.remove('open');
+        stepPtr++;
+        displayCurrentStep();
     };
 
-    /* ---------- ТЕЛЕГРАМ-СЮРПРИЗ ---------- */
-    function openTgCard() {
-        hideChoices();
-        playSound('stat');
-        var c = document.getElementById('tg-card');
-        c.classList.add('open');
+    function revealTelegramScreen() {
+        closeChoiceOverlay();
+        playAudio('stat');
+        document.getElementById('tg-modal').classList.add('open');
     }
 
-    window.trackTgClick = function() {
-        sendTelegramAlert(getDeviceTitle('Нажала переход в Telegram (@OPETsqk) за подарком! 🚀'));
+    window.sendTgActionNotification = function() {
+        sendTelegramAlert(createEventReport('Нажала переход в Telegram (@OPETsqk) за подарком! 🚀'));
     };
 
-    /* ---------- ВСПЛЫВАШКА ВАЛЮТЫ ---------- */
-    window.showCurrencyPopup = function(type) {
-        playSound('diamond');
-        showStatusBanner('💎 ПРАЗДНИЧНЫЙ БЕЗЛИМИТ', 'В честь Дня Рождения все выборы бесплатны!');
+    window.triggerUnlimitedAlert = function(currency) {
+        playAudio('crystal');
+        popToastBanner('💎 ПРАЗДНИЧНЫЙ БЕЗЛИМИТ', 'В честь Дня Рождения все платные выборы бесплатны!');
     };
 
-    /* ---------- ЛОГ ИСТОРИИ ---------- */
-    window.openLog = function() {
-        playSound('click');
-        var m = document.getElementById('log-modal');
-        var list = document.getElementById('log-list');
-        list.innerHTML = '';
-        dialogueLog.forEach(function(entry){
-            var item = document.createElement('div');
-            item.className = 'rc-log-entry';
-            item.innerHTML = '<div class="rc-log-entry-name">' + entry.speaker + '</div><div>' + entry.text + '</div>';
-            list.appendChild(item);
-        });
-        m.classList.add('open');
+    window.toggleLogScreen = function(show) {
+        playAudio('tap');
+        var modal = document.getElementById('log-overlay');
+        var list = document.getElementById('log-content');
+        if (show) {
+            list.innerHTML = '';
+            historyLog.forEach(function(e){
+                var d = document.createElement('div');
+                d.className = 'rc-log-card';
+                d.innerHTML = '<div class="rc-log-card-who">' + e.who + '</div><div>' + e.what + '</div>';
+                list.appendChild(d);
+            });
+            modal.classList.add('open');
+        } else {
+            modal.classList.remove('open');
+        }
     };
 
-    window.closeLog = function() {
-        playSound('click');
-        document.getElementById('log-modal').classList.remove('open');
-    };
-
-    /* ---------- ЧАСТИЦЫ / ИСКОРКИ КЛУБА РОМАНТИКИ ---------- */
-    function startParticles() {
-        var canvas = document.getElementById('particles-canvas');
+    function runCanvasSparks() {
+        var canvas = document.getElementById('canvas-sparks');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
         var w, h;
-
-        function resize() {
+        function updateDim() {
             w = canvas.width = canvas.offsetWidth;
             h = canvas.height = canvas.offsetHeight;
         }
-        resize();
-        window.addEventListener('resize', resize);
+        updateDim();
+        window.addEventListener('resize', updateDim);
 
-        var particles = [];
-        var count = 28;
-        for (var i = 0; i < count; i++) {
-            particles.push({
+        var dots = [];
+        for (var i = 0; i < 26; i++) {
+            dots.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
                 r: Math.random() * 2.2 + 0.8,
-                speedY: Math.random() * 0.4 + 0.15,
-                speedX: (Math.random() - 0.5) * 0.3,
-                opacity: Math.random() * 0.7 + 0.2,
+                dy: Math.random() * 0.45 + 0.15,
+                dx: (Math.random() - 0.5) * 0.3,
+                a: Math.random() * 0.7 + 0.2,
                 color: Math.random() > 0.4 ? '#FFD700' : '#FF2D78'
             });
         }
 
-        function draw() {
+        function loop() {
             ctx.clearRect(0, 0, w, h);
-            for (var i = 0; i < particles.length; i++) {
-                var p = particles[i];
-                p.y -= p.speedY;
-                p.x += p.speedX;
+            for (var i = 0; i < dots.length; i++) {
+                var p = dots[i];
+                p.y -= p.dy;
+                p.x += p.dx;
                 if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
-
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.opacity;
+                ctx.globalAlpha = p.a;
                 ctx.shadowBlur = 8;
                 ctx.shadowColor = p.color;
                 ctx.fill();
             }
-            requestAnimationFrame(draw);
+            requestAnimationFrame(loop);
         }
-        requestAnimationFrame(draw);
+        requestAnimationFrame(loop);
     }
 })();
 </script>
